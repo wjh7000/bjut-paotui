@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/order/order"
+    "pages/order/order",
+    "pages/info/info"
     
   ],
   "window": {
@@ -24,6 +25,12 @@
           "text":"订单",
           "iconPath": "./images/Order.png",
           "selectedIconPath": "./images/Order_select.png"
+      },
+      {
+          "pagePath": "pages/info/info",
+          "text":"个人",
+          "iconPath":"./images/Info.png",
+          "selectedIconPath": "./images/Info_select.png"
       }
     ]
   },
