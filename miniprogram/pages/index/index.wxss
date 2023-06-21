@@ -1,0 +1,15 @@
+.container{
+    margin: 80rpx;
+    display: grid;
+}
+.container .body{
+    width: 200rpx;
+    height: 40rpx;
+    background-color: #fff;
+    display: grid;
+    
+
+}
+.container .body .text{
+    margin-top: 80rpx;
+}

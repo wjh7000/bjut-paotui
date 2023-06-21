@@ -1,1 +1,19 @@
-index.wxml
+<view class = "banner">
+    <swiper indicator-dots="true" autoplay="true">
+    <swiper-item wx:for="{{banner}}">
+        <image src="{{item}}" mode="widthFix"/>
+    </swiper-item>
+        
+    </swiper>
+
+</view>
+<view class="container">
+    <view class="body" wx:for="{{indexConfig}}" wx:key="index">
+        <view class="icon">
+            <!-- add icon here -->
+        </view>
+        <text class="text">
+            {{item.text}}
+        </text>
+    </view>
+</view>

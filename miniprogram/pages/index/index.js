@@ -1,10 +1,25 @@
 Page({
-//tets
+
   /**
    * 页面的初始数据
    */
   data: {
-    
+    banner: ['../../images/swiper1.png','../../images/swiper2.png' , '../../images/swiper3.png'], 
+    indexConfig: [
+        {
+            icon:'',
+            text:'快递代取'
+
+        },
+        {
+            icon:'',
+            text:'外卖代取'
+        },
+        {
+            icon:'',
+            text:'test3'
+        }
+    ]
   },
 
   /**
