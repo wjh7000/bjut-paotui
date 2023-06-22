@@ -1,6 +1,6 @@
 <view class = "banner">
     <swiper indicator-dots="true" autoplay="true">
-    <swiper-item wx:for="{{banner}}">
+    <swiper-item wx:for="{{banner}}" wx:key="index">
         <image src="{{item}}" mode="widthFix"/>
     </swiper-item>
         

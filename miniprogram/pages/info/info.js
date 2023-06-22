@@ -5,14 +5,45 @@ Page({
      * 页面的初始数据
      */
     data: {
-
+        userInfo:{},
+        hasuserinfo:false,
+        ifuserprofile:false,
     },
 
+    getUserProfile(){
+        wx.getUserProfile({
+          desc: '获取用户信息',
+          success:(res)=>{
+              this.setData({
+                  userInfo:res.userInfo,
+                  hasuserinfo:true
+              })
+              wx.setStorageSync('userInfo', res.userInfo)
+          }
+        })
+    },
+
+    getUserInfo(e){
+        this.setData({
+            userInfo: e.detail.userInfo,
+            hasuserinfo:true
+        })
+    },
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-
+        if(wx.getUserProfile){
+            this.setData({
+                ifuserprofile:true
+            })
+        }
+        const userInfo=wx.getStorageSync('userInfo');
+        console.log(userInfo,!!userInfo);
+        this.setData({
+            hasuserinfo:!!userInfo,
+            userInfo:userInfo,
+        })
     },
 
     /**

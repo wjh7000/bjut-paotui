@@ -1,2 +1,21 @@
 <!--pages/info/info.wxml-->
-<text>pages/info/info.wxml</text>
+<view class="info">
+    <image class="user" src="{{hasuserinfo? userInfo.avatarUrl:'../../images/user.png'}}"></image>
+    <block wx:if="{{!hasuserinfo}}">
+        <button wx:if="{{ifuserprofile}}"bindtap="getUserProfile">点击授权</button>
+        <button wx:else open-type="getUserInfo" bindgetuserinfo="getUserInfo">点我授权</button>
+    </block>
+    <view class="detail" wx:if="{{hasuserinfo}}">
+        <text>{{userInfo.nickName}}</text>
+        <text>{{userInfo.gender===0?'男':'女'}}</text>
+    </view>
+    <image wx:if="{{hasuserinfo}}" class="next" src="../../images/next.png"></image>
+</view>
+
+<view class="address">
+    <view class="addressleft">
+        <image src="../../images/address.png"></image>
+        <text>地址管理</text>
+    </view>
+    <text class="addressright">></text>
+</view>

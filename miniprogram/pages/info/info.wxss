@@ -1,1 +1,53 @@
 /* pages/info/info.wxss */
+.info{
+    width: 80%;
+    background-color: #1067D1;
+    display: flex;
+    border-radius:10rpx ;
+    margin:0 auto;
+    padding: 50rpx 40rpx;
+    align-items: center;
+}
+
+.info .user{
+    width: 130rpx;
+    height: 130rpx;
+    border-radius: 50%;
+}
+
+.info .detail{
+    display: flex;
+    flex-direction: column;
+    color:#fff;
+    margin-left: 40rpx;
+}
+.info .next{
+    width:50rpx;
+    height: 50rpx;
+    margin-left: auto;
+}
+.address{
+    display: flex;
+    width: 80%;
+    background-color: #fff;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20rpx 40rpx;
+    margin-top: 20rpx;
+}
+.address .addressleft{
+    display: flex;
+    align-items: center;
+}
+.address .addressleft image{
+    width: 50rpx;
+    height: 50rpx;
+}
+.address .addressleft text{
+    margin-left: 30rpx;
+}
+
+.address .addressRight{
+    color:#c1c1c1;
+}
