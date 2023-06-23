@@ -1,0 +1,66 @@
+.info{
+    background-color: #fff;
+}
+.item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40rpx 20rpx;
+    border-bottom: 2rpx solid #d3d3d3;
+    width: 85%;
+    margin: 0 auto;
+}
+.item .right{
+    display: flex;
+    align-items: center;
+}
+
+.item .right text{
+    color: #a1a1a1;
+}
+
+.item .right image{
+    width: 80rpx;
+    height: 80rpx;
+    margin-right: 30rpx;
+    border-radius: 50%;
+}
+
+.item .right input{
+    text-align: right;
+    color: #a1a1a1;
+}
+
+.address{
+    display: flex;
+    width: 85%;
+    background-color: #fff;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20rpx 40rpx;
+    margin-top: 20rpx;
+}
+.address .addressleft{
+    display: flex;
+    align-items: center;
+}
+.address .addressleft image{
+    width: 50rpx;
+    height: 50rpx;
+}
+.address .addressleft text{
+    margin-left: 30rpx;
+}
+
+.address .addressright{
+    color: #a1a1a1;
+}
+
+.btn button{
+    margin-top: 50rpx;
+    width: 90%;
+    background-color: #1067D1;
+    color: beige;
+    border-radius: 40rpx;
+}

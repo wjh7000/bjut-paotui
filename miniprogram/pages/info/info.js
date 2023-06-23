@@ -14,6 +14,7 @@ Page({
         wx.getUserProfile({
           desc: '获取用户信息',
           success:(res)=>{
+              console.log(res);
               this.setData({
                   userInfo:res.userInfo,
                   hasuserinfo:true
@@ -21,6 +22,13 @@ Page({
               wx.setStorageSync('userInfo', res.userInfo)
           }
         })
+    },
+    personal(){
+        if(this.data.hasuserinfo){
+            wx.navigateTo({
+              url: '../personaldetail/personaldetail',
+            })
+        }
     },
 
     getUserInfo(e){
@@ -39,7 +47,7 @@ Page({
             })
         }
         const userInfo=wx.getStorageSync('userInfo');
-        console.log(userInfo,!!userInfo);
+        //console.log(userInfo,!!userInfo);
         this.setData({
             hasuserinfo:!!userInfo,
             userInfo:userInfo,
@@ -57,7 +65,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-
+        this.onLoad();
     },
 
     /**

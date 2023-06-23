@@ -1,0 +1,33 @@
+<view class = "info">
+    <view class = "item" bindtap="changeavatar">
+        <text>头像</text>
+        <view class = "right">
+            <image src="{{userInfo.avatarUrl}}"></image>
+            <text>></text>
+        </view>
+    </view>
+    <view class = "item">
+        <text>名字</text>
+        <view class = "right">
+            <input type ="text" bindinput="updatenickname" placeholder="请填写昵称" value="{{userInfo.nickName}}"/>
+        </view>
+    </view>
+    <view class = "item">
+        <text>手机号</text>
+        <view class = "right">
+            <input type ="text" bindinput="updatephone" placeholder="空" value="{{hasphone?phone:''}}"/>
+        </view>
+    </view>
+</view>
+
+<view class="address" bindtap="updateaddress">
+    <view class="addressleft">
+        <image src="../../images/address.png"></image>
+        <text>我的地址</text>
+    </view>
+    <text class="addressright">></text>
+</view>
+
+<view class ="btn" bindtap="save">
+    <button>保存</button>
+</view>

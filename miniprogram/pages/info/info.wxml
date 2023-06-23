@@ -1,5 +1,5 @@
 <!--pages/info/info.wxml-->
-<view class="info">
+<view class="info" bindtap="personal">
     <image class="user" src="{{hasuserinfo? userInfo.avatarUrl:'../../images/user.png'}}"></image>
     <block wx:if="{{!hasuserinfo}}">
         <button wx:if="{{ifuserprofile}}"bindtap="getUserProfile">点击授权</button>
@@ -7,7 +7,7 @@
     </block>
     <view class="detail" wx:if="{{hasuserinfo}}">
         <text>{{userInfo.nickName}}</text>
-        <text>{{userInfo.gender===0?'男':'女'}}</text>
+        <text>{{userInfo.gender==0?'男':'女'}}</text>
     </view>
     <image wx:if="{{hasuserinfo}}" class="next" src="../../images/next.png"></image>
 </view>
