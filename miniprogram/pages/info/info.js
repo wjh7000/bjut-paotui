@@ -14,7 +14,6 @@ Page({
         wx.getUserProfile({
           desc: '获取用户信息',
           success:(res)=>{
-              console.log(res);
               this.setData({
                   userInfo:res.userInfo,
                   hasuserinfo:true
@@ -29,12 +28,33 @@ Page({
           }
         })
     },
+
     personal(){
         if(this.data.hasuserinfo){
             wx.navigateTo({
               url: '../personaldetail/personaldetail',
             })
         }
+    },
+
+    au(){
+        wx.navigateTo({
+            url: '../aboutus/aboutus',
+        })
+    },
+
+    addressmanage(){
+        if(!this.data.hasuserinfo){
+            wx.showToast({
+                title: '请先登录',
+                duration: 1000,
+                icon:'error',
+              })
+            return;
+        }
+        wx.navigateTo({
+          url: '../addressmanage/addressmanage',
+        })
     },
 
     getUserInfo(e){

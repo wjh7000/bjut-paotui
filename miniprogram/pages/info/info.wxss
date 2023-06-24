@@ -28,7 +28,8 @@
 }
 .address{
     display: flex;
-    width: 100%;
+    width: 90%;
+    height: 100rpx;
     background-color: #fff;
     margin: 0 auto;
     justify-content: space-between;
@@ -50,4 +51,27 @@
 
 .address .addressRight{
     color:#c1c1c1;
+}
+
+.btn{
+    display: flex;
+    width: 90%;
+    height: 100rpx;
+    background-color: #fff;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20rpx 40rpx;
+    margin-top: 0rpx;
+}
+.btn .btnleft{
+    display: flex;
+    align-items: center;
+}
+.btn .btnleft image{
+    width: 50rpx;
+    height: 50rpx;
+}
+.btn .btnleft text{
+    margin-left: 30rpx;
 }

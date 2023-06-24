@@ -4,7 +4,8 @@
     "pages/order/order",
     "pages/info/info",
     "pages/personaldetail/personaldetail",
-    "pages/addressmanage/addressmanage"
+    "pages/addressmanage/addressmanage",
+    "pages/aboutus/aboutus"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

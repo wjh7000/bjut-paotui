@@ -12,10 +12,22 @@
     <image wx:if="{{hasuserinfo}}" class="next" src="../../images/next.png"></image>
 </view>
 
-<view class="address">
+<button class="address" bindtap="addressmanage">
     <view class="addressleft">
         <image src="../../images/address.png"></image>
         <text>地址管理</text>
     </view>
-    <text class="addressright">></text>
-</view>
+</button>
+
+<button class = "btn" open-type="contact">
+    <view class="btnleft">
+        <image src="../../images/cs.png"></image>
+        <text>官方客服</text>
+    </view>
+</button>
+<button class ="btn" bindtap="au">
+    <view class="btnleft">
+        <image src="../../images/au.png"></image>
+        <text>关于我们</text>
+    </view>
+</button>
