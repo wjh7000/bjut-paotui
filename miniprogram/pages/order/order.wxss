@@ -22,7 +22,7 @@
 }
 .body .tips{
     width: 100%;
-    background-color: #82b1eb;
+    background-image: linear-gradient(#5a9ae7,#99dbf5) ;
     text-align: center;
     color: #fff;
     padding: 10rpx 0;

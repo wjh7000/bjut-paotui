@@ -1,19 +1,22 @@
 <view class = "banner">
-    <swiper indicator-dots="true" autoplay="true">
-    <swiper-item wx:for="{{banner}}" wx:key="index">
-        <image src="{{item}}" mode="widthFix"/>
-    </swiper-item>
-        
+    <swiper indicator-dots="true" autoplay="true" class="banner_body">
+        <swiper-item wx:for="{{banner}}" wx:key="index" class="banner_item">
+            <image src="{{item}}" mode="widthFix"/>
+        </swiper-item>
     </swiper>
+</view>
 
+<view class="notice" bindtap="handClickNotice">
+    <image src="../../images/notice.png"></image>
+    <text>欢迎北京工业大学师生使用本小程序-如遇到问题请添加客服vx：123456789</text>
 </view>
 <view class="container">
-    <view class="body" wx:for="{{indexConfig}}" wx:key="index">
-        <view class="icon">
-            <!-- add icon here -->
+    <view class="body" wx:for="{{indexConfig}}" wx:key="index" data-url="{{ item.url }}" bindtap="toDetail">
+        <view class="circleBorder">
+            <view class="icon">
+                <image src="{{ item.icon }}"></image>
+            </view>
         </view>
-        <text class="text">
-            {{item.text}}
-        </text>
+        <text class="text">{{item.text}}</text>
     </view>
 </view>
