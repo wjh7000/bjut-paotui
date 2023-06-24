@@ -5,9 +5,14 @@ Page({
      * 页面的初始数据
      */
     data: {
-
+            tabList:['全部','我的订单','我帮助的','正在悬赏'],
+            tabNow: 0,
     },
-
+    selectTab (e) {
+        this.setData({
+            tabNow: e.currentTarget.dataset.id
+        })
+    },
     /**
      * 生命周期函数--监听页面加载
      */
