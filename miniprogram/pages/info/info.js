@@ -20,6 +20,12 @@ Page({
                   hasuserinfo:true
               })
               wx.setStorageSync('userInfo', res.userInfo)
+              if(!!!wx.getStorageSync('phone')){
+                  wx.reLaunch({
+                    url: '../personaldetail/personaldetail',
+                  })
+            }
+              
           }
         })
     },

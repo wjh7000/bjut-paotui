@@ -88,6 +88,15 @@ Page({
     },
 
     updateaddress(){
+        if(!!!wx.getStorageSync('phone')){
+            //wx.hideHomeButton();
+            wx.showToast({
+                title: '请保存手机号',
+                duration: 1000,
+                icon:'error',
+              })
+            return;
+        }
         wx.navigateTo({
           url: '../addressmanage/addressmanage',
         })
@@ -134,21 +143,28 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-
+        if(!!!wx.getStorageSync('phone')){
+            wx.hideHomeButton();
+            wx.showToast({
+                title: '请填写手机号',
+                duration: 1000,
+                icon:'error',
+              })
+        }
     },
 
     /**
      * 生命周期函数--监听页面隐藏
      */
     onHide() {
-
+        
     },
 
     /**
      * 生命周期函数--监听页面卸载
      */
     onUnload() {
-
+        
     },
 
     /**
