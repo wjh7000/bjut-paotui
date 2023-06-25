@@ -20,6 +20,16 @@ Page({
             }
         ],
         typeNow: 0,
+        businessIndex: 0,
+        businessArray: ['顺丰','圆通','韵达','京东','中通'],
+        selectBusiness: false
+    },
+
+    bindBusinessChange(e) {
+        this.setData({
+            businessIndex: e.detail.value,
+            selectBusiness: true
+        })
     },
 
     selectType(e) {
@@ -30,6 +40,12 @@ Page({
         wx.showToast({
             icon: 'none',
             title: tip,
+        })
+    },
+
+    selectAddress(){
+        wx.navigateTo({
+          url: '../addressmanage/addressmanage',
         })
     },
     /**

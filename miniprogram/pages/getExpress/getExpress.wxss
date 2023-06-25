@@ -2,7 +2,7 @@
 .container{
     background-color: #fff;
     width: 90%;
-    margin: 30rpx ;
+    margin: 30rpx auto;
     border-radius: 30rpx;
     box-shadow: 0 0 15rpx #a1a1a1;
     padding: 40rpx 25rpx 25rpx 25rpx;
@@ -91,4 +91,7 @@
 
 .container .bottom_tips text:nth-child(3) {
     color: #f00;
+}
+.container  .submit {
+    background-color: #1067d1;
 }
