@@ -1,46 +1,42 @@
-// pages/addressmanage/addressmanage.js
+// pages/selectBuild/selectBuild.js
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        address: [],
+        tabList: ['教学区', '宿舍楼','其余地点'],
+        teachList:['第一教学楼','第二教学楼','第三教学楼','第四教学楼'],
+        otherList:['南操','北操'],
+        tabNow: 0
     },
-
-    edit(e) {
+  
+    selectBuild(e) {
         const index = e.currentTarget.dataset.index;
-        const address = this.data.address[index];
+        const that = this.data;
+        const build =(this.data.tabNow==0)?
+        `${that.tabList[that.tabNow]}-${this.data.teachList[index]}`:
+        (this.data.tabNow==0)?
+        build = `${that.tabList[that.tabNow]}-${this.data.otherList[index]}`
+        : `${that.tabList[that.tabNow]}-${index + 1}号楼`;
         wx.navigateTo({
-          url: `../addAddress/addAddress?address=${JSON.stringify(address)}&index=${index}`,
+          url: `../addAddress/addAddress?build=${build}`
         })
-      },
+    },
+  
+    selectTab(e) {
+        const id = e.currentTarget.dataset.id;
+        this.setData({
+            tabNow: id,
+        })
+    },
+  
     
-      delete(e) {
-        const index = e.currentTarget.dataset.index;
-        const address = this.data.address;
-        address.splice(index, 1);
-        wx.setStorageSync('address', address);
-        wx.showToast({
-          title: '删除成功',
-        })
-        this.onLoad();
-      },
-    
-      addAddress() {
-        wx.navigateTo({
-          url: '../addAddress/addAddress',
-        })
-      },
-
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-    const address = wx.getStorageSync('address');
-    this.setData({
-    address,
-    })
+
     },
 
     /**
@@ -54,9 +50,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-        this.setData({
-            address: wx.getStorageSync('address')
-          })
+
     },
 
     /**
