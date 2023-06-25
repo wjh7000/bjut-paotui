@@ -15,6 +15,19 @@ Page({
           url: `../addAddress/addAddress?address=${JSON.stringify(address)}&index=${index}`,
         })
       },
+      
+      selectAddress(e) {
+        const {
+          index
+        } = e.currentTarget.dataset;
+        const url = wx.getStorageSync('Nowurl')
+        if(url=='personal') { return;}
+        const address = this.data.address[index];
+        wx.setStorageSync('addressNow', address);
+        wx.redirectTo({
+          url: `../${url}/${url}`,
+        })
+      },
     
       delete(e) {
         const index = e.currentTarget.dataset.index;

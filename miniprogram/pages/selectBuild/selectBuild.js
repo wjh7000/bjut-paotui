@@ -19,7 +19,7 @@ Page({
         (this.data.tabNow==2)?
         `${that.tabList[that.tabNow]}-${this.data.otherList[index]}`
         : `${that.tabList[that.tabNow]}-${index + 1}号楼`;
-        wx.navigateTo({
+        wx.redirectTo({
           url: `../addAddress/addAddress?build=${build}`
         })
     },

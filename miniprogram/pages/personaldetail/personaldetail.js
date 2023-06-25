@@ -97,6 +97,7 @@ Page({
               })
             return;
         }
+        wx.setStorageSync('Nowurl', 'personal');
         wx.navigateTo({
           url: '../addressmanage/addressmanage',
         })

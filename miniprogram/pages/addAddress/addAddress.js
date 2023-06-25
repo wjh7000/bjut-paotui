@@ -120,7 +120,7 @@ Page({
     },
   
     selectBuild() {
-        wx.navigateTo({
+        wx.redirectTo({
             url: '../selectBuild/selectBuild',
         })
     },
