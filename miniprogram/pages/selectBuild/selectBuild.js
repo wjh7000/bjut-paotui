@@ -16,8 +16,8 @@ Page({
         const that = this.data;
         const build =(this.data.tabNow==0)?
         `${that.tabList[that.tabNow]}-${this.data.teachList[index]}`:
-        (this.data.tabNow==0)?
-        build = `${that.tabList[that.tabNow]}-${this.data.otherList[index]}`
+        (this.data.tabNow==2)?
+        `${that.tabList[that.tabNow]}-${this.data.otherList[index]}`
         : `${that.tabList[that.tabNow]}-${index + 1}号楼`;
         wx.navigateTo({
           url: `../addAddress/addAddress?build=${build}`

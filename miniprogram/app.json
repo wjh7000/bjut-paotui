@@ -6,13 +6,9 @@
     "pages/personaldetail/personaldetail",
     "pages/addressmanage/addressmanage",
     "pages/aboutus/aboutus",
-<<<<<<< HEAD
     "pages/addAddress/addAddress",
-    "pages/selectBuild/selectBuild"
-=======
-
+    "pages/selectBuild/selectBuild",
     "pages/getExpress/getExpress"
->>>>>>> 50bac6034edf0bba530e63f2e152b01c13e903d3
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
