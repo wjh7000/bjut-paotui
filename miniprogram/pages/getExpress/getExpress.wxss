@@ -1,1 +1,94 @@
 /* pages/getExpress/getExpress.wxss */
+.container{
+    background-color: #fff;
+    width: 90%;
+    margin: 30rpx ;
+    border-radius: 30rpx;
+    box-shadow: 0 0 15rpx #a1a1a1;
+    padding: 40rpx 25rpx 25rpx 25rpx;
+}
+.container .title{
+    text-align: center;
+
+}
+
+.container .type{
+    display: flex;
+    margin: 0 auto;
+    width: 90%;
+    margin-top: 20rpx;
+    padding-bottom: 30rpx;
+    border-bottom: 4rpx solid #d1d1d1;
+    display: flex;
+    justify-content: center;
+}
+
+.container .type view{
+    border: 2rpx solid #d1d1d1;
+    padding: 20rpx 60rpx;
+    color: #a1a1a1;
+} 
+
+.selectType {
+    color: #f00 !important;
+    border-color: #f00 !important;
+}
+
+.container .address{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 20rpx;
+    padding-bottom: 30rpx;
+    border-bottom: 2rpx solid #d1d1d1;
+}
+
+.container .address text:nth-child(2){
+    color: #d1d1d1;
+}
+
+.container .address input {
+    text-align: right;
+    color: #d1d1d1;
+}
+
+.container .getCode{
+    margin-top: 20rpx;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.container .getCode .content {
+    border: 2rpx solid #d1d1d1;
+    padding: 20rpx;
+    width: 83%;
+}
+
+.container .getCode .getImg {
+    width: 70rpx;
+    height: 70rpx;
+    position: absolute;
+    bottom: 60rpx;
+    right: 80rpx;
+}
+
+.container .bottom_tips {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.container .bottom_tips text {
+     margin-top: 20rpx;
+}
+
+.container .bottom_tips text:nth-child(1) {
+    color: #a1a1a1;
+}
+
+.container .bottom_tips text:nth-child(3) {
+    color: #f00;
+}
