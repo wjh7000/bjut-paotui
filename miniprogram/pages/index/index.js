@@ -7,21 +7,46 @@ Page({
     banner: ['../../images/swiper1.png','../../images/swiper2.png' , '../../images/swiper3.png'], 
     indexConfig: [
         {
-            icon:'',
-            text:'快递代取'
-
+            icon:'../../images/express.png',
+            text:'快递代取',
+            url:'../getExpress/getExpress'
         },
         {
-            icon:'',
+            icon:'../../images/run.png',
             text:'外卖代取'
         },
         {
-            icon:'',
-            text:'test3'
+            icon:'../../images/run.png',
+            text:'校园跑腿'
+        },
+        {
+            icon:'../../images/run.png',
+            text:'快递代寄'
+        },
+        {
+            icon:'../../images/run.png',
+            text:'帮我寄'
+        },
+        {
+            icon:'../../images/run.png',
+            text:'帮我打印'
         }
     ]
   },
 
+toDetail(e){
+    const url = e.currentTarget.dataset.url;
+    wx.navigateTo({
+      url,
+    })
+},  
+
+handClickNotice(){
+    wx.showModal({
+        title:'公告',
+        content:'如遇到问题请添加客服vx：123456789'
+    })
+},
   /**
    * 生命周期函数--监听页面加载
    */

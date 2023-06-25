@@ -1,15 +1,73 @@
+.banner_body .banner_item .banner_item image{
+    width: 100%;
+}
 .container{
-    margin: 80rpx;
-    display: grid;
+    margin: 40rpx;
+    display: flex;
+    flex-wrap: wrap;
 }
 .container .body{
-    width: 200rpx;
-    height: 40rpx;
+    width: 180rpx;
+    height: 160rpx;
     background-color: #fff;
-    display: grid;
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 20rpx;
+    border-radius: 20rpx;
+}
 
+.container .body .circleBorder{
+    width: 120rpx;
+    height: 120rpx;
+    position: absolute;
+    top: -40rpx;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .body .circleBorder .icon {
+    width: 100rpx;
+    height: 100rpx;
+    background-color: #00f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+}
+
+.container .body .circleBorder .icon image {
+    width: 60rpx;
+    height: 60rpx;
 }
 .container .body .text{
-    margin-top: 80rpx;
+    margin-top: 60rpx;
+    color: #00f;
 }
+
+.notice {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 5rpx 15rpx;
+    margin-top: 20rpx;
+}
+
+.notice image {
+    width: 60rpx;
+    height: 60rpx;
+}
+
+.notice text {
+    font-size: 30rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+

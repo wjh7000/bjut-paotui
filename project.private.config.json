@@ -82,7 +82,18 @@
                 },
                 {
                     "name": "",
+<<<<<<< HEAD
                     "pathName": "pages/selectBuild/selectBuild",
+=======
+                    "pathName": "pages/index/index",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
+                },
+                {
+                    "name": "",
+                    "pathName": "pages/getExpress/getExpress",
+>>>>>>> 50bac6034edf0bba530e63f2e152b01c13e903d3
                     "query": "",
                     "launchMode": "default",
                     "scene": null

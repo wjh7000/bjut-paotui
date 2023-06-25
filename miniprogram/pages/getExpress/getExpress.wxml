@@ -1,0 +1,31 @@
+<view class="container">
+    <view class="title">快递大小</view>
+    <view class="type">
+        <view class="{{ typeNow === index ? 'selectType' : '' }}" wx:for="{{ typeList }}" wx:key="index" data-id="{{ index }}" data-tip="{{ item.tips }}"bindtap="selectType">{{ item.name }}</view>
+    </view>
+    <view class="address">
+        <text>收件地址：</text>
+        <text>请选择收件地址 ></text>
+    </view>
+
+    <view class="address">
+        <text>取件信息</text>
+    </view>
+    <view class="getCode">
+        <textarea class="content" cols="30" rows="10" placeholder="输入取件码或上传截图~"></textarea>
+        <image class="getImg" src="../../images/getImg.png"></image>
+    </view>
+    <view class="address">
+        <text>备注信息：</text>
+        <input  class="info" type="text" placeholder="此信息所有人可见"/>
+    </view>
+    <view class="address">
+        <text>更多选择：</text>
+        <text style="color: #1067d1">显示</text>
+    </view>
+    <view class="bottom_tips">
+        <text>信息仅接单同学可见，安全放心~</text>
+        <text>需支付</text>
+        <text>3元</text>
+    </view>
+</view>
