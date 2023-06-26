@@ -10,7 +10,8 @@
     "pages/selectBuild/selectBuild",
     "pages/getExpress/getExpress",
     "pages/expressBusiness/expressBusiness",
-    "pages/apply/apply"
+    "pages/apply/apply",
+    "pages/takeaway/takeaway"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

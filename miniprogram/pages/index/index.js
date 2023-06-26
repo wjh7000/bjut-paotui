@@ -13,7 +13,8 @@ Page({
         },
         {
             icon:'../../images/run.png',
-            text:'外卖代取'
+            text:'外卖代取',
+            url:'../takeaway/takeaway'
         },
         {
             icon:'../../images/run.png',
