@@ -35,6 +35,14 @@ Page({
   },
 
 toDetail(e){
+    const userInfo = wx.getStorageSync('userInfo');
+    if(!userInfo){
+        wx.showToast({
+            title: '请先登录',
+            icon:'error'
+        })
+        return;
+    } 
     const url = e.currentTarget.dataset.url;
     wx.navigateTo({
       url,

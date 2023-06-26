@@ -8,7 +8,8 @@
     "pages/aboutus/aboutus",
     "pages/addAddress/addAddress",
     "pages/selectBuild/selectBuild",
-    "pages/getExpress/getExpress"
+    "pages/getExpress/getExpress",
+    "pages/expressBusiness/expressBusiness"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
