@@ -70,10 +70,12 @@ Page({
     },
 
     getCode() {
-        wx.chooseImage({
+        wx.chooseMedia({
           count: 1,
-          sizeType: ['original', 'compressed'],
-          sourceType: ['album', 'camera'],
+          mediaType:['image'],
+          sourceType:['album','camera'],
+          maxDuration:30,
+          camera:'back',
           success: (res) => {
             wx.showLoading({
               title: '加载中',
@@ -81,7 +83,7 @@ Page({
             const random = Math.floor(Math.random() * 1000);
             wx.cloud.uploadFile({
                 cloudPath: `expressCode/${random}.png`,
-                filePath: res.tempFilePaths[0],
+                filePath: res.tempFiles[0].tempFilePath,
                 success: (res) => {
                     let fileID = res.fileID;
                     this.setData({
@@ -150,8 +152,8 @@ Page({
                 wx.showToast({
                   title: '提交成功',
                 })
-                wx.navigateTo({
-                  url: '../index/index',
+                wx.switchTab({
+                    url: '../index/index',
                 })
             },
             fail: (res) => {
