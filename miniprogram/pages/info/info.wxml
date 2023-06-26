@@ -19,6 +19,13 @@
     </view>
 </button>
 
+<button class ="btn" bindtap="apply">
+    <view class="btnleft">
+        <image src="../../images/check.png"></image>
+        <text>骑手申请</text>
+    </view>
+</button>
+
 <button class = "btn" open-type="contact">
     <view class="btnleft">
         <image src="../../images/cs.png"></image>

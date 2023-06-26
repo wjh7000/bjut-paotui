@@ -43,6 +43,12 @@ Page({
         })
     },
 
+    apply(){
+        wx.navigateTo({
+            url: '../apply/apply',
+        })
+    },
+
     addressmanage(){
         if(!this.data.hasuserinfo){
             wx.showToast({
