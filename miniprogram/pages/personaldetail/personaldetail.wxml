@@ -9,7 +9,9 @@
     <view class = "item">
         <text>名字</text>
         <view class = "right">
-            <input type ="text" bindinput="updatenickname" placeholder="请填写昵称" value="{{userInfo.nickName}}"/>
+            <input type ="text" bindinput="updatenickname" 
+           
+            placeholder="请填写昵称" value="{{userInfo.nickName}}"/>
         </view>
     </view>
     <view class = "item">
@@ -28,6 +30,7 @@
     <text class="addressright">></text>
 </view>
 
+
 <view class ="btn" bindtap="save">
-    <button>保存</button>
+    <button form-type="submit" class="register">保存</button>
 </view>

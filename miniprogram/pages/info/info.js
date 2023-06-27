@@ -48,6 +48,11 @@ Page({
             url: '../apply/apply',
         })
     },
+    contacter(){
+        wx.navigateTo({
+            url: '../contact/contact',
+        })
+    },
 
     addressmanage(){
         if(!this.data.hasuserinfo){

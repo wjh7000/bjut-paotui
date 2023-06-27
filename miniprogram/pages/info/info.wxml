@@ -26,6 +26,14 @@
     </view>
 </button>
 
+<button class ="btn" bindtap="contacter">
+    <view class="btnleft">
+        <image src="../../images/info.png"></image>
+        <text>联系人</text>
+    </view>
+</button>
+
+
 <button class = "btn" open-type="contact">
     <view class="btnleft">
         <image src="../../images/cs.png"></image>

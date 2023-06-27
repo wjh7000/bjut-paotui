@@ -10,7 +10,10 @@
     "pages/selectBuild/selectBuild",
     "pages/getExpress/getExpress",
     "pages/expressBusiness/expressBusiness",
-    "pages/apply/apply"
+    "pages/apply/apply",
+    "pages/message/message",
+    "pages/contact/contact"
+
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -33,6 +36,14 @@
           "iconPath": "./images/Order.png",
           "selectedIconPath": "./images/Order_select.png"
       },
+
+      {
+        "pagePath": "pages/message/message",
+        "text":"消息",
+        "iconPath": "./images/msg.png",
+        "selectedIconPath": "./images/msg_fil.png"
+    },
+
       {
           "pagePath": "pages/info/info",
           "text":"个人",

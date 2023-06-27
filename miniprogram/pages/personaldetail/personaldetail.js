@@ -35,8 +35,20 @@ Page({
     },
 
     save(e){
+        let xinxi
+        let phonenum
         wx.setStorageSync('phone', this.data.phone);
         wx.setStorageSync('userInfo', this.data.userInfo);
+        xinxi =  this.data.userInfo
+        phonenum =  this.data.phone
+        wx.cloud.database().collection('chat_user').
+        add({
+            data:{
+                time:Date.now(),
+                ...xinxi,phonenum
+            }
+        })
+
         if(!!!this.data.phone){
             wx.showToast({
               title: '手机号不可为空',

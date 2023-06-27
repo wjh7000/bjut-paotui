@@ -4,6 +4,9 @@ page {
 .info{
     background-color: #fff;
 }
+.register{
+    background-color: #fff;
+}
 .item{
     display: flex;
     justify-content: space-between;
