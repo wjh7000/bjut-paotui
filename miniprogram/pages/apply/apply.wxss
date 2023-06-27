@@ -37,25 +37,7 @@
     align-items: center;
     margin-top: 40rpx;
   }
-  
-  .body .item .left {
-    display: flex;
-    align-items: center;
-  }
-  
-  .body .item .left image {
-    width: 40rpx;
-    height: 40rpx;
-  }
-  
-  .body .item .right {
-    color: #a1a1a1;
-  }
-  
-  .body .item .left text {
-    margin-left: 20rpx;
-  }
-  
+
   .body .item input {
     text-align: right;
   }
