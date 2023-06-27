@@ -26,6 +26,7 @@ Page({
         money: 3,
         address:'',
         business:'',
+        address_to:'',
         expressCode:'',
         remark:'',
         codeImg:'',
@@ -64,6 +65,16 @@ Page({
     },
 
     getRemark(e) {
+        this.setData({
+            remark: e.detail.value
+        })
+    },
+    getName(e) {
+        this.setData({
+            remark: e.detail.value
+        })
+    },
+    getAddress_to(e) {
         this.setData({
             remark: e.detail.value
         })
@@ -123,6 +134,13 @@ Page({
     submit(){
         const that = this.data;
         const {phone ,name}=wx.getStorageSync('addressNow');
+        if(!that.address || !that.business || (!that.expressCode && !that.codeImg)){
+            wx.showToast({
+                title: '信息缺失',
+                icon:'error'
+            })
+            return;
+        }
         db.collection('getExpress').add({
             data: {
                 type:'getExpress',
@@ -152,9 +170,12 @@ Page({
                 wx.showToast({
                   title: '提交成功',
                 })
-                wx.switchTab({
-                    url: '../index/index',
-                })
+                
+                setTimeout(function(){
+                    wx.switchTab({
+                      url: '../index/index',
+                     })}
+                     ,600);
             },
             fail: (res) => {
                 wx.showToast({
