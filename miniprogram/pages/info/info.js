@@ -11,6 +11,12 @@ Page({
     },
 
     getUserProfile(){
+        wx.cloud.callFunction({
+            name:'getuserid',
+            complete: res =>{
+                wx.setStorageSync('userid', res.result.openid);
+            }
+        })
         wx.getUserProfile({
           desc: '获取用户信息',
           success:(res)=>{
