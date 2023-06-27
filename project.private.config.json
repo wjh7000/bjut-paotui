@@ -18,6 +18,13 @@
                     "query": "",
                     "launchMode": "default",
                     "scene": null
+                },
+                {
+                    "name": "",
+                    "pathName": "pages/expressDelivery/expressDelivery",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
                 }
             ]
         }
