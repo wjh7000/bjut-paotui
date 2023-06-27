@@ -21,7 +21,7 @@
 
 <button class ="btn" bindtap="apply">
     <view class="btnleft">
-        <image src="../../images/check.png"></image>
+        <image src="../../images/apply.png"></image>
         <text>骑手申请</text>
     </view>
 </button>

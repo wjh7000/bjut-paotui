@@ -1,5 +1,4 @@
-/* pages/getExpress/getExpress.wxss */
-.container{
+/* pages/expressDelivery/expressDelivery.wxss */.container{
     background-color: #fff;
     width: 90%;
     margin: 30rpx auto;
@@ -50,6 +49,10 @@
 }
 
 .container .address input {
+    text-align: right;
+    color: #d1d1d1;
+}
+.container .address .phcolor{
     text-align: right;
     color: #d1d1d1;
 }
@@ -106,9 +109,4 @@
     position: absolute;
     left: 80rpx;
     bottom: 60rpx;
-}
-
-.container .address .phcolor{
-    text-align: right;
-    color: #d1d1d1;
 }

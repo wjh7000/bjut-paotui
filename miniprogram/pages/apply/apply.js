@@ -1,4 +1,5 @@
 // pages/apply/apply.js
+const db = wx.cloud.database()
 Page({
 
     /**
@@ -62,9 +63,32 @@ Page({
 
     submit(){
         var that=this.data;
-        console.log(that.userID);
-        console.log(that.userIDImg);
-        console.log(that.name);
+        var myDate=new Date();
+        db.collection('mailmanapply').add({
+            data: {
+                userInfo:that.userInfo,
+                name:that.name,
+                userID:that.userID,
+                userIDImg:that.userIDImg,
+                state:"审核中",
+            },
+            success: (res) => {
+                wx.showToast({
+                  title: '提交成功',
+                })
+                setTimeout(function(){
+                    wx.switchTab({
+                      url: '../info/info',
+                     })}
+                     ,600);
+            },
+            fail: (res) => {
+                wx.showToast({
+                  icon: 'none',
+                  title: '上传失败',
+                })
+            }
+        })
     },
 
     onLoad(options) {

@@ -4,7 +4,11 @@
         <view class="{{ typeNow === index ? 'selectType' : '' }}" wx:for="{{ typeList }}" wx:key="index" data-id="{{ index }}" data-tip="{{ item.tips }}"bindtap="selectType">{{ item.name }}</view>
     </view>
     <view class="address">
-        <text>收件地址：</text>
+        <text>寄件人：</text>
+        <input type="text" placeholder="请输入寄件人姓名 >" value="{{ name }}" bindinput="getRemark" placeholder-class="phcolor"/>
+    </view>
+    <view class="address">
+        <text>取件地址：</text>
         <text bindtap="selectAddress">
             {{ !address ? '请选择收件地址 >' : address}}
         </text>
@@ -16,10 +20,18 @@
         </text>
     </view>
     <view class="address">
+        <text>收件人：</text>
+        <input type="text" placeholder="请输入寄件人姓名 >" value="{{ name_to }}" bindinput="getName" placeholder-class="phcolor"/>
+    </view>
+    <view class="address">
+        <text>收件地址：</text>
+        <input type="text" placeholder="请输入收件地址 >" value="{{ address_to }}" bindinput="getAddress_to" placeholder-class="phcolor"/>
+    </view>
+    <view class="address">
         <text>取件信息</text>
     </view>
     <view class="getCode">
-        <textarea class="content" cols="30" rows="10" placeholder="输入取件码或上传截图~" value="{{ expressCode }}"  bindinput="getExpressCode" placeholder-class="phcolor">
+        <textarea class="content" cols="30" rows="10" placeholder="输入预约码或上传截图~" value="{{ expressCode }}"  bindinput="getExpressCode" placeholder-class="phcolor">
             <image class="expressCode" src="{{ codeImg }}">
             </image>
             <image class="getImg" src="{{ codeImg ? '../../images/getImg_fill.png' : '../../images/getImg.png' }}" bindtap="getCode">

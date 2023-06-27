@@ -12,23 +12,25 @@ Page({
             url:'../getExpress/getExpress'
         },
         {
-            icon:'../../images/run.png',
-            text:'外卖代取'
+            icon:'../../images/waimai.png',
+            text:'外卖代取',
+            url:'../takeaway/takeaway'
         },
         {
             icon:'../../images/run.png',
             text:'校园跑腿'
         },
         {
-            icon:'../../images/run.png',
-            text:'快递代寄'
+            icon:'../../images/expressDelivery.png',
+            text:'快递代寄',
+            url:'../expressDelivery/expressDelivery'
         },
         {
-            icon:'../../images/run.png',
-            text:'帮我寄'
+            icon:'../../images/borrow.png',
+            text:'租借服务'
         },
         {
-            icon:'../../images/run.png',
+            icon:'../../images/print.png',
             text:'帮我打印'
         }
     ]

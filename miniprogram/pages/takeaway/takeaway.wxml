@@ -1,0 +1,30 @@
+<view class="container">
+    <view class="title">外卖种类</view>
+    <view class="type">
+        <view class="{{ typeNow === index ? 'selectType' : ''}}" wx:for="{{ typeList }}" wx:key="index" data-id="{{ index }}" data-tip="{{ item.tips }}" data-money="{{item.money}}"bindtap="selectType">{{ item.name }}</view>
+    </view>
+    <view class="address">
+        <text>送餐地址：</text>
+        <text>请选择地址 ></text>
+    </view>
+    <view class="address">
+        <text>外卖存点：</text>
+        <text>请选择外卖柜 ></text>
+    </view>
+    <view class="address">
+        <text>取餐信息</text>
+    </view>
+    <view class="getCode">
+        <textarea class="content" cols="30" rows="10" placeholder="请输入取餐码或上传截图"></textarea>
+        <image class="getImg" src="../../images/getImg.png"></image>
+    </view>
+    <view class="address">
+        <text>备注信息</text>
+        <input type="text" placeholder="您的配送偏好等"/>
+    </view>
+    <view class="bottom_tips">
+        <text>已为您保密个人信息</text>
+        <text>需支付：{{money}}元</text>
+    </view>
+    <button class="submit">立即发布</button>
+</view>
