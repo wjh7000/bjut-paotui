@@ -54,6 +54,7 @@ Page({
     },
 
     selectBusiness(){
+        wx.setStorageSync('Nowurl', 'getExpress')
         wx.navigateTo({
           url: '../expressBusiness/expressBusiness',
         })
