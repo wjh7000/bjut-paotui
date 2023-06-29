@@ -28,6 +28,7 @@ Page({
         name:'',
         address:'',
         business:'',
+        name_from:'',
         name_to:'',
         address_to:'',
         expressCode:'',
@@ -77,7 +78,11 @@ Page({
             remark: e.detail.value
         })
     },
-
+    getName_from(e) {
+        this.setData({
+            remark: e.detail.value
+        })
+    },
     getCode() {
         wx.chooseMedia({
           count: 1,
@@ -170,7 +175,7 @@ Page({
             success: (res) => {
                 // 清空输入内容
                 this.setData({
-                    typr:'',
+                    type:'',
                     status:'',
                     money: '',
                     address: '',

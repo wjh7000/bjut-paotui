@@ -21,7 +21,7 @@
     </view>
     <view class="address">
         <text>收件人：</text>
-        <input type="text" placeholder="请输入收件人姓名 >" value="{{ name_to }}" bindinput="getName" placeholder-class="phcolor"/>
+        <input type="text" placeholder="请输入收件人姓名 >" value="{{ name_to }}" bindinput="getName_to" placeholder-class="phcolor"/>
     </view>
     <view class="address">
         <text>收件地址：</text>
