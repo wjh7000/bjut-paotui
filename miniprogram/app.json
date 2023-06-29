@@ -14,8 +14,7 @@
     "pages/message/message",
     "pages/contact/contact",
     "pages/takeaway/takeaway",
-    "pages/expressDelivery/expressDelivery",
-    "pages/waiting/waiting"
+    "pages/expressDelivery/expressDelivery"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
