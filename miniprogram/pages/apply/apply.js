@@ -64,31 +64,66 @@ Page({
     submit(){
         var that=this.data;
         var myDate=new Date();
-        db.collection('mailmanapply').add({
-            data: {
-                userInfo:that.userInfo,
-                name:that.name,
-                userID:that.userID,
-                userIDImg:that.userIDImg,
-                state:"审核中",
-            },
-            success: (res) => {
-                wx.showToast({
-                  title: '提交成功',
-                })
-                setTimeout(function(){
-                    wx.switchTab({
-                      url: '../info/info',
-                     })}
-                     ,600);
-            },
-            fail: (res) => {
-                wx.showToast({
-                  icon: 'none',
-                  title: '上传失败',
-                })
+        const _openid=wx.getStorageSync('userid');
+        db.collection('mailmanapply').where({
+            _openid,
+        }).get({
+            success(res){
+                const db = wx.cloud.database();
+                if(res.data.length==0){
+                    console.log('ok');
+                    db.collection('mailmanapply').add({
+                        data: {
+                            userInfo:that.userInfo,
+                            name:that.name,
+                            userID:that.userID,
+                            userIDImg:that.userIDImg,
+                            state:"审核中",
+                        },
+                        success: (res) => {
+                            wx.showToast({
+                              title: '提交成功',
+                            })
+                            setTimeout(function(){
+                                wx.switchTab({
+                                  url: '../info/info',
+                                 })}
+                                 ,600);
+                        },
+                        fail: (res) => {
+                            wx.showToast({
+                              icon: 'none',
+                              title: '上传失败',
+                            })
+                        }
+                    })
+                }
+                else{
+                    console.log('else');
+                    const {_id}=res.data[0];
+                    db.collection('mailmanapply').doc(_id).update({
+                        data:{
+                            name:that.name,
+                            userID:that.userID,
+                            userIDImg:that.userIDImg,
+                            state:"审核中",
+                        },
+                        success: (res) => {
+                            wx.showToast({
+                              title: '提交成功',
+                            })
+                            setTimeout(function(){
+                                wx.switchTab({
+                                  url: '../info/info',
+                                 })}
+                                 ,600);
+                        }
+                    })
+                }
             }
         })
+
+       
     },
 
     onLoad(options) {
