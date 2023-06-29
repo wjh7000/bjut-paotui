@@ -151,11 +151,13 @@ Page({
             })
             return;
         }
-        db.collection('expressDelivery').add({
+        db.collection('order').add({
             data: {
                 type:'expressDeilivery',
                 status:'waiting',
                 money: that.money,
+                name_to:that.name_to,
+                address_to:that.address_to,
                 address: that.address,
                 business: that.business,
                 expressCode: that.expressCode,
@@ -168,8 +170,12 @@ Page({
             success: (res) => {
                 // 清空输入内容
                 this.setData({
+                    typr:'',
+                    status:'',
                     money: '',
                     address: '',
+                    name_to:'',
+                    address_to:'',
                     business: '',
                     expressCode: '',
                     remark: '',

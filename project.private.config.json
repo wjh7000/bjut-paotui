@@ -28,7 +28,10 @@
                 },
                 {
                     "name": "",
-                    "pathName": "pages/index/index",
+<<<<<<< HEAD
+=======
+                    "pathName": "pages/info/info",
+>>>>>>> f8597d461e124853216f65082e90818aba969066
                     "query": "",
                     "launchMode": "default",
                     "scene": null

@@ -142,7 +142,7 @@ Page({
             })
             return;
         }
-        db.collection('getExpress').add({
+        db.collection('order').add({
             data: {
                 type:'getExpress',
                 status:'waiting',

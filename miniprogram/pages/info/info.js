@@ -1,4 +1,5 @@
 // pages/info/info.js
+const db = wx.cloud.database()
 Page({
 
     /**
@@ -50,10 +51,69 @@ Page({
     },
 
     apply(){
-        wx.navigateTo({
-            url: '../apply/apply',
-        })
+        const _openid=wx.getStorageSync('userid')
+        var state;    
+        db.collection('mailmanapply').where({
+            _openid,
+        }).get({
+            success(res){
+                if(res.data.length!=0)state=res.data[0].state;
+                if(res.data.length==0){
+                    wx.navigateTo({
+                    url: '../apply/apply',
+                    })    
+                }
+                else if(state=="审核中"){
+                    wx.showModal({
+                      title: '审核中',
+                      content: '审核已提交，可点击确定复制客服微信询问状态',
+                      complete: (res) => {
+                        if (res.confirm) {
+                            wx.setClipboardData({
+                              data: 'Lmk78899296',
+                            })
+                        }
+                      }
+                    })
+                }
+                else if(state=="已拒绝"){
+                    wx.showModal({
+                      title: '拒绝',
+                      content: '您的申请被拒绝，可联系客服或再次申请',
+                      confirmText:'再次申请',
+                      cancelText:'联系客服',
+                      complete: (res) => {
+                        if (res.cancel) {
+                            wx.setClipboardData({
+                                data: 'Lmk78899296',
+                              })
+                        }
+                        if (res.confirm) {
+                            wx.navigateTo({
+                                url: '../apply/apply',
+                                }) 
+                        }
+                      }
+                    })
+                }
+                else if(state=="已通过"){
+                    wx.showModal({
+                      title: '通过',
+                      content: '您的申请已通过',
+                      complete: (res) => {
+                        if (res.cancel) {}
+                        if (res.confirm) {}
+                      }
+                    })
+                }
+            },
+            fail(res){
+                console.log(res);
+            }
+        }) 
+        
     },
+
     contacter(){
         wx.navigateTo({
             url: '../contact/contact',

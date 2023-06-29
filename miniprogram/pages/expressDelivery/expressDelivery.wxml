@@ -4,10 +4,6 @@
         <view class="{{ typeNow === index ? 'selectType' : '' }}" wx:for="{{ typeList }}" wx:key="index" data-id="{{ index }}" data-tip="{{ item.tips }}"bindtap="selectType">{{ item.name }}</view>
     </view>
     <view class="address">
-        <text>寄件人：</text>
-        <input type="text" placeholder="请输入寄件人姓名 >" value="{{ name }}" bindinput="getRemark" placeholder-class="phcolor"/>
-    </view>
-    <view class="address">
         <text>取件地址：</text>
         <text bindtap="selectAddress">
             {{ !address ? '请选择收件地址 >' : address}}
@@ -20,8 +16,12 @@
         </text>
     </view>
     <view class="address">
+        <text>寄件人：</text>
+        <input type="text" placeholder="请输入寄件人姓名 >" value="{{ name }}" bindinput="getRemark" placeholder-class="phcolor"/>
+    </view>
+    <view class="address">
         <text>收件人：</text>
-        <input type="text" placeholder="请输入寄件人姓名 >" value="{{ name_to }}" bindinput="getName" placeholder-class="phcolor"/>
+        <input type="text" placeholder="请输入收件人姓名 >" value="{{ name_to }}" bindinput="getName" placeholder-class="phcolor"/>
     </view>
     <view class="address">
         <text>收件地址：</text>
