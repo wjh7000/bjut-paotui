@@ -13,6 +13,10 @@
     "pages/apply/apply",
     "pages/message/message",
     "pages/contact/contact",
+    "pages/register/register",
+    "pages/login/login",
+    "pages/friends/friends",
+    "pages/chat/chat",
     "pages/takeaway/takeaway",
     "pages/expressDelivery/expressDelivery"
   ],

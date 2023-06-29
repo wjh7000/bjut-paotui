@@ -3,40 +3,5 @@
     "projectname": "bjut-paotui",
     "setting": {
         "compileHotReLoad": true
-    },
-    "condition": {
-        "miniprogram": {
-            "list": [
-                {
-                    "name": "db guide",
-                    "pathName": "pages/databaseGuide/databaseGuide",
-                    "query": ""
-                },
-                {
-                    "name": "",
-                    "pathName": "pages/getExpress/getExpress",
-                    "query": "",
-                    "launchMode": "default",
-                    "scene": null
-                },
-                {
-                    "name": "",
-                    "pathName": "pages/expressDelivery/expressDelivery",
-                    "query": "",
-                    "launchMode": "default",
-                    "scene": null
-                },
-                {
-                    "name": "",
-<<<<<<< HEAD
-=======
-                    "pathName": "pages/info/info",
->>>>>>> f8597d461e124853216f65082e90818aba969066
-                    "query": "",
-                    "launchMode": "default",
-                    "scene": null
-                }
-            ]
-        }
     }
 }
