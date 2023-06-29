@@ -1,2 +1,3 @@
 <!--pages/contact/contact.wxml-->
-<text>pages/contact/contact.wxml</text>
+<button bindtap="changeUser" class="buttonType">切换用户</button>
+<button bindtap="jumpToFriend" class="buttonType">好友</button>

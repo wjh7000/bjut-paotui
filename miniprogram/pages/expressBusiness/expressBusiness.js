@@ -14,8 +14,9 @@ Page({
     selectBusiness(e) {
         const index = e.currentTarget.dataset.index;
         const business = this.data.businessList[index];
+        const url = wx.getStorageSync('Nowurl')
         wx.redirectTo({
-          url: `../getExpress/getExpress?business=${business}`,
+          url: `../${url}/${url}?business=${business}`,
         })
     },
     selectTab(e) {
