@@ -1,4 +1,5 @@
 // pages/info/info.js
+const db = wx.cloud.database()
 Page({
 
     /**
@@ -50,10 +51,22 @@ Page({
     },
 
     apply(){
-        wx.navigateTo({
-            url: '../apply/apply',
-        })
+        const _openid=wx.getStorageSync('userid')
+        var state;    
+        db.collection('mailmanapply').where({
+            _openid,
+        }).get({
+            success(res){
+                state=res.data[0].state;
+                console.log(state);
+                wx.navigateTo({
+                url: '../apply/apply',
+                })
+            }
+        }) 
+        
     },
+
     contacter(){
         wx.navigateTo({
             url: '../contact/contact',
