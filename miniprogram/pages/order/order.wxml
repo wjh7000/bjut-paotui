@@ -45,34 +45,115 @@
     </view>
 </view>
 
-<view wx:if="{{ tabNow === 3}}" class="body">
+<view wx:if="{{ tabNow === 1}}" class="body">
     <view class="tips">
         向上拖动更新信息~
     </view>
-    <view class="order" wx:for="{{ 4 }}" wx:key="index">
+    <view class="order" wx:for="{{ myOrder }}" wx:key="index">
         <view class="order_top">
             <view class="top_left">
-                <image src="../../images/info_select.png"></image> 
+                <image src="{{item.userInfo.avatarUrl}}"></image> 
                 <view class="name">
-                    <text>租借服务</text>
-                    <text>2天前</text>
+                    <text wx:if="{{item.type === 'getExpress'}}">快递代取</text>
+                    <text wx:elif="{{item.type === 'expressDelivery'}}">快递代寄</text>
+                    <text wx:elif="{{item.type === 'takeaway'}}">外卖代取</text>
+                    <text wx:else>未知项目</text>
+                    <text>{{item.nowDate+' '+item.nowTime}}</text>
                 </view>
             </view>
-            <view class="top_right">
-                待帮助
+            <view class="{{item.status === 'waiting' ? 'top_right' : 'top_right_finished'}}">
+                {{item.status === 'waiting' ? '待帮助' : '已完成'}}
             </view>
         </view>
         <view class="order_content">
             <view class="content">
-                我是吴骏涵，谁能借我耳机。 约定时间：23：00 租借时长：30分钟归还
+                {{item.info}}
             </view>
             <view class="address">
-                目的地：其他区域-其他区域-其他区域
+                {{item.address}}
             </view>
         </view>
         <view class="order_bottom">
             <view class="money">
-            金额 ¥100
+                金额￥{{item.money}}
+            </view>
+            <view class="accept">
+            接单
+            </view>
+        </view>
+    </view>
+</view>
+
+<view wx:if="{{ tabNow === 2}}" class="body">
+    <view class="tips">
+        向上拖动更新信息~
+    </view>
+    <view class="order" wx:for="{{ helpOrder }}" wx:key="index">
+        <view class="order_top">
+            <view class="top_left">
+                <image src="{{item.userInfo.avatarUrl}}"></image> 
+                <view class="name">
+                    <text wx:if="{{item.type === 'getExpress'}}">快递代取</text>
+                    <text wx:elif="{{item.type === 'expressDelivery'}}">快递代寄</text>
+                    <text wx:elif="{{item.type === 'takeaway'}}">外卖代取</text>
+                    <text wx:else>未知项目</text>
+                    <text>{{item.nowDate+' '+item.nowTime}}</text>
+                </view>
+            </view>
+            <view class="{{item.status === 'waiting' ? 'top_right' : 'top_right_finished'}}">
+                {{item.status === 'waiting' ? '待帮助' : '已完成'}}
+            </view>
+        </view>
+        <view class="order_content">
+            <view class="content">
+                {{item.info}}
+            </view>
+            <view class="address">
+                {{item.address}}
+            </view>
+        </view>
+        <view class="order_bottom">
+            <view class="money">
+                金额￥{{item.money}}
+            </view>
+            <view class="accept">
+            接单
+            </view>
+        </view>
+    </view>
+</view>
+
+<view wx:if="{{ tabNow === 3}}" class="body">
+    <view class="tips">
+        向上拖动更新信息~
+    </view>
+    <view class="order" wx:for="{{ rewardOrder }}" wx:key="index">
+        <view class="order_top">
+            <view class="top_left">
+                <image src="{{item.userInfo.avatarUrl}}"></image> 
+                <view class="name">
+                    <text wx:if="{{item.type === 'getExpress'}}">快递代取</text>
+                    <text wx:elif="{{item.type === 'expressDelivery'}}">快递代寄</text>
+                    <text wx:elif="{{item.type === 'takeaway'}}">外卖代取</text>
+                    <text wx:else>未知项目</text>
+                    <text>{{item.nowDate+' '+item.nowTime}}</text>
+                </view>
+            </view>
+            <view class="{{item.status === 'waiting' ? 'top_right' : 'top_right_finished'}}">
+                {{item.status === 'waiting' ? '待帮助' : '已完成'}}
+            </view>
+        </view>
+        <view class="order_content">
+            <view class="content">
+                {{item.info}}
+            </view>
+            <view class="address">
+                {{item.address}}
+            </view>
+        </view>
+        <view class="order_bottom">
+            <view class="money">
+                金额￥{{item.money}}
             </view>
             <view class="accept">
             接单

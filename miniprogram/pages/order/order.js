@@ -16,21 +16,24 @@ Page({
             helpOrder:[],
             openid:'',
     },
+    
+    
     selectTab (e) {
+        const {id} =e.currentTarget.dataset
         this.setData({
-            tabNow: e.currentTarget.dataset.id
+            tabNow: id
         })
-        if (this.tabNow == 0){
+        if (id == 0){
             this.onLoad();
         }
-        else if (this.tabNow == 1){
-            
+        else if (id == 1){
+            console.log('ok')
             this.getMyOrder();
         }
-        else if (this.tabNow == 2){
+        else if (id == 2){
             this.getMyHelpOrder();
         }
-        else if (this.tabNow == 3){
+        else if (id == 3){
             this.getRewardOrder();
         }
     },
@@ -38,7 +41,22 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        
+        wx.cloud.callFunction({
+            name:'getuserid',
+            success:(res)=>{
+                console.log(res.result.openid)
+                this.setData({
+                    openid:res.result.openid
+                })
+                console.log(this.data.openid)
+                //this.data.openid = res.result.openid
+            },
+            fail:(res)=>{
+                wx.showToast({
+                  title: '错误',
+                })
+            }
+        }),
         db.collection('order').get({
             success:(res)=> {
                 const { data } = res;
@@ -70,6 +88,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
+        this.onLoad()
 
     },
 
@@ -102,32 +121,120 @@ Page({
         wx.showLoading({
             title: '加载中',
           })
-        let orderList = this.data.orderList;
-
-        db.collection('order').skip(orderList.length).get({
-            success:(res) => {
-                if (res.data.length){
-                    
-                    res.data.forEach(item => {
-                        const info = {type: item.type, address: item.address}
-                        const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                        item.info = info_text;
-                        orderList.push(item);
-                    })
-                    this.setData({
-                        orderList,
-                    })
+        //let orderList = this.data.orderList;
+        let {
+            orderList,
+            myOrder,
+            rewardOrder,
+            helpOrder,
+            tabNow,
+            openid,
+            pagenum
+        } = this.data;
+        if (tabNow === 0){
+            db.collection('order').skip(orderList.length).get({
+                success:(res) => {
+                    if (res.data.length){
+                        res.data.forEach(item => {
+                            const info = {type: item.type, address: item.address}
+                            const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                            item.info = info_text;
+                            orderList.push(item);
+                        })
+                        this.setData({
+                            orderList,
+                        })
+                        wx.hideLoading()
+                    }
+                    else{
+                        wx.showToast({
+                          title: '无更多信息',
+                        })
+                        //wx.hideLoading()
+                    }
                 }
-                else{
-                    wx.showToast({
-                      title: '无更多信息',
-                    })
-                    //wx.hideLoading()
+            })
+        }
+        if (tabNow === 1){
+            db.collection('order').skip(myOrder.length).where({
+                _openid: openid
+            }).get({
+                success:(res) => {
+                    if (res.data.length){
+                        res.data.forEach(item => {
+                            const info = {type: item.type, address: item.address}
+                            const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                            item.info = info_text;
+                            myOrder.push(item);
+                        })
+                        this.setData({
+                            myOrder,
+                        })
+                        wx.hideLoading()
+                    }
+                    else{
+                        wx.showToast({
+                          title: '无更多信息',
+                        })
+                        wx.hideLoading()
+                    }
                 }
-                
-            }
+            })
+        }
+        if (tabNow === 2){
+            db.collection('order').skip(helpOrder.length).where({
+                runnerid: openid
+            }).get({
+                success:(res) => {
+                    if (res.data.length){
+                        res.data.forEach(item => {
+                            const info = {type: item.type, address: item.address}
+                            const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                            item.info = info_text;
+                            helpOrder.push(item);
+                        })
+                        this.setData({
+                            helpOrder,
+                        })
+                        wx.hideLoading()
+                    }
+                    else{
+                        wx.showToast({
+                          title: '无更多信息',
+                        })
+                        wx.hideLoading()
+                    }
+                }
+            })
+        }
+        if (tabNow === 3){
+            db.collection('order').skip(rewardOrder.length).where({
+                status: 'waiting'
+            }).get({
+                success:(res) => {
+                    if (res.data.length){
+                        res.data.forEach(item => {
+                            const info = {type: item.type, address: item.address}
+                            const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                            item.info = info_text;
+                            rewardOrder.push(item);
+                        })
+                        this.setData({
+                            rewardOrder,
+                        })
+                        wx.hideLoading()
+                    }
+                    else{
+                        wx.showToast({
+                          title: '无更多信息',
+                        })
+                        wx.hideLoading()
+                    }
+                }
+            })
+        }
 
-        })
+        
     },
 
     /**
@@ -139,43 +246,79 @@ Page({
 
     //我的订单页
     getMyOrder() {
-        wx.cloud.callFunction({
-            name:'getuserid',
-            success:(res)=>{
-
-            },
-            fail:(res)=>{
-                wx.showToast({
-                  title: '错误',
-                })
-
-            }
-        })
         db.collection('order').where({
-            _openid:res.result.openid
+            _openid:this.data.openid
         }).get({
             success:(res)=> {
                 console.log('test');
-                // const { data } = res;
-                // data.forEach(item => {
-                //     console.log(item)
-                //     // const {business, expectGender, expectTime, number, remark, size} = item.info;
-                //     // const info = '快递类型: ${size} -- 快递数量: ${number}个 -- 快递商家: ${business} -- ';
-                //     // item.info = info
-                //     const info = {type: item.type, address: item.address}
-                //     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                //     item.info = info_text;
-                // });
-                // this.setData({
-                //     orderList: data,
-                // })
-                // //console.log(this.orderList)
+                const { data } = res;
+                data.forEach(item => {
+                    console.log(item)
+                    const info = {type: item.type, address: item.address}
+                    const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    item.info = info_text;
+                });
+                this.setData({
+                    myOrder: data,
+                })
+                //console.log(this.myOrder)
             },
             fail:(res)=>{
                 wx.showToast({
-                    icon:'none',
+                    title:'加载错误',
                 })
             }
         })
+    },
+
+    getMyHelpOrder(){
+        db.collection('order').where({
+            runnerid:this.data.openid
+        }).get({
+            success:(res)=> {
+                console.log('test');
+                const { data } = res;
+                data.forEach(item => {
+                    console.log(item)
+                    const info = {type: item.type, address: item.address}
+                    const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    item.info = info_text;
+                });
+                this.setData({
+                    helpOrder: data,
+                })
+                //console.log(this.myOrder)
+            },
+            fail:(res)=>{
+                wx.showToast({
+                    title:'加载错误',
+                })
+            }
+        })
+
+    },
+    getRewardOrder(){
+        db.collection('order').where({
+            status:'waiting'
+        }).get({
+            success:(res)=> {
+                const { data } = res;
+                data.forEach(item => {
+                    console.log(item)
+                    const info = {type: item.type, address: item.address}
+                    const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    item.info = info_text;
+                });
+                this.setData({
+                    rewardOrder: data,
+                })
+            },
+            fail:(res)=>{
+                wx.showToast({
+                    title:'加载错误',
+                })
+            }
+        })
+
     }
 })
