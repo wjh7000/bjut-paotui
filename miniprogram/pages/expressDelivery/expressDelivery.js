@@ -25,7 +25,7 @@ Page({
         ],
         typeNow: 0,
         money: 3,
-        name:'',
+        name:'小件',
         address:'',
         business:'',
         name_from:'',
@@ -64,23 +64,23 @@ Page({
 
     getName(e) {
         this.setData({
-            remark: e.detail.value
+            name: e.detail.value
         })
     },
     getAddress_to(e) {
         this.setData({
-            remark: e.detail.value
+            address_to: e.detail.value
         })
     },
 
     getName_to(e) {
         this.setData({
-            remark: e.detail.value
+            name_to: e.detail.value
         })
     },
     getName_from(e) {
         this.setData({
-            remark: e.detail.value
+            name_from: e.detail.value
         })
     },
     getCode() {
@@ -121,11 +121,56 @@ Page({
             title: tip,
         })
     },
+    currentTime() {
 
+        setInterval(this.formatDate, 500);
+    
+      },
+    
+      formatDate() {
+    
+        //获取当前时间并打印
+    
+        let myDate = new Date()
+    
+        let wk = myDate.getDay()
+    
+        let yy = String(myDate.getFullYear())
+    
+        let mm = myDate.getMonth() + 1
+    
+        let dd = String(myDate.getDate() < 10 ? '0' + myDate.getDate() : myDate.getDate())
+    
+        let hou = String(myDate.getHours() < 10 ? '0' + myDate.getHours() : myDate.getHours())
+    
+        let min = String(myDate.getMinutes() < 10 ? '0' + myDate.getMinutes() : myDate.getMinutes())
+    
+        let sec = String(myDate.getSeconds() < 10 ? '0' + myDate.getSeconds() : myDate.getSeconds())
+    
+        let weeks = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+    
+        let week = weeks[wk]
+    
+        this.nowDate = yy + ' 年 ' + mm + ' 月 ' + dd + ' 日'
+    
+        this.nowTime = hou + ' : ' + min + ' : ' + sec
+    
+        this.nowWeek = week
+    
+        this.setData({
+    
+          nowDate: this.nowDate,
+    
+          nowTime: this.nowTime,
+    
+        })  
+    
+      },
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
+        this.currentTime();
         const address = wx.getStorageSync('addressNow');
         const userInfo = wx.getStorageSync('userInfo');
         const { business } = options;
@@ -149,7 +194,7 @@ Page({
     submit(){
         const that = this.data;
         const {phone ,name}=wx.getStorageSync('addressNow');
-        if(!that.address || !that.business || (!that.expressCode && !that.codeImg)){
+        if(!that.address || !that.business || (!that.expressCode && !that.codeImg) || !that.name_from || !that.name_to || !that.address_to){
             wx.showToast({
                 title: '信息缺失',
                 icon:'error'
@@ -161,6 +206,7 @@ Page({
                 type:'expressDeilivery',
                 status:'waiting',
                 money: that.money,
+                name_from:that.name_from,
                 name_to:that.name_to,
                 address_to:that.address_to,
                 address: that.address,
@@ -169,8 +215,10 @@ Page({
                 remark: that.remark,
                 codeImg: that.codeImg,
                 userInfo:that.userInfo,
-                name: that.name,
-                phone: phone
+                size: that.typeList[that.typeNow].name,
+                phone: phone,
+                nowDate:that.nowDate,
+                nowTime:that.nowTime
             },
             success: (res) => {
                 // 清空输入内容

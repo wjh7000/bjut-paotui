@@ -31,7 +31,8 @@ Page({
         },
         {
             icon:'../../images/print.png',
-            text:'帮我打印'
+            text:'帮我打印',
+            url:'../helpPrint/helpPrint'
         }
     ]
   },
