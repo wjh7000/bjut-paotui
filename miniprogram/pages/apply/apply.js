@@ -64,6 +64,52 @@ Page({
     submit(){
         var that=this.data;
         var myDate=new Date();
+        if(!that.name){
+            wx.showToast({
+              title: '姓名为空',
+              icon: 'none',
+            })
+            return;
+        }
+        else if(!that.userID){
+            wx.showToast({
+              title: '证件号为空',
+              icon: 'none',
+            })
+            return;
+        }
+        else if(that.userID.length!=8){
+            wx.showToast({
+              title: '证件号错误',
+              icon: 'none',
+            })
+            return;
+        }
+        else if(!that.userIDImg){
+            wx.showToast({
+              title: '请上传证件照片',
+              icon: 'none',
+            })
+            return;
+        }
+        else{
+            var reg = /^[\u4E00-\u9FA5]+$/;
+            if(!reg.test(that.name)){
+                wx.showToast({
+                    title: '请填写真实姓名',
+                    icon: 'none',
+                  })
+                return;
+            }
+            var n1=Number(that.userID)
+            if(isNaN(n1)){
+                wx.showToast({
+                    title: '证件号非法',
+                    icon: 'none',
+                  })
+                return;
+            }
+        }
         const _openid=wx.getStorageSync('userid');
         db.collection('mailmanapply').where({
             _openid,
