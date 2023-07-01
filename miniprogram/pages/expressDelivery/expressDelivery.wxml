@@ -4,9 +4,9 @@
         <view class="{{ typeNow === index ? 'selectType' : '' }}" wx:for="{{ typeList }}" wx:key="index" data-id="{{ index }}" data-tip="{{ item.tips }}"bindtap="selectType">{{ item.name }}</view>
     </view>
     <view class="address">
-        <text>取件地址：</text>
+        <text>寄件地址：</text>
         <text bindtap="selectAddress">
-            {{ !address ? '请选择收件地址 >' : address}}
+            {{ !address ? '请选择寄件地址 >' : address}}
         </text>
     </view>
     <view class="address">

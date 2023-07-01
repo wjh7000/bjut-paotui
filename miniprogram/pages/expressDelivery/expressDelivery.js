@@ -201,6 +201,42 @@ Page({
             })
             return;
         }
+        else if(that.remark.length>20){
+            wx.showToast({
+                title: '备注大于20字',
+                icon:'error',
+              })
+              return;
+        }
+        else if(that.that.expressCode.length>20){
+            wx.showToast({
+                title: '取件码大于20字',
+                icon:'error',
+              })
+              return;
+        }
+        else if(that.that.address_to.length>20 || that.that.address_to.length < 5){
+            wx.showToast({
+                title: '收件地址非法',
+                icon:'error',
+              })
+              return;
+        }
+        else if(that.that.name_from.length>5 || that.that.name_from.length<2){
+            wx.showToast({
+                title: '寄件人姓名非法',
+                icon:'error',
+              })
+              return;
+        }
+
+        else if(that.that.name_to.length>5 || that.that.name_to.length<2){
+            wx.showToast({
+                title: '收件人姓名非法',
+                icon:'error',
+              })
+              return;
+        }
         db.collection('order').add({
             data: {
                 type:'expressDeilivery',

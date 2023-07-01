@@ -182,6 +182,13 @@ Page({
             })
             return;
         }
+        if(that.remark.length>50){
+            wx.showToast({
+                title: '备注大于50字',
+                icon:'error',
+              })
+              return;
+        }
         db.collection('order').add({
             data: {
                 type:'getExpress',

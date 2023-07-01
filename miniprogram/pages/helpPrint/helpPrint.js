@@ -31,6 +31,14 @@ Page({
 
   submit() {
     const that = this.data;
+    
+    if(that.remark.length>10){
+        wx.showToast({
+            title: '备注大于10字',
+            icon:'error',
+          })
+          return;
+    }
     const {
       printImg,
       address,
@@ -47,6 +55,13 @@ Page({
       })
       return;
     }
+    if (remark.length>50) {
+        wx.showToast({
+          icon: 'none',
+          title: '备注过长',
+        })
+        return;
+      }
     db.collection('order').add({
       data: {
         // 模块的名字
