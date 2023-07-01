@@ -239,7 +239,7 @@ Page({
         }
         db.collection('order').add({
             data: {
-                type:'expressDeilivery',
+                type:'expressDelivery',
                 status:'waiting',
                 money: that.money,
                 name_from:that.name_from,

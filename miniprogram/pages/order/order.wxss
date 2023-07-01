@@ -70,6 +70,14 @@
     font-size: 28rpx;
 }
 
+.order .order_top .top_right_finished {
+    color: rgb(228, 72, 11);
+    background-color: rgba(250, 4, 4, 0.2);
+    padding: 10rpx 25rpx;
+    border: 15rpx;
+    font-size: 28rpx;
+}
+
 .order .order_content {
     padding-left: 70rpx;
     padding-top: 20rpx;

@@ -37,8 +37,6 @@ Page({
     save(e){
         let xinxi
         let phonenum
-        wx.setStorageSync('phone', this.data.phone);
-        wx.setStorageSync('userInfo', this.data.userInfo);
         xinxi =  this.data.userInfo
         phonenum =  this.data.phone
         wx.cloud.database().collection('chat_user').
@@ -48,7 +46,7 @@ Page({
                 ...xinxi,phonenum
             }
         })
-
+        var n1=Number(this.data.phone);
         if(!!!this.data.phone){
             wx.showToast({
               title: '手机号不可为空',
@@ -63,6 +61,14 @@ Page({
               })
               return;
         }
+        
+        else if(isNaN(n1)){
+                wx.showToast({
+                    title: '手机号非法',
+                    icon: 'error',
+                  })
+                return;
+            }
         else if(!!!this.data.userInfo.nickName){
             wx.showToast({
               title: '名字不可为空',
@@ -78,6 +84,8 @@ Page({
               })
               return ;
         }
+        wx.setStorageSync('phone', this.data.phone);
+        wx.setStorageSync('userInfo', this.data.userInfo);
         wx.showToast({
           title: '修改成功',
           duration: 500,

@@ -206,6 +206,7 @@ Page({
                 nowTime:that.nowTime
             },
             success: (res) => {
+                console.log(res)
                 // 清空输入内容
                 this.setData({
                     money: '',

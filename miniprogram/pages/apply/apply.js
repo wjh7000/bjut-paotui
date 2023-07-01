@@ -125,6 +125,8 @@ Page({
                             userID:that.userID,
                             userIDImg:that.userIDImg,
                             state:"审核中",
+                            count:0,
+                            like:0
                         },
                         success: (res) => {
                             wx.showToast({
