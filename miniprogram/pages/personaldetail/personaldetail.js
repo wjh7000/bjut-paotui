@@ -37,8 +37,6 @@ Page({
     save(e){
         let xinxi
         let phonenum
-        wx.setStorageSync('phone', this.data.phone);
-        wx.setStorageSync('userInfo', this.data.userInfo);
         xinxi =  this.data.userInfo
         phonenum =  this.data.phone
         wx.cloud.database().collection('chat_user').
@@ -78,6 +76,8 @@ Page({
               })
               return ;
         }
+        wx.setStorageSync('phone', this.data.phone);
+        wx.setStorageSync('userInfo', this.data.userInfo);
         wx.showToast({
           title: '修改成功',
           duration: 500,
