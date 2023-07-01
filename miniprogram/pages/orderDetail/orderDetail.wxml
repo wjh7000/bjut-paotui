@@ -1,0 +1,19 @@
+<!--pages/orderDetail/orderDetail.wxml-->
+
+<view class="body">
+    <view class="title">
+        <text>订单详情</text>
+    </view>
+    <view class="content">
+        {{info}}
+    </view>
+    <button class="btn" style="width: 64vw;">
+        <view class="btnleft">
+            <text>提交</text>
+        </view>
+        
+    </button>
+
+
+
+</view>

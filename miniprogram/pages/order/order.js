@@ -27,7 +27,6 @@ Page({
             this.onLoad();
         }
         else if (id == 1){
-            console.log('ok')
             this.getMyOrder();
         }
         else if (id == 2){
@@ -44,11 +43,10 @@ Page({
         wx.cloud.callFunction({
             name:'getuserid',
             success:(res)=>{
-                console.log(res.result.openid)
                 this.setData({
                     openid:res.result.openid
                 })
-                console.log(this.data.openid)
+                //console.log(this.data.openid)
                 //this.data.openid = res.result.openid
             },
             fail:(res)=>{
@@ -250,10 +248,8 @@ Page({
             _openid:this.data.openid
         }).get({
             success:(res)=> {
-                console.log('test');
                 const { data } = res;
                 data.forEach(item => {
-                    console.log(item)
                     const info = {type: item.type, address: item.address}
                     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     item.info = info_text;
@@ -276,10 +272,9 @@ Page({
             runnerid:this.data.openid
         }).get({
             success:(res)=> {
-                console.log('test');
                 const { data } = res;
                 data.forEach(item => {
-                    console.log(item)
+                    //console.log(item)
                     const info = {type: item.type, address: item.address}
                     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     item.info = info_text;
@@ -304,7 +299,7 @@ Page({
             success:(res)=> {
                 const { data } = res;
                 data.forEach(item => {
-                    console.log(item)
+                    //console.log(item)
                     const info = {type: item.type, address: item.address}
                     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     item.info = info_text;
@@ -320,5 +315,24 @@ Page({
             }
         })
 
+    },
+
+    jumptoDetail(e){
+        const detail = e.currentTarget.dataset.detail
+        //console.log(detail)
+        wx.setStorageSync('orderDetail', detail),
+        wx.navigateTo({
+          //url: `../orderDetail/orderDetail?ddetail=${detail}` ,
+          url: `../orderDetail/orderDetail`,
+          
+          success:(res)=>{
+              
+          },
+          fail:(res)=>{
+            wx.showToast({
+                title:'加载详情错误',
+            })
+          }
+        })
     }
 })

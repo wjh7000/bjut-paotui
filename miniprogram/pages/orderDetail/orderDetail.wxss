@@ -1,0 +1,14 @@
+/* pages/orderDetail/orderDetail.wxss */
+.body{
+    /* display: flex; */
+    flex-direction: row;
+    color:rgb(0, 0, 0);
+    
+}
+.body .title{
+    display: flex;
+    flex-direction: row;
+    /* height: 50rpx; */
+    color:rgb(0, 0, 0);
+
+}
