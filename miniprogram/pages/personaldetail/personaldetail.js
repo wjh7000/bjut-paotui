@@ -46,7 +46,7 @@ Page({
                 ...xinxi,phonenum
             }
         })
-
+        var n1=Number(this.data.phone);
         if(!!!this.data.phone){
             wx.showToast({
               title: '手机号不可为空',
@@ -61,6 +61,14 @@ Page({
               })
               return;
         }
+        
+        else if(isNaN(n1)){
+                wx.showToast({
+                    title: '手机号非法',
+                    icon: 'error',
+                  })
+                return;
+            }
         else if(!!!this.data.userInfo.nickName){
             wx.showToast({
               title: '名字不可为空',
