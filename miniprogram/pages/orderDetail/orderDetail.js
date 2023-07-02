@@ -12,14 +12,15 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        const cdetail = wx.getStorageSync('orderDetail');
-        let that = this;
-        that.setData({
-            detail:cdetail,
+        const detail = wx.getStorageSync('orderDetail');
+        //console.log(cdetail);
+        //var that = this;
+        this.setData({
+            detail:detail,
         }),
         // console.log(options.ddetail);
         //wx.getStorageSync('detail');
-        console.log(that.detail);
+        console.log(this.data.detail);
     },
 
     /**

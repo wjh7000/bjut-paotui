@@ -5,7 +5,11 @@
         <text>订单详情</text>
     </view>
     <view class="content">
-        {{info}}
+        <!-- {{info}} -->
+        {{detail.address}}
+        <hr/><hr/>
+        {{detail.expressCode}}
+
     </view>
     <button class="btn" style="width: 64vw;">
         <view class="btnleft">

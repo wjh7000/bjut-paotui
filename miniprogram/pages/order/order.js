@@ -1,3 +1,8 @@
+/* TODO LIST
+订单简略页 更改显示内容（起始地-到达地形式） 
+订单详细页
+拖动更新信息
+*/
 //const { DrawShapeEmitter } = require("XrFrame/components/emitter");
 const db = wx.cloud.database()
 
@@ -57,15 +62,23 @@ Page({
         }),
         db.collection('order').get({
             success:(res)=> {
-                const { data } = res;
-                data.forEach(item => {
+                let { data } = res;
+                console.log(res)
+
+
+                data.forEach((item,index)=> {
+                    //旧版
                     const info = {type: item.type, address: item.address}
                     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     item.info = info_text;
+                    //新版
+                    // const formattedItem = this.formatInfo(item);
+                    // data[index] = formattedItem;
                 });
                 this.setData({
                     orderList: data,
                 })
+                console.log(this.data.orderList)
             },
             fail:(res)=>{
                 wx.showToast({
@@ -250,9 +263,12 @@ Page({
             success:(res)=> {
                 const { data } = res;
                 data.forEach(item => {
+                    //const newItem = this.formatInfo(item)
                     const info = {type: item.type, address: item.address}
                     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     item.info = info_text;
+                    
+                    //console.log(newItem)
                 });
                 this.setData({
                     myOrder: data,
@@ -322,9 +338,10 @@ Page({
         //console.log(detail)
         wx.setStorageSync('orderDetail', detail),
         wx.navigateTo({
-          //url: `../orderDetail/orderDetail?ddetail=${detail}` ,
-          url: `../orderDetail/orderDetail`,
           
+          //恢复这里
+          url: `../orderDetail/orderDetail`,
+          //url: `../testGPT/testGPT`,
           success:(res)=>{
               
           },
@@ -334,5 +351,34 @@ Page({
             })
           }
         })
+    },
+    
+    formatInfo(item){
+        let basicInfo = {
+            type:item.type, _id:item._id, openid:item._openid, status:item.status, money:item.money, nowDate:item.nowDate, nowTime:item.nowTime, phone:item.phone, userInfo:item.userInfo
+        }
+        let moreInfo
+        //console.log(basicInfo)
+        if (basicInfo.type === "getExpress"){
+            moreInfo = {
+                addressFrom:"快递站", addressTo:item.address, business:item.business, codeImg:item.codeImg, expressCode:item.expressCode, remark:item.remark, size:item.size
+            }
+        }
+        else if (basicInfo.type === "expressDelivery"){
+            moreInfo = {
+                address, business, codeImg, expressCode, name_from, name_to, remark, size
+            } = item
+        }
+        else if (basicInfo.type === "helpPring"){
+            moreInfo = {
+                address, info
+            } = item
+        }
+        else{
+            moreInfo = {test:"test"}
+        }
+
+        let returnItem = {basicInfo:basicInfo, moreInfo:moreInfo}
+        return returnItem
     }
 })
