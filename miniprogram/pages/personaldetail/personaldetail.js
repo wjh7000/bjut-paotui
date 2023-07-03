@@ -168,7 +168,7 @@ Page({
             wx.hideHomeButton();
             wx.showToast({
                 title: '请填写手机号',
-                duration: 1000,
+                duration: 2000,
                 icon:'error',
               })
         }

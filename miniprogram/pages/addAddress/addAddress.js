@@ -40,6 +40,21 @@ Page({
               })
             return;
         }
+        if(houseNumber.length!=3){
+            wx.showToast({
+                title: '门牌号应为三位',
+                icon:'error',
+              })
+            return;
+        }
+        var n2=Number(houseNumber);
+        if(isNaN(n2)){
+            wx.showToast({
+                title: '门牌号非法',
+                icon: 'error',
+              })
+            return;
+        }
         if(!name){
             wx.showToast({
                 title: '收件人不可为空',
@@ -60,6 +75,14 @@ Page({
                 icon:'error',
               })
               return;
+        }
+        var n1=Number(phone);
+        if(isNaN(n1)){
+            wx.showToast({
+                title: '手机号非法',
+                icon: 'error',
+              })
+            return;
         }
         let address = wx.getStorageSync('address');
                 if (!isEdit && defalutAddress && address) {
