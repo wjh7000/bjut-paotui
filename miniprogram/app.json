@@ -19,7 +19,8 @@
     "pages/chat/chat",
     "pages/takeaway/takeaway",
     "pages/expressDelivery/expressDelivery",
-    "pages/helpPrint/helpPrint"
+    "pages/helpPrint/helpPrint",
+    "pages/orderDetail/orderDetail"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

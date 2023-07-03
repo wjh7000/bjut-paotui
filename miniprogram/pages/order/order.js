@@ -1,3 +1,8 @@
+/* TODO LIST
+订单简略页 更改显示内容（起始地-到达地形式） 
+订单详细页
+拖动更新信息
+*/
 //const { DrawShapeEmitter } = require("XrFrame/components/emitter");
 const db = wx.cloud.database()
 
@@ -27,7 +32,6 @@ Page({
             this.onLoad();
         }
         else if (id == 1){
-            console.log('ok')
             this.getMyOrder();
         }
         else if (id == 2){
@@ -44,11 +48,10 @@ Page({
         wx.cloud.callFunction({
             name:'getuserid',
             success:(res)=>{
-                console.log(res.result.openid)
                 this.setData({
                     openid:res.result.openid
                 })
-                console.log(this.data.openid)
+                //console.log(this.data.openid)
                 //this.data.openid = res.result.openid
             },
             fail:(res)=>{
@@ -59,15 +62,23 @@ Page({
         }),
         db.collection('order').get({
             success:(res)=> {
-                const { data } = res;
-                data.forEach(item => {
+                let { data } = res;
+                console.log(res)
+
+
+                data.forEach((item,index)=> {
+                    //旧版
                     const info = {type: item.type, address: item.address}
                     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     item.info = info_text;
+                    //新版
+                    // const formattedItem = this.formatInfo(item);
+                    // data[index] = formattedItem;
                 });
                 this.setData({
                     orderList: data,
                 })
+                console.log(this.data.orderList)
             },
             fail:(res)=>{
                 wx.showToast({
@@ -250,13 +261,14 @@ Page({
             _openid:this.data.openid
         }).get({
             success:(res)=> {
-                console.log('test');
                 const { data } = res;
                 data.forEach(item => {
-                    console.log(item)
+                    //const newItem = this.formatInfo(item)
                     const info = {type: item.type, address: item.address}
                     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     item.info = info_text;
+                    
+                    //console.log(newItem)
                 });
                 this.setData({
                     myOrder: data,
@@ -276,10 +288,9 @@ Page({
             runnerid:this.data.openid
         }).get({
             success:(res)=> {
-                console.log('test');
                 const { data } = res;
                 data.forEach(item => {
-                    console.log(item)
+                    //console.log(item)
                     const info = {type: item.type, address: item.address}
                     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     item.info = info_text;
@@ -304,7 +315,7 @@ Page({
             success:(res)=> {
                 const { data } = res;
                 data.forEach(item => {
-                    console.log(item)
+                    //console.log(item)
                     const info = {type: item.type, address: item.address}
                     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     item.info = info_text;
@@ -320,5 +331,54 @@ Page({
             }
         })
 
+    },
+
+    jumptoDetail(e){
+        const detail = e.currentTarget.dataset.detail
+        //console.log(detail)
+        wx.setStorageSync('orderDetail', detail),
+        wx.navigateTo({
+          
+          //恢复这里
+          url: `../orderDetail/orderDetail`,
+          //url: `../testGPT/testGPT`,
+          success:(res)=>{
+              
+          },
+          fail:(res)=>{
+            wx.showToast({
+                title:'加载详情错误',
+            })
+          }
+        })
+    },
+    
+    formatInfo(item){
+        let basicInfo = {
+            type:item.type, _id:item._id, openid:item._openid, status:item.status, money:item.money, nowDate:item.nowDate, nowTime:item.nowTime, phone:item.phone, userInfo:item.userInfo
+        }
+        let moreInfo
+        //console.log(basicInfo)
+        if (basicInfo.type === "getExpress"){
+            moreInfo = {
+                addressFrom:"快递站", addressTo:item.address, business:item.business, codeImg:item.codeImg, expressCode:item.expressCode, remark:item.remark, size:item.size
+            }
+        }
+        else if (basicInfo.type === "expressDelivery"){
+            moreInfo = {
+                address, business, codeImg, expressCode, name_from, name_to, remark, size
+            } = item
+        }
+        else if (basicInfo.type === "helpPring"){
+            moreInfo = {
+                address, info
+            } = item
+        }
+        else{
+            moreInfo = {test:"test"}
+        }
+
+        let returnItem = {basicInfo:basicInfo, moreInfo:moreInfo}
+        return returnItem
     }
 })
