@@ -5,7 +5,7 @@
             <image src="../../images/build.png"></image>
             <text>选择楼栋</text>
         </view>
-        <view class="right" bindtap="selectBuild">{{ build ? build : '点击选择' }} ></view>
+        <view class="right" bindtap="selectBuild">{{ build ? build : '点击选择（必填）' }} ></view>
     </view>
     <view class="body_item">
         <view class="left">
@@ -13,7 +13,7 @@
             <text>详细地址</text>
         </view>
         <view class="right">
-            <input type="text" placeholder="输入门牌号" bindinput="getHouseNumber" value="{{ houseNumber }}" />
+            <input type="text" placeholder="输入门牌号（必填3位）" bindinput="getHouseNumber" value="{{ houseNumber }}" />
         </view>
     </view>
     <view class="body_item">
@@ -22,7 +22,7 @@
             <text>收件姓名</text>
         </view>
         <view class="right">
-            <input type="text" placeholder="输入取件姓名" bindinput="getName" value="{{ name }}" />
+            <input type="text" placeholder="输入取件姓名（必填）" bindinput="getName" value="{{ name }}" />
         </view>
     </view>
     <view class="body_item">
@@ -31,7 +31,7 @@
             <text>收件电话</text>
         </view>
         <view class="right">
-            <input type="text" placeholder="输入取件电话" bindinput="getPhone" value="{{ phone }}" />
+            <input type="text" placeholder="输入取件电话（必填）" bindinput="getPhone" value="{{ phone }}" />
         </view>
     </view>
 

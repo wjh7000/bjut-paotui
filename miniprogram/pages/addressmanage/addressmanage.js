@@ -24,6 +24,7 @@ Page({
         if(url=='personal') { return;}
         const address = this.data.address[index];
         wx.setStorageSync('addressNow', address);
+        wx.setStorageSync('indexnow', index);
         wx.redirectTo({
           url: `../${url}/${url}`,
         })
@@ -31,13 +32,33 @@ Page({
     
       delete(e) {
         const index = e.currentTarget.dataset.index;
+        var indexnow=wx.getStorageSync('indexnow');
         const address = this.data.address;
-        address.splice(index, 1);
-        wx.setStorageSync('address', address);
-        wx.showToast({
-          title: '删除成功',
-        })
-        this.onLoad();
+        wx.showModal({
+            title: '删除',
+            content: '确定要删除吗？',
+            complete: (res) => {
+            if (res.confirm) {
+                if(indexnow>index) indexnow--;
+                else if(indexnow==index){
+                    wx.removeStorage({
+                      key: 'addressNow',
+                    })
+                    wx.removeStorage({
+                      key: 'indexnow',
+                    })
+                }
+                wx.setStorageSync('indexnow', indexnow)
+                address.splice(index, 1);
+                wx.setStorageSync('address', address);
+                wx.showToast({
+                title: '删除成功',
+                })
+                this.onLoad();   
+            }
+            }
+          })
+        
       },
     
       addAddress() {
