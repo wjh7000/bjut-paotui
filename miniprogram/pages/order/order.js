@@ -374,7 +374,7 @@ Page({
         else if (basicInfo.type === "helpPrint"){
             
             moreInfo = {
-                addressFrom:"打印机", addressTo:item.address
+                addressFrom:"打印机", addressTo:item.address, info:item.info
             }
         }
         else{

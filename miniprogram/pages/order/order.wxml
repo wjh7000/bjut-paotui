@@ -23,8 +23,17 @@
                     <text>{{item.basicInfo.nowDate+' '+item.basicInfo.nowTime}}</text>
                 </view>
             </view>
-            <view class="{{item.basicInfo.status === 'waiting' ? 'top_right' : 'top_right_finished'}}">
+            <!-- <view class="{{item.basicInfo.status === 'waiting' ? 'top_right' : 'top_right_finished'}}">
                 {{item.basicInfo.status === 'waiting' ? '待帮助' : '已完成'}}
+            </view> -->
+            <view wx:if="{{item.basicInfo.status === 'waiting'}}" class = "top_right">
+                待帮助
+            </view>
+            <view wx:elif="{{item.basicInfo.status === 'inProgress'}}" class = "top_right_inprogress">
+                进行中
+            </view>
+            <view wx:elif="{{item.basicInfo.status === 'finished'}}" class = "top_right_finished">
+                已完成
             </view>
         </view>
         <view class="order_content" bindtap="jumptoDetail" data-detail="{{item}}" wx:if="{{item.basicInfo.type !== 'helpPrint'}}">
@@ -40,6 +49,10 @@
             <view class="toAddress">
                 终点：{{item.moreInfo.addressTo}}
             </view>
+            <view class = "sub_content">
+                快递大小：{{item.moreInfo.size}}
+            </view>
+
         </view>
         <view class="order_content" bindtap="jumptoDetail" data-detail="{{item}}" wx:elif="{{item.basicInfo.type === 'helpPrint'}}">
             <!-- <view class="content">
@@ -54,7 +67,11 @@
             <view class="toAddress">
                 文件送到：{{item.moreInfo.addressTo}}
             </view>
+            <view class = "sub_content">
+                文件页数：{{item.moreInfo.info.pageNum}}
+            </view>
         </view>
+        
         <view class="order_bottom">
             <view class="money">
                 金额￥{{item.basicInfo.money}}

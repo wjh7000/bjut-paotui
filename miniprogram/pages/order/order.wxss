@@ -70,6 +70,14 @@
     font-size: 28rpx;
 }
 
+.order .order_top .top_right_inprogress {
+    color: rgb(31, 104, 241);
+    background-color: rgba(47, 167, 236, 0.2);
+    padding: 10rpx 25rpx;
+    border: 15rpx;
+    font-size: 28rpx;
+}
+
 .order .order_top .top_right_finished {
     color: rgb(228, 72, 11);
     background-color: rgba(250, 4, 4, 0.2);
@@ -83,9 +91,10 @@
     padding-top: 20rpx;
     font-size: 35rpx;
 }
-.order .order_content .address{
+.order .order_content .sub_content{
     color: #106761;
-    font-size: 25rpx;
+    padding-top: 10rpx;
+    font-size: 30rpx;
 }
 .order .order_bottom {
     display: flex;

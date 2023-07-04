@@ -51,9 +51,11 @@ Page({
     },
 
     getExpressCode(e) {
+        console.log(e.detail)
         this.setData({
             expressCode: e.detail.value
         })
+        console.log(this.data.expressCode)
     },
 
     getRemark(e) {
@@ -298,7 +300,7 @@ Page({
                 phone: phone,
                 nowDate:that.nowDate,
                 nowTime:that.nowTime,
-                createTime:db.serverDate()
+                createTime: db.serverDate()
             },
             success: (res) => {
                 // 清空输入内容
