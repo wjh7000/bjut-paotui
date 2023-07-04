@@ -6,14 +6,16 @@
     </view>
     <view class="content">
         <!-- {{info}} -->
-        {{detail.address}}
-        <hr/><hr/>
-        {{detail.expressCode}}
+        {{detail.basicInfo.userInfo.nickName}}
+        {{detail.basicInfo.phone}}
+        <br/>
+        {{detail.moreInfo.addressFrom}}
+        {{detail.moreInfo.addressTo}}
 
     </view>
     <button class="btn" style="width: 64vw;">
         <view class="btnleft">
-            <text>提交</text>
+            <text>接单</text>
         </view>
         
     </button>

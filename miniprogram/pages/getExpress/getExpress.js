@@ -234,7 +234,8 @@ Page({
                 size: that.typeList[that.typeNow].name,
                 phone: phone,
                 nowDate:that.nowDate,
-                nowTime:that.nowTime
+                nowTime:that.nowTime,
+                createTime:db.serverDate()
             },
             success: (res) => {
                 console.log(res)

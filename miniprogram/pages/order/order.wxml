@@ -13,30 +13,51 @@
     <view class="order" wx:for="{{ orderList }}" wx:key="index">
         <view class="order_top">
             <view class="top_left">
-                <image src="{{item.userInfo.avatarUrl}}"></image> 
+                <image src="{{item.basicInfo.userInfo.avatarUrl}}"></image> 
                 <view class="name">
-                    <text wx:if="{{item.type === 'getExpress'}}">快递代取</text>
-                    <text wx:elif="{{item.type === 'expressDelivery'}}">快递代寄</text>
-                    <text wx:elif="{{item.type === 'takeaway'}}">外卖代取</text>
+                    <text wx:if="{{item.basicInfo.type === 'getExpress'}}">快递代取</text>
+                    <text wx:elif="{{item.basicInfo.type === 'expressDelivery'}}">快递代寄</text>
+                    <text wx:elif="{{item.basicInfo.type === 'takeaway'}}">外卖代取</text>
+                    <text wx:elif="{{item.basicInfo.type === 'helpPrint'}}">帮我打印</text>
                     <text wx:else>未知项目</text>
-                    <text>{{item.nowDate+' '+item.nowTime}}</text>
+                    <text>{{item.basicInfo.nowDate+' '+item.basicInfo.nowTime}}</text>
                 </view>
             </view>
-            <view class="{{item.status === 'waiting' ? 'top_right' : 'top_right_finished'}}">
-                {{item.status === 'waiting' ? '待帮助' : '已完成'}}
+            <view class="{{item.basicInfo.status === 'waiting' ? 'top_right' : 'top_right_finished'}}">
+                {{item.basicInfo.status === 'waiting' ? '待帮助' : '已完成'}}
             </view>
         </view>
-        <view class="order_content" bindtap="jumptoDetail" data-detail="{{item}}">
-            <view class="content">
+        <view class="order_content" bindtap="jumptoDetail" data-detail="{{item}}" wx:if="{{item.basicInfo.type !== 'helpPrint'}}">
+            <!-- <view class="content">
                 {{item.info}}
             </view>
             <view class="address">
                 {{item.address}}
+            </view> -->
+            <view class="fromAddress">
+                起点：{{item.moreInfo.addressFrom}}
+            </view>
+            <view class="toAddress">
+                终点：{{item.moreInfo.addressTo}}
+            </view>
+        </view>
+        <view class="order_content" bindtap="jumptoDetail" data-detail="{{item}}" wx:elif="{{item.basicInfo.type === 'helpPrint'}}">
+            <!-- <view class="content">
+                {{item.info}}
+            </view>
+            <view class="address">
+                {{item.moreInfo.address}}
+            </view> -->
+            <!-- <view class="fromAddress">
+                起点：{{item.moreInfo.addressFrom}}
+            </view> -->
+            <view class="toAddress">
+                文件送到：{{item.moreInfo.addressTo}}
             </view>
         </view>
         <view class="order_bottom">
             <view class="money">
-                金额￥{{item.money}}
+                金额￥{{item.basicInfo.money}}
             </view>
             <view class="accept">
             接单
