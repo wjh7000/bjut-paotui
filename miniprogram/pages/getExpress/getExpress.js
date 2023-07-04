@@ -66,6 +66,7 @@ Page({
         this.setData({
             expressCode: e.detail.value
         })
+ 
     },
 
     getRemark(e) {
@@ -152,14 +153,22 @@ Page({
     onLoad(options) {
         this.currentTime();
         const address = wx.getStorageSync('addressNow');
+        const business = wx.getStorageSync('businessNow');
         const userInfo = wx.getStorageSync('userInfo');
-        const { business } = options;
+        ///const { business } = options;
         //const name = wx.getStorageSync('addressNow');
         if (address) {
             const { build, houseNumber } = address;
             this.setData({
                 address: `${build}-${houseNumber}`,
                 userInfo,
+                //name: `${name}`
+            })
+        }
+        if (!address) {
+
+            this.setData({
+                address:''
                 //name: `${name}`
             })
         }
@@ -175,16 +184,38 @@ Page({
     submit(){
         const that = this.data;
         const {phone ,name}=wx.getStorageSync('addressNow');
-        if(!that.address || !that.business || (!that.expressCode && !that.codeImg)){
+        if(!that.address){
             wx.showToast({
-                title: '信息缺失',
+                title: '未选收件地址',
                 icon:'error'
             })
             return;
         }
-        if(that.remark.length>50){
+        else if(!that.business){
             wx.showToast({
-                title: '备注大于50字',
+                title: '未选快递商家',
+                icon:'error'
+            })
+            return;
+        }
+         else if(!that.expressCode && !that.codeImg){
+            wx.showToast({
+                title: '未填写取件信息',
+                icon:'error'
+            })
+            return;
+        }
+        else if(that.remark.length>10){
+            wx.showToast({
+                title: '备注大于10字',
+                icon:'error',
+              })
+              return;
+        }
+
+        else if(that.expressCode.length>10){
+            wx.showToast({
+                title: '取件码大于10字',
                 icon:'error',
               })
               return;
@@ -248,7 +279,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-
+        this.onLoad();
     },
 
     /**

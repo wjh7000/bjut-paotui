@@ -48,17 +48,31 @@ Page({
       remark,
       twoSided
     } = this.data;
-    if (!printImg || !address || !pageNum) {
+    if (!printImg) {
       wx.showToast({
         icon: 'none',
-        title: '您填写的信息不全',
+        title: '您未上传文件',
       })
       return;
     }
-    if (remark.length>50) {
+    else if (!address) {
         wx.showToast({
           icon: 'none',
-          title: '备注过长',
+          title: '您未填写地址',
+        })
+        return;
+    }
+    else if (!pageNum) {
+        wx.showToast({
+          icon: 'none',
+          title: '您未填页数',
+        })
+        return;
+    }
+    else if (remark.length>20) {
+        wx.showToast({
+          icon: 'none',
+          title: '备注大于20字',
         })
         return;
       }

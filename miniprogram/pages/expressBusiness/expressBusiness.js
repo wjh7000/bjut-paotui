@@ -13,10 +13,15 @@ Page({
 
     selectBusiness(e) {
         const index = e.currentTarget.dataset.index;
-        const business = this.data.businessList[index];
+        ///const business = this.data.businessList[index];
+        ///wx.setStorageSync('businessNow', business);
         const url = wx.getStorageSync('Nowurl')
+        ///wx.navigateBack({ delta: 1, })
+
+        const business = this.data.businessList[index];
+        wx.setStorageSync('businessNow', business);
         wx.redirectTo({
-          url: `../${url}/${url}?business=${business}`,
+          url: `../${url}/${url}`,
         })
     },
     selectTab(e) {
