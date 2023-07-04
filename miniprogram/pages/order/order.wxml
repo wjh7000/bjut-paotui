@@ -76,8 +76,11 @@
             <view class="money">
                 金额￥{{item.basicInfo.money}}
             </view>
-            <view class="accept">
+            <view class="accept" wx:if="{{item.basicInfo.status === 'waiting'}}" bindtap="orderReceive" data-item="{{item}}">
             接单
+            </view>
+            <view class="accept" wx:if="{{item.basicInfo.status === 'inProgress'}}"bindtap="orderFinished"data-item="{{item}}">
+            完成订单
             </view>
         </view>
     </view>

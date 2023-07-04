@@ -383,5 +383,51 @@ Page({
 
         let returnItem = {basicInfo:basicInfo, moreInfo:moreInfo}
         return returnItem
+    },
+    orderReceive(e){
+        wx.showLoading({
+          title: '加载中',
+        })
+        const {
+            item
+        } = e.currentTarget.dataset;
+        console.log(e);
+        const {
+            _id
+        } = item.basicInfo;
+    
+        db.collection('order').doc(_id).update({
+            data:{
+                runnerid: this.data.openid,
+                status: 'inProgress',
+            },
+            success:(res) =>{
+                this.onLoad();
+                wx.hideLoading();
+            }
+        })
+    },
+
+    orderFinished(e){
+        wx.showLoading({
+          title: '加载中',
+        })
+        const {
+            item
+        } = e.currentTarget.dataset;
+        console.log(e);
+        const {
+            _id
+        } = item.basicInfo;
+    
+        db.collection('order').doc(_id).update({
+            data:{
+                status: 'finished',
+            },
+            success:(res) =>{
+                this.onLoad();
+                wx.hideLoading();
+            }
+        })
     }
 })
