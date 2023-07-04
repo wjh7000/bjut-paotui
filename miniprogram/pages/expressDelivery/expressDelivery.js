@@ -297,7 +297,8 @@ Page({
                 size: that.typeList[that.typeNow].name,
                 phone: phone,
                 nowDate:that.nowDate,
-                nowTime:that.nowTime
+                nowTime:that.nowTime,
+                createTime:db.serverDate()
             },
             success: (res) => {
                 // 清空输入内容
