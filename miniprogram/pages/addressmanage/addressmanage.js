@@ -25,8 +25,11 @@ Page({
         const address = this.data.address[index];
         wx.setStorageSync('addressNow', address);
         wx.setStorageSync('indexnow', index);
-        wx.redirectTo({
-          url: `../${url}/${url}`,
+        // wx.redirectTo({
+        //   url: `../${url}/${url}`,
+        // })
+        wx.navigateBack({
+            delta: 1
         })
       },
     
