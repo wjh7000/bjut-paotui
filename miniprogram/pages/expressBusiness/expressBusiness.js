@@ -20,8 +20,8 @@ Page({
 
         const business = this.data.businessList[index];
         wx.setStorageSync('businessNow', business);
-        wx.redirectTo({
-          url: `../${url}/${url}`,
+        wx.navigateBack({
+            delta:1,
         })
     },
     selectTab(e) {

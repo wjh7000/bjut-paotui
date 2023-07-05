@@ -131,12 +131,12 @@ Page({
     })
   },
 
-  selectAddress() {
-    wx.setStorageSync('urlNow', 'print')
-    wx.redirectTo({
-      url: '../address/address',
+  selectAddress(){
+    wx.setStorageSync('Nowurl', 'helpPrint')
+    wx.navigateTo({
+      url: '../addressmanage/addressmanage',
     })
-  },
+},
 
   getImg() {
     wx.chooseMessageFile({
@@ -273,7 +273,9 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    wx.switchTab({
+        url: '../index/index',
+      })
   },
 
   /**
