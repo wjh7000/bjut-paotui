@@ -12,15 +12,15 @@
   </view>
   <view class="item">
     <text>收件地址</text>
-    <text bindtap="selectAddress">{{ address ? address : '请选择地址 >' }}</text>
+    <text bindtap="selectAddress">{{ address ? address : '请选地址（必选） ' }}</text>
   </view>
   <view class="item">
     <text>页数</text>
-    <input type="text" value="{{ pageNum }}" placeholder="输入页数" bindinput="getPageNumber" />
+    <input type="text" value="{{ pageNum }}" placeholder="输入页数（必填最大99）" maxlength="2"bindinput="getPageNumber" />
   </view>
   <view class="item">
     <text>备注</text>
-    <input type="text" value="{{ remark }}" placeholder="备注信息, 若没有可填无" bindinput="getRemark" />
+    <input type="text" value="{{ remark }}" placeholder="备注信息（可选）" bindinput="getRemark" />
   </view>
   <view class="item">
     <text>是否彩印</text>
@@ -34,7 +34,7 @@
     <view class="tips_money">
       <text>黑白 <text class="color_red">0.5元/张</text> </text>
       <text>彩印 <text class="color_red">2元/张</text> </text>
-      <text>跑路费 <text class="color_red">3元/张</text> </text>
+      <text>跑路费 <text class="color_red">3元</text> </text>
     </view>
     <text>需支付</text>
     <text class="color_red money">{{ colorPrint ? ( 2 * pageNum + 3 ) : ( 0.5 * pageNum + 3 ) }} 元</text>

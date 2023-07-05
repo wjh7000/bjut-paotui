@@ -51,9 +51,11 @@ Page({
     },
 
     getExpressCode(e) {
+        console.log(e.detail)
         this.setData({
             expressCode: e.detail.value
         })
+        console.log(this.data.expressCode)
     },
 
     getRemark(e) {
@@ -173,13 +175,21 @@ Page({
         this.currentTime();
         const address = wx.getStorageSync('addressNow');
         const userInfo = wx.getStorageSync('userInfo');
-        const { business } = options;
+        const business = wx.getStorageSync('businessNow');
+        //const { business } = options;
         //const name = wx.getStorageSync('addressNow');
         if (address) {
             const { build, houseNumber } = address;
             this.setData({
                 address: `${build}-${houseNumber}`,
                 userInfo,
+                //name: `${name}`
+            })
+        }
+        if (!address) {
+
+            this.setData({
+                address:''
                 //name: `${name}`
             })
         }
@@ -194,12 +204,83 @@ Page({
     submit(){
         const that = this.data;
         const {phone ,name}=wx.getStorageSync('addressNow');
-        if(!that.address || !that.business || (!that.expressCode && !that.codeImg) || !that.name_from || !that.name_to || !that.address_to){
+        if(!that.address){
             wx.showToast({
-                title: '信息缺失',
+                title: '未选择寄件地址',
                 icon:'error'
             })
             return;
+        }
+        else if(!that.business){
+            wx.showToast({
+                title: '未选择快递商家',
+                icon:'error'
+            })
+            return;
+        }
+         else if(!that.name_from){
+            wx.showToast({
+                title: '未填写寄件人',
+                icon:'error'
+            })
+            return;
+        }
+        else if(!that.name_to){
+            wx.showToast({
+                title: '未填写收件人',
+                icon:'error'
+            })
+            return;
+        }
+        else if(!that.address_to){
+            wx.showToast({
+                title: '未填写收件地址',
+                icon:'error'
+            })
+            return;
+        }
+        else if(!that.expressCode && !that.codeImg){
+            wx.showToast({
+                title: '未填写取件信息',
+                icon:'error'
+            })
+            return;
+        }
+        else if(that.remark.length>20){
+            wx.showToast({
+                title: '备注大于20字',
+                icon:'error',
+              })
+              return;
+        }
+        else if(that.expressCode.length>20){
+            wx.showToast({
+                title: '取件码大于20字',
+                icon:'error',
+              })
+              return;
+        }
+        else if(that.address_to.length>20){
+            wx.showToast({
+                title: '收件地址非法',
+                icon:'error',
+              })
+              return;
+        }
+        else if(that.name_from.length>5){
+            wx.showToast({
+                title: '寄件人姓名非法',
+                icon:'error',
+              })
+              return;
+        }
+
+        else if(that.name_to.length>5){
+            wx.showToast({
+                title: '收件人姓名非法',
+                icon:'error',
+              })
+              return;
         }
         db.collection('order').add({
             data: {
@@ -218,7 +299,8 @@ Page({
                 size: that.typeList[that.typeNow].name,
                 phone: phone,
                 nowDate:that.nowDate,
-                nowTime:that.nowTime
+                nowTime:that.nowTime,
+                createTime: db.serverDate()
             },
             success: (res) => {
                 // 清空输入内容

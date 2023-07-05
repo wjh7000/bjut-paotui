@@ -31,6 +31,14 @@ Page({
 
   submit() {
     const that = this.data;
+    
+    if(that.remark.length>10){
+        wx.showToast({
+            title: '备注大于10字',
+            icon:'error',
+          })
+          return;
+    }
     const {
       printImg,
       address,
@@ -40,13 +48,34 @@ Page({
       remark,
       twoSided
     } = this.data;
-    if (!printImg || !address || !pageNum) {
+    if (!printImg) {
       wx.showToast({
         icon: 'none',
-        title: '您填写的信息不全',
+        title: '您未上传文件',
       })
       return;
     }
+    else if (!address) {
+        wx.showToast({
+          icon: 'none',
+          title: '您未填写地址',
+        })
+        return;
+    }
+    else if (!pageNum) {
+        wx.showToast({
+          icon: 'none',
+          title: '您未填页数',
+        })
+        return;
+    }
+    else if (remark.length>20) {
+        wx.showToast({
+          icon: 'none',
+          title: '备注大于20字',
+        })
+        return;
+      }
     db.collection('order').add({
       data: {
         // 模块的名字
@@ -76,7 +105,8 @@ Page({
         // 用户信息
         userInfo,
         // 用户手机号
-        phone: wx.getStorageSync('phone')
+        phone: wx.getStorageSync('phone'),
+        createTime:db.serverDate()
       },
       success: (res) => {
         wx.switchTab({

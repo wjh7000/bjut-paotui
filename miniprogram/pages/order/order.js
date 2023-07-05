@@ -60,25 +60,25 @@ Page({
                 })
             }
         }),
-        db.collection('order').get({
+        db.collection('order').orderBy('createTime','desc').get({
             success:(res)=> {
                 let { data } = res;
-                console.log(res)
+                //console.log(res)
 
 
                 data.forEach((item,index)=> {
                     //旧版
-                    const info = {type: item.type, address: item.address}
-                    const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    item.info = info_text;
+                    // const info = {type: item.type, address: item.address}
+                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    // item.info = info_text;
                     //新版
-                    // const formattedItem = this.formatInfo(item);
-                    // data[index] = formattedItem;
+                    const formattedItem = this.formatInfo(item);
+                    data[index] = formattedItem;
                 });
                 this.setData({
                     orderList: data,
                 })
-                console.log(this.data.orderList)
+                //console.log(this.data.orderList)
             },
             fail:(res)=>{
                 wx.showToast({
@@ -150,7 +150,9 @@ Page({
                             const info = {type: item.type, address: item.address}
                             const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                             item.info = info_text;
-                            orderList.push(item);
+
+                            const formattedItem = this.formatInfo(item);
+                            orderList.push(formattedItem);
                         })
                         this.setData({
                             orderList,
@@ -259,7 +261,7 @@ Page({
     getMyOrder() {
         db.collection('order').where({
             _openid:this.data.openid
-        }).get({
+        }).orderBy('createTime','desc').get({
             success:(res)=> {
                 const { data } = res;
                 data.forEach(item => {
@@ -286,7 +288,7 @@ Page({
     getMyHelpOrder(){
         db.collection('order').where({
             runnerid:this.data.openid
-        }).get({
+        }).orderBy('createTime','desc').get({
             success:(res)=> {
                 const { data } = res;
                 data.forEach(item => {
@@ -311,7 +313,7 @@ Page({
     getRewardOrder(){
         db.collection('order').where({
             status:'waiting'
-        }).get({
+        }).orderBy('createTime','desc').get({
             success:(res)=> {
                 const { data } = res;
                 data.forEach(item => {
@@ -366,13 +368,14 @@ Page({
         }
         else if (basicInfo.type === "expressDelivery"){
             moreInfo = {
-                address, business, codeImg, expressCode, name_from, name_to, remark, size
-            } = item
+                addressFrom:item.address, addressTo:"快递站", business:item.business, codeImg:item.codeImg, expressCode:item.expressCode, name_from:item.name_from, name_to:item.name_to, remark:item.remark, size:item.size
+            }
         }
-        else if (basicInfo.type === "helpPring"){
+        else if (basicInfo.type === "helpPrint"){
+            
             moreInfo = {
-                address, info
-            } = item
+                addressFrom:"打印机", addressTo:item.address, info:item.info
+            }
         }
         else{
             moreInfo = {test:"test"}
@@ -380,5 +383,51 @@ Page({
 
         let returnItem = {basicInfo:basicInfo, moreInfo:moreInfo}
         return returnItem
+    },
+    orderReceive(e){
+        wx.showLoading({
+          title: '加载中',
+        })
+        const {
+            item
+        } = e.currentTarget.dataset;
+        console.log(e);
+        const {
+            _id
+        } = item.basicInfo;
+    
+        db.collection('order').doc(_id).update({
+            data:{
+                runnerid: this.data.openid,
+                status: 'inProgress',
+            },
+            success:(res) =>{
+                this.onLoad();
+                wx.hideLoading();
+            }
+        })
+    },
+
+    orderFinished(e){
+        wx.showLoading({
+          title: '加载中',
+        })
+        const {
+            item
+        } = e.currentTarget.dataset;
+        console.log(e);
+        const {
+            _id
+        } = item.basicInfo;
+    
+        db.collection('order').doc(_id).update({
+            data:{
+                status: 'finished',
+            },
+            success:(res) =>{
+                this.onLoad();
+                wx.hideLoading();
+            }
+        })
     }
 })

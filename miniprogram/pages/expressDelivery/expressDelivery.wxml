@@ -4,34 +4,34 @@
         <view class="{{ typeNow === index ? 'selectType' : '' }}" wx:for="{{ typeList }}" wx:key="index" data-id="{{ index }}" data-tip="{{ item.tips }}"bindtap="selectType">{{ item.name }}</view>
     </view>
     <view class="address">
-        <text>取件地址：</text>
+        <text>寄件地址：</text>
         <text bindtap="selectAddress">
-            {{ !address ? '请选择收件地址 >' : address}}
+            {{ !address ? '请选寄件地址（必选） >' : address}}
         </text>
     </view>
     <view class="address">
         <text>快递商家：</text>
         <text bindtap="selectBusiness">
-            {{ !business ? '请选择快递点 >' : business }}
+            {{ !business ? '请选快递点（必选） >' : business }}
         </text>
     </view>
     <view class="address">
         <text>寄件人：</text>
-        <input type="text" placeholder="请输入寄件人姓名 >" value="{{ name_from }}" bindinput="getName_from" placeholder-class="phcolor"/>
+        <input type="text" placeholder="请输入（必填2-5字） >" value="{{ name_from }}"  maxlength="5" bindinput="getName_from" placeholder-class="phcolor"/>
     </view>
     <view class="address">
         <text>收件人：</text>
-        <input type="text" placeholder="请输入收件人姓名 >" value="{{ name_to }}" bindinput="getName_to" placeholder-class="phcolor"/>
+        <input type="text" placeholder="请输入（必填2-5字） >" value="{{ name_to }}"  maxlength="5" bindinput="getName_to" placeholder-class="phcolor"/>
     </view>
     <view class="address">
         <text>收件地址：</text>
-        <input type="text" placeholder="请输入收件地址 >" value="{{ address_to }}" bindinput="getAddress_to" placeholder-class="phcolor"/>
+        <input type="text" placeholder="请输入（必填小于20字）" value="{{ address_to }}" maxlength="20" bindinput="getAddress_to" placeholder-class="phcolor"/>
     </view>
     <view class="address">
         <text>取件信息</text>
     </view>
     <view class="getCode">
-        <textarea class="content" cols="30" rows="10" placeholder="输入预约码或上传截图~" value="{{ expressCode }}"  bindinput="getExpressCode" placeholder-class="phcolor">
+        <textarea class="content" cols="30" rows="10"  maxlength="10" placeholder="输入取件码（少于10字）或上传截图~（二选一）" value="{{ expressCode }}"  bindinput="getExpressCode" placeholder-class="phcolor">
             <image class="expressCode" src="{{ codeImg }}">
             </image>
             <image class="getImg" src="{{ codeImg ? '../../images/getImg_fill.png' : '../../images/getImg.png' }}" bindtap="getCode">
@@ -40,7 +40,7 @@
     </view>
     <view class="address">
         <text>备注信息：</text>
-        <input type="text" placeholder="此信息所有人可见" value="{{ remark }}" bindinput="getRemark" placeholder-class="phcolor"/>
+        <input type="text" placeholder="少于10字（可选）" value="{{ remark }}" bindinput="getRemark" placeholder-class="phcolor"/>
     </view>
     <view class="bottom_tips">
         <text>信息仅接单同学可见，安全放心~</text>
