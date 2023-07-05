@@ -1,40 +1,46 @@
 
 
-<view wx:if="{{my_friends.length==0}}" class='no-message'>
+<view wx:if="{{my_customers.data.length==0&&me_rider.data.length==0}}" class='no-message'>
 <image src="../../images/no_message.png"></image>
 </view>
 
 <view wx:else>
-<block wx:for="{{my_friends}}">
+<block wx:for="{{my_customers.data}}">
 <view class="user-list">
 
-    <block wx:if="{{item.userA_id==userInfo._id}}">
     <view class="left" bindtap="startChat" data-index="{{index}}">
         <view class="flex-row">
-            <image class="face" src="{{item.userB_avatarUrl}}"></image>  
-                <view>
-                <view class="nick-name">{{item.userB_account_id}}</view>
-                <view class="msg">{{item.record[item.record.length-1].text}}</view>
+            <image class="face" src="{{item.userInfo.avatarUrl}}"></image>  
+            <view>
+                <view class="nick-name">{{item.userInfo.nickName}}</view>
+                <view class="msg">{{item.chatlog[item.chatlog.length-1].sentamce}}</view>
             </view>  
         </view>
-        <view class="time">{{item.record[item.record.length-1].time}}</view>
+        <view class="time">{{item.newtime}}</view>
     </view>
-    </block>
 
-    <block wx:if="{{item.userB_id==userInfo._id}}">
-    <view class="left" bindtap="startChat" data-index="{{index}}">
 
-        <view class="flex-row">
-        <image class="face" bindtap="startChat" src="{{item.userA_avatarUrl}}"></image>    
-        <view>
-            <view class="nick-name">{{item.userA_account_id}}</view>
-            <view class="msg">{{item.record[item.record.length-1].text}}</view>
-        </view>
-        </view>
-        <view class="time">{{item.record[item.record.length-1].time}}</view>
-    </view>
-    </block>
+
 
 </view>
 </block>
+
+<block wx:for="{{me_rider.data}}">
+<view class="user-list">
+
+    <view class="left" bindtap="startChat" data-index="{{index}}">
+        <view class="flex-row">
+            <image class="face" src="{{item.userInfo.avatarUrl}}"></image>  
+            <view>
+                <view class="nick-name">{{item.userInfo.nickName}}</view>
+                <view class="msg">{{item.chatlog[item.chatlog.length-1].sentamce}}</view>
+            </view>  
+        </view>
+        <view class="time">{{item.newtime}}</view>
+    </view>
+</view>
+</block>
+
+
+
 </view>

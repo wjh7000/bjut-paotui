@@ -1,13 +1,16 @@
-const app = getApp()
-
+const app = getApp();
+const db = wx.cloud.database();
 Page({
     data: {
-
+        myid:'',
+        my_customers:[],
     },
 
     onLoad() {
-        
+        const myid=wx.getStorageSync('userid');
+
         this.setData({
+            myid,
             userInfo : app.globalData.userInfo
         })
     },
@@ -15,16 +18,18 @@ Page({
         
         this.setData({
             userInfo : app.globalData.userInfo,
-            my_friends : []
+            my_customers : [],
+            me_rider    :[]
         })
-        this.loadUser()
-        this.getMyfriend()
+        //this.loadUser()
+       // this.getMyfriend()
+        this.getCustomers()
+        this.getrider()
     },
     loadUser() {
         var that = this;
-        wx.cloud.database().collection('chat_user').where({
-            account_id : that.data.userInfo.account_id,
-            password: that.data.userInfo.password
+        db.collection('chat_user').where({
+            _openid : that.data.userInfo._openid,
         }).get({
             success(res) {
                 console.log(res)
@@ -37,40 +42,44 @@ Page({
         })
     },
 
-
-    getMyfriend() {
-        // 获取所有成功添加好友的朋友
-        var that = this;
-        const DB = wx.cloud.database().command;
-        wx.cloud.database().collection('chat_record').where(
-            DB.or([
-                {
-                    userA_id: app.globalData.userInfo._id,
-                    friend_status: true
-                },
-                {
-                    userB_id: app.globalData.userInfo._id,
-                    friend_status: true
-                }
-            ])
-        ).watch({
-            onChange: function(snapshot){
+    getCustomers() {
+        const _openid=wx.getStorageSync('userid')
+        var state;    
+        const that=this;
+        db.collection('chat_record').where({
+            _openid,
+        }).get({
+            success(res){
                 that.setData({
-                    my_friends : snapshot.docs
-                })
-            },
-            onError : function(err){
-                console.log(err)
-            }
-        })
+                    my_customers:res,
+                });
+                console.log(that.data.my_customers);
+            }})
     },
 
-    startChat(e) {
+    getrider() {
+        const _openid=wx.getStorageSync('userid')
+        var state;    
+        const that=this;
+        db.collection('chat_record').where({
+            userid:_openid,
+        }).get({
+            success(res){
+                that.setData({
+                    me_rider:res,
+                });
+                console.log(that.data.me_rider);
+            }})
+    },
 
+
+    startChat(e) {
+        const that=this;
         var index = e.currentTarget.dataset.index;
-        console.log(this.data.my_friends)
+        console.log(index);
+        console.log(this.data.my_customers);
         wx.navigateTo({
-          url: '/pages/chat/chat?id=' + this.data.my_friends[index]._id
+          url: '/pages/chat/chat?id=' + this.data.my_customers.data[index]._id
         })
         
     }

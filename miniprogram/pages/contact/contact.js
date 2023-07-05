@@ -1,6 +1,6 @@
 const app = getApp()
 var count = 0
-
+const db = wx.cloud.database();
 Page({
   data: {
       
@@ -140,7 +140,43 @@ Page({
 
       this.onShow()
 
-    }
+    },
+
+        createDialog(){
+                var that=this.data;
+                var myDate=new Date();
+                const deliverid=wx.getStorageSync('userid');
+               // const userid='o0IHy4mVYyOvEz6fdfJzVoB_gXxs';
+                const userid='o0IHy4h0DmVWqU-o-N_VnukiYIKk';
+                const userInfo=wx.getStorageSync('userInfo');
+                const typeList=[
+                    {
+                        id:deliverid,
+                        sentamce:'我是您的骑手请开始有什么问题可以联系我',
+                        time:myDate.toLocaleString(),
+                    }
+                ];
+                db.collection('chat_record').add({
+                    data: {
+                        chatlog: typeList,
+                        userid:userid,
+                        newtime:myDate.toLocaleString(),
+                        userInfo,
+                    },
+                    success: (res) => {
+                        wx.showToast({
+                          title: '提交成功',
+                        })
+                    },
+                    fail: (res) => {
+                        wx.showToast({
+                          icon: 'none',
+                          title: '上传失败',
+                        })
+                    }
+                })
+            }
+
 
     
 })

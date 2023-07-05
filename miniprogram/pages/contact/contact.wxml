@@ -1,3 +1,4 @@
 <!--pages/contact/contact.wxml-->
 <button bindtap="changeUser" class="buttonType">切换用户</button>
 <button bindtap="jumpToFriend" class="buttonType">好友</button>
+<button bindtap="createDialog" class="buttonType">建立骑手用户对话</button>
