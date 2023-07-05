@@ -20,6 +20,7 @@ Page({
             rewardOrder:[],
             helpOrder:[],
             openid:'',
+            isRunner:''
     },
     
     
@@ -60,6 +61,13 @@ Page({
                 })
             }
         }),
+
+        //判断骑手
+        this.getPersonPower();
+
+        
+
+        //加载全部订单
         db.collection('order').orderBy('createTime','desc').get({
             success:(res)=> {
                 let { data } = res;
@@ -385,27 +393,36 @@ Page({
         return returnItem
     },
     orderReceive(e){
-        wx.showLoading({
-          title: '加载中',
-        })
-        const {
-            item
-        } = e.currentTarget.dataset;
-        console.log(e);
-        const {
-            _id
-        } = item.basicInfo;
-    
-        db.collection('order').doc(_id).update({
-            data:{
-                runnerid: this.data.openid,
-                status: 'inProgress',
-            },
-            success:(res) =>{
-                this.onLoad();
-                wx.hideLoading();
-            }
-        })
+        if (this.data.isRunner){
+            wx.showLoading({
+              title: '加载中',
+            })
+            const {
+                item
+            } = e.currentTarget.dataset;
+            console.log(e);
+            const {
+                _id
+            } = item.basicInfo;
+            
+            db.collection('order').doc(_id).update({
+                data:{
+                    runnerid: this.data.openid,
+                    status: 'inProgress',
+                },
+                success:(res) =>{
+                    this.onLoad();
+                    wx.hideLoading();
+                }
+            })
+        }
+        else {
+            wx.showModal({
+              title: '提示',
+              showCancel:false,
+              content: '您目前不是接单员，请先前往个人页申请成为接单员，待审核通过后再来接单',
+            })
+        }
     },
 
     orderFinished(e){
@@ -427,6 +444,18 @@ Page({
             success:(res) =>{
                 this.onLoad();
                 wx.hideLoading();
+            }
+        })
+    },
+    getPersonPower(){
+        db.collection('mailmanapply').where({
+            _openid: wx.getStorageSync('userid'),
+            state:'已通过'
+        }).get({
+            success:(res)=>{
+                this.setData({
+                    isRunner: !!res.data.length
+                })
             }
         })
     }
