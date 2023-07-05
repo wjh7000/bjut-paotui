@@ -82,5 +82,16 @@ Page({
           url: '/pages/chat/chat?id=' + this.data.my_customers.data[index]._id
         })
         
+    },
+
+    startChatWithRider(e) {
+        const that=this;
+        var index = e.currentTarget.dataset.index;
+        console.log(index);
+        console.log(this.data.me_rider);
+        wx.navigateTo({
+          url: '/pages/chat/chat?id=' + this.data.me_rider.data[index]._id
+        })
+        
     }
 })

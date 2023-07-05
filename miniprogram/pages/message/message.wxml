@@ -5,6 +5,7 @@
 </view>
 
 <view wx:else>
+<text>我的顾客</text>
 <block wx:for="{{my_customers.data}}">
 <view class="user-list">
 
@@ -24,11 +25,11 @@
 
 </view>
 </block>
-
+<text>我的骑手</text>
 <block wx:for="{{me_rider.data}}">
 <view class="user-list">
 
-    <view class="left" bindtap="startChat" data-index="{{index}}">
+    <view class="left" bindtap="startChatWithRider" data-index="{{index}}">
         <view class="flex-row">
             <image class="face" src="{{item.userInfo.avatarUrl}}"></image>  
             <view>
