@@ -6,7 +6,8 @@
     </view>
 </scroll-view>
 
-<view wx:if="{{ tabNow === 0}}" class="body">
+<!-- <view wx:if="{{ tabNow === 0}}" class="body"> -->
+<view class="body">
     <view class="tips">
         向上拖动更新信息~
     </view>
@@ -40,9 +41,13 @@
             <view class="toAddress">
                 终点：{{item.moreInfo.addressTo}}
             </view>
-            <view class = "sub_content">
+            <view class = "sub_content" wx:if="{{item.basicInfo.type === 'expressDelivery' || item.basicInfo.type === 'getExpress'}}">
                 快递大小：{{item.moreInfo.size}}
             </view>
+            <view class = "sub_content" wx:elif="{{item.basicInfo.type === 'takeaway'}}">
+                外卖类型：{{item.moreInfo.size}}
+            </view>
+            <view class = "tap_detail">点击订单查看详情</view> 
 
         </view>
         <view class="order_content" bindtap="jumptoDetail" data-detail="{{item}}" wx:elif="{{item.basicInfo.type === 'helpPrint'}}">
@@ -58,16 +63,21 @@
             <view class="money">
                 金额￥{{item.basicInfo.money}}
             </view>
-            <view class="accept" wx:if="{{item.basicInfo.status === 'waiting'}}" bindtap="orderReceive" data-item="{{item}}">
+            <view class="accept" wx:if="{{item.basicInfo.status === 'waiting' && item.basicInfo.openid !== openid}}" bindtap="orderReceive" data-item="{{item}}">
             接单
             </view>
-            <view class="accept" wx:if="{{item.basicInfo.status === 'inProcess'}}"bindtap="orderFinished"data-item="{{item}}">
+            <view class="accept" wx:if="{{item.basicInfo.status === 'inProcess' && item.basicInfo.runnerid === openid && item.basicInfo.openid !== openid}}"bindtap="orderFinished"data-item="{{item}}">
             完成订单
             </view>
         </view>
     </view>
 </view>
 
+
+
+
+
+<!-- 
 <view wx:if="{{ tabNow === 1}}" class="body">
     <view class="tips">
         向上拖动更新信息~
@@ -183,4 +193,4 @@
             </view>
         </view>
     </view>
-</view>
+</view> -->

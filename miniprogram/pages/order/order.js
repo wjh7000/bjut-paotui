@@ -13,7 +13,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-            tabList:['全部','我的订单','我帮助的','正在悬赏'],
+            tabList:['订单广场','进行中','已完成','我发布的'],
             tabNow: 0,
             orderList:[],
             myOrder:[],
@@ -25,21 +25,21 @@ Page({
     
     
     selectTab (e) {
-        const {id} =e.currentTarget.dataset
+        let {id} =e.currentTarget.dataset
         this.setData({
             tabNow: id
         })
         if (id == 0){
-            this.onLoad();
+            this.getRewardOrder();
         }
         else if (id == 1){
-            this.getMyOrder();
+            this.getProcessOrder();
         }
         else if (id == 2){
-            this.getMyHelpOrder();
+            this.getFinishedOrder();
         }
         else if (id == 3){
-            this.getRewardOrder();
+            this.getMyOrder();
         }
     },
     /**
@@ -64,30 +64,42 @@ Page({
 
         //判断骑手
         this.getPersonPower();
-        //加载全部订单
-        db.collection('order').orderBy('createTime','desc').get({
-            success:(res)=> {
-                let { data } = res;
-                data.forEach((item,index)=> {
-                    //旧版
-                    // const info = {type: item.type, address: item.address}
-                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    // item.info = info_text;
-                    //新版
-                    const formattedItem = this.formatInfo(item);
-                    data[index] = formattedItem;
-                });
-                this.setData({
-                    orderList: data,
-                })
-                //console.log(this.data.orderList)
-            },
-            fail:(res)=>{
-                wx.showToast({
-                    icon:'none',
-                })
-            }
-        })
+        if (this.data.tabNow == 0){
+            this.getRewardOrder();
+        }
+        else if (this.data.tabNow == 1){
+            this.getProcessOrder();
+        }
+        else if (this.data.tabNow == 2){
+            this.getFinishedOrder();
+        }
+        else if (this.data.tabNow == 3){
+            this.getMyOrder();
+        }
+        // //加载全部订单
+        // db.collection('order').orderBy('createTime','desc').get({
+        //     success:(res)=> {
+        //         let { data } = res;
+        //         data.forEach((item,index)=> {
+        //             //旧版
+        //             // const info = {type: item.type, address: item.address}
+        //             // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+        //             // item.info = info_text;
+        //             //新版
+        //             const formattedItem = this.formatInfo(item);
+        //             data[index] = formattedItem;
+        //         });
+        //         this.setData({
+        //             orderList: data,
+        //         })
+        //         //console.log(this.data.orderList)
+        //     },
+        //     fail:(res)=>{
+        //         wx.showToast({
+        //             icon:'none',
+        //         })
+        //     }
+        // })
     },
 
     /**
@@ -124,18 +136,20 @@ Page({
      * 页面相关事件处理函数--监听用户下拉动作
      */
     onPullDownRefresh() {
+        
         if (this.data.tabNow == 0){
-            this.onLoad();
-        }
-        else if (this.data.tabNow == 1){
-            this.getMyOrder();
-        }
-        else if (this.data.tabNow == 2){
-            this.getMyHelpOrder();
-        }
-        else if (this.data.tabNow == 3){
             this.getRewardOrder();
         }
+        else if (this.data.tabNow == 1){
+            this.getProcessOrder();
+        }
+        else if (this.data.tabNow == 2){
+            this.getFinishedOrder();
+        }
+        else if (this.data.tabNow == 3){
+            this.getMyOrder();
+        }
+        wx.stopPullDownRefresh();
     },
 
     /**
@@ -153,110 +167,202 @@ Page({
             helpOrder,
             tabNow,
             openid,
-            pagenum
         } = this.data;
         if (tabNow === 0){
-            db.collection('order').skip(orderList.length).get({
+            db.collection('order').where({
+                status:'waiting'
+            }).orderBy('createTime','desc').skip(orderList.length).get({
                 success:(res) => {
-                    if (res.data.length){
-                        res.data.forEach(item => {
-                            const info = {type: item.type, address: item.address}
-                            const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                            item.info = info_text;
+                    let {data} = res;
+                    if (data.length){
+                        // res.data.forEach(item => {
+                        //     const info = {type: item.type, address: item.address}
+                        //     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                        //     item.info = info_text;
 
-                            const formattedItem = this.formatInfo(item);
-                            orderList.push(formattedItem);
-                        })
+                        //     const formattedItem = this.formatInfo(item);
+                        //     orderList.push(formattedItem);
+                        // })
+                        wx.hideLoading();
+                        data.forEach((item,index)=> {
+                            let formattedItem = this.formatInfo(item);
+                            data[index] = formattedItem;
+                            orderList.push(data[index]);
+                        });
                         this.setData({
                             orderList,
-                        })
-                        wx.hideLoading()
+                        });
+                        
                     }
                     else{
+                        wx.hideLoading()
                         wx.showToast({
                           title: '无更多信息',
                         })
-                        //wx.hideLoading()
+                        
                     }
                 }
             })
         }
         if (tabNow === 1){
-            db.collection('order').skip(myOrder.length).where({
-                _openid: openid
-            }).get({
+            db.collection('order').where({
+                runnerid: this.data.openid,
+                status: 'inProcess',
+            }).orderBy('createTime','desc').skip(orderList.length).get({
                 success:(res) => {
-                    if (res.data.length){
-                        res.data.forEach(item => {
-                            const info = {type: item.type, address: item.address}
-                            const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                            item.info = info_text;
-                            myOrder.push(item);
-                        })
+                    let {data} = res;
+                    if (data.length){
+                        wx.hideLoading();
+                        data.forEach((item,index)=> {
+                            let formattedItem = this.formatInfo(item);
+                            data[index] = formattedItem;
+                            orderList.push(data[index]);
+                        });
                         this.setData({
-                            myOrder,
-                        })
-                        wx.hideLoading()
+                            orderList,
+                        });
+                        
                     }
                     else{
+                        wx.hideLoading()
                         wx.showToast({
                           title: '无更多信息',
                         })
-                        wx.hideLoading()
+                        
                     }
                 }
+            // db.collection('order').skip(orderList.length).where({
+            //     _openid: openid
+            // }).get({
+            //     success:(res) => {
+            //         if (res.data.length){
+            //             // res.data.forEach(item => {
+            //             //     const info = {type: item.type, address: item.address}
+            //             //     const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+            //             //     item.info = info_text;
+            //             //     orderList.push(item);
+            //             // })
+            //             // this.setData({
+            //             //     orderList,
+            //             // })
+            //             res.data.forEach((item,index)=> {
+            //                 let formattedItem = this.formatInfo(item);
+            //                 data[index] = formattedItem;
+            //                 orderList.push(data[index]);
+            //             });
+            //             this.setData({
+            //                 orderList,
+            //             })
+            //             wx.hideLoading()
+            //         }
+            //         else{
+            //             wx.showToast({
+            //               title: '无更多信息',
+            //             })
+            //             wx.hideLoading()
+            //         }
+            //     }
             })
         }
         if (tabNow === 2){
-            db.collection('order').skip(helpOrder.length).where({
-                runnerid: openid
-            }).get({
+            db.collection('order').where({
+                runnerid: this.data.openid,
+                status:'finished'
+            }).orderBy('createTime','desc').skip(orderList.length).get({
                 success:(res) => {
-                    if (res.data.length){
-                        res.data.forEach(item => {
-                            const info = {type: item.type, address: item.address}
-                            const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                            item.info = info_text;
-                            helpOrder.push(item);
-                        })
+                    let {data} = res;
+                    if (data.length){
+                        wx.hideLoading();
+                        data.forEach((item,index)=> {
+                            let formattedItem = this.formatInfo(item);
+                            data[index] = formattedItem;
+                            orderList.push(data[index]);
+                        });
                         this.setData({
-                            helpOrder,
-                        })
-                        wx.hideLoading()
+                            orderList,
+                        });
+                        
                     }
                     else{
+                        wx.hideLoading()
                         wx.showToast({
                           title: '无更多信息',
                         })
-                        wx.hideLoading()
+                        
                     }
                 }
+            // db.collection('order').skip(helpOrder.length).where({
+            //     runnerid: openid
+            // }).get({
+            //     success:(res) => {
+            //         if (res.data.length){
+            //             res.data.forEach(item => {
+            //                 const info = {type: item.type, address: item.address}
+            //                 const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+            //                 item.info = info_text;
+            //                 helpOrder.push(item);
+            //             })
+            //             this.setData({
+            //                 helpOrder,
+            //             })
+            //             wx.hideLoading()
+            //         }
+            //         else{
+            //             wx.hideLoading()
+            //             wx.showToast({
+            //               title: '无更多信息',
+            //             })
+                        
+            //         }
+            //     }
             })
         }
         if (tabNow === 3){
-            db.collection('order').skip(rewardOrder.length).where({
-                status: 'waiting'
-            }).get({
+            db.collection('order').where({
+                _openid: this.data.openid,
+            }).orderBy('createTime','desc').skip(orderList.length).get({
                 success:(res) => {
-                    if (res.data.length){
-                        res.data.forEach(item => {
-                            const info = {type: item.type, address: item.address}
-                            const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                            item.info = info_text;
-                            rewardOrder.push(item);
-                        })
+                    let {data} = res;
+                    if (data.length){
+                        wx.hideLoading();
+                        data.forEach((item,index)=> {
+                            let formattedItem = this.formatInfo(item);
+                            data[index] = formattedItem;
+                            orderList.push(data[index]);
+                        });
                         this.setData({
-                            rewardOrder,
-                        })
-                        wx.hideLoading()
+                            orderList,
+                        });
+                        
                     }
                     else{
+                        wx.hideLoading()
                         wx.showToast({
                           title: '无更多信息',
                         })
-                        wx.hideLoading()
+                        
                     }
                 }
+                // success:(res) => {
+                //     if (res.data.length){
+                //         res.data.forEach(item => {
+                //             const info = {type: item.type, address: item.address}
+                //             const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                //             item.info = info_text;
+                //             rewardOrder.push(item);
+                //         })
+                //         this.setData({
+                //             rewardOrder,
+                //         })
+                //         wx.hideLoading()
+                //     }
+                //     else{
+                //         wx.showToast({
+                //           title: '无更多信息',
+                //         })
+                //         wx.hideLoading()
+                //     }
+                // }
             })
         }
 
@@ -269,26 +375,54 @@ Page({
     onShareAppMessage() {
 
     },
-
+    getAll(){
+        //加载全部订单
+        db.collection('order').orderBy('createTime','desc').get({
+            success:(res)=> {
+                let { data } = res;
+                data.forEach((item,index)=> {
+                    //旧版
+                    // const info = {type: item.type, address: item.address}
+                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    // item.info = info_text;
+                    //新版
+                    const formattedItem = this.formatInfo(item);
+                    data[index] = formattedItem;
+                });
+                this.setData({
+                    orderList: data,
+                });
+                console.log(this.data.orderList)
+            },
+            fail:(res)=>{
+                wx.showToast({
+                    icon:'none',
+                })
+            }
+        })
+    },
     //我的订单页
     getMyOrder() {
         db.collection('order').where({
             _openid:this.data.openid
         }).orderBy('createTime','desc').get({
             success:(res)=> {
-                const { data } = res;
-                data.forEach(item => {
-                    //const newItem = this.formatInfo(item)
+                let { data } = res;
+                console.log(data)
+                data.forEach((item,index)=> {
+                    //旧版
                     // const info = {type: item.type, address: item.address}
                     // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     // item.info = info_text;
-                    const formattedItem = this.formatInfo(item);
+                    //新版
+                    let formattedItem = this.formatInfo(item);
                     data[index] = formattedItem;
                 });
                 this.setData({
-                    myOrder: data,
+                    //myOrder: data,
+                    orderList: data
                 })
-                //console.log(this.myOrder)
+                console.log(this.data.orderList)
             },
             fail:(res)=>{
                 wx.showToast({
@@ -303,19 +437,23 @@ Page({
             runnerid:this.data.openid
         }).orderBy('createTime','desc').get({
             success:(res)=> {
-                const { data } = res;
-                data.forEach(item => {
-                    //console.log(item)
+                let { data } = res;
+                data.forEach((item,index)=> {
+                    //旧版
                     // const info = {type: item.type, address: item.address}
                     // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     // item.info = info_text;
-                    const formattedItem = this.formatInfo(item);
+                    //新版
+                    let formattedItem = this.formatInfo(item);
                     data[index] = formattedItem;
                 });
+                
                 this.setData({
-                    helpOrder: data,
-                })
-                //console.log(this.myOrder)
+                    //rewardOrder: data,
+                    orderList:data
+                });
+                
+               
             },
             fail:(res)=>{
                 wx.showToast({
@@ -330,17 +468,93 @@ Page({
             status:'waiting'
         }).orderBy('createTime','desc').get({
             success:(res)=> {
-                const { data } = res;
-                data.forEach(item => {
+                let { data } = res;
+                console.log("d", data);
+                data.forEach((item,index)=> {
+                    //旧版
                     // const info = {type: item.type, address: item.address}
                     // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
                     // item.info = info_text;
-                    const formattedItem = this.formatInfo(item);
+                    //新版
+                    let formattedItem = this.formatInfo(item);
                     data[index] = formattedItem;
                 });
+                
                 this.setData({
-                    rewardOrder: data,
+                    //rewardOrder: data,
+                    orderList:data
+                });
+                
+                
+                
+                console.log(this.data.orderList)
+            },
+            fail:(res)=>{
+                wx.showToast({
+                    title:'加载错误',
                 })
+            }
+        })
+
+    },
+    getProcessOrder(){
+        db.collection('order').where({
+            runnerid:this.data.openid,
+            status:'inProcess'
+        }).orderBy('createTime','desc').get({
+            success:(res)=> {
+                let { data } = res;
+                //console.log("d", data);
+                data.forEach((item,index)=> {
+                    //旧版
+                    // const info = {type: item.type, address: item.address}
+                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    // item.info = info_text;
+                    //新版
+                    let formattedItem = this.formatInfo(item);
+                    data[index] = formattedItem;
+                });
+                
+                this.setData({
+                    //rewardOrder: data,
+                    orderList:data
+                });
+                
+                
+                
+                console.log(this.data.orderList)
+            },
+            fail:(res)=>{
+                wx.showToast({
+                    title:'加载错误',
+                })
+            }
+        })
+
+    },
+    getFinishedOrder(){
+        db.collection('order').where({
+            runnerid:this.data.openid,
+            status:'finished'
+        }).orderBy('createTime','desc').get({
+            success:(res)=> {
+                let { data } = res;
+                console.log("d", data);
+                data.forEach((item,index)=> {
+                    //旧版
+                    // const info = {type: item.type, address: item.address}
+                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    // item.info = info_text;
+                    //新版
+                    let formattedItem = this.formatInfo(item);
+                    data[index] = formattedItem;
+                });
+                
+                this.setData({
+                    //rewardOrder: data,
+                    orderList:data
+                });
+                console.log(this.data.orderList)
             },
             fail:(res)=>{
                 wx.showToast({
@@ -369,7 +583,7 @@ Page({
     
     formatInfo(item){
         let basicInfo = {
-            type:item.type, _id:item._id, openid:item._openid, status:item.status, money:item.money, nowDate:item.nowDate, nowTime:item.nowTime, phone:item.phone, userInfo:item.userInfo
+            type:item.type, _id:item._id, openid:item._openid, status:item.status, money:item.money, nowDate:item.nowDate, nowTime:item.nowTime, phone:item.phone, userInfo:item.userInfo, runnerid:item.runnerid
         }
         let moreInfo
         //console.log(basicInfo)
@@ -380,7 +594,12 @@ Page({
         }
         else if (basicInfo.type === "expressDelivery"){
             moreInfo = {
-                addressFrom:item.address, addressTo:"快递站", business:item.business, img:item.codeImg, expressCode:item.expressCode, name_from:item.name_from, name_to:item.name_to, remark:item.remark, size:item.size
+                addressFrom:item.address, addressTo:"快递站", business:item.business, img:item.codeImg, expressCode:item.expressCode, name_from:item.name_from, name_to:item.name_to, remark:item.remark, size:item.size, receiverAddress:item.address_to
+            }
+        }
+        else if (basicInfo.type === "takeaway"){
+            moreInfo = {
+                addressFrom:item.Spoint+"外卖柜", addressTo:item.Daddress, img:item.codeImg, expressCode:item.expresscode, remark:item.remark, size:item.size
             }
         }
         else if (basicInfo.type === "helpPrint"){
@@ -398,9 +617,6 @@ Page({
     },
     orderReceive(e){
         if (this.data.isRunner){
-            wx.showLoading({
-              title: '加载中',
-            })
             const {
                 item
             } = e.currentTarget.dataset;
@@ -408,17 +624,34 @@ Page({
             const {
                 _id
             } = item.basicInfo;
+            if (item.basicInfo.openid === this.data.openid){
+                wx.showModal({
+                  title: '提示',
+                  content: '不能接自己发布的订单',
+                  showCancel:false,
+                  complete: (res) => {
+                    if (res.cancel) {
+                      
+                    }
+                  }
+                })
+            }
+            else{
+                wx.showLoading({
+                    title: '加载中',
+                  })
+                db.collection('order').doc(_id).update({
+                    data:{
+                        runnerid: this.data.openid,
+                        status: 'inProcess',
+                    },
+                    success:(res) =>{
+                        this.onLoad();
+                        wx.hideLoading();
+                    }
+                })
+            }
             
-            db.collection('order').doc(_id).update({
-                data:{
-                    runnerid: this.data.openid,
-                    status: 'inProcess',
-                },
-                success:(res) =>{
-                    this.onLoad();
-                    wx.hideLoading();
-                }
-            })
         }
         else {
             wx.showModal({

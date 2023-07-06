@@ -96,6 +96,11 @@
     padding-top: 10rpx;
     font-size: 30rpx;
 }
+.order .order_content .tap_detail{
+    color: #696969;
+    padding-top: 10rpx;
+    font-size: 26rpx;
+}
 .order .order_bottom {
     display: flex;
     justify-content: flex-end;
