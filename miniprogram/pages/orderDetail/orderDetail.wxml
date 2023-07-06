@@ -82,12 +82,15 @@
             <text>接单</text>
         </view>
     </button>
-
-    <button class="btn" style="width: 64vw;" wx:elif="{{detail.basicInfo.status==='inProcess'}}" bindtap="orderFinished">
+    <button class="btn" style="width: 64vw;" wx:elif="{{detail.basicInfo.status==='inProcess' && detail.basicInfo.openid !== openid}}" bindtap="orderFinished">
         <view class="btnleft">
             <text>完成订单</text>
         </view>
     </button>
+
+    <view class="finishedMessage" wx:elif="{{detail.basicInfo.status==='inProcess' && detail.basicInfo.openid === openid}}">
+        <text>此订单由我发布</text>
+    </view>
 
 
     <view class="finishedMessage"wx:elif="{{detail.basicInfo.status==='finished'}}">
