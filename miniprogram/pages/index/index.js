@@ -27,7 +27,8 @@ Page({
         },
         {
             icon:'../../images/borrow.png',
-            text:'租借服务'
+            text:'租借服务',
+            url:'../Rentalservice/Rentalservice'
         },
         {
             icon:'../../images/print.png',
