@@ -1,14 +1,103 @@
 /* pages/orderDetail/orderDetail.wxss */
+
 .body{
-    /* display: flex; */
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: column; */
     color:rgb(0, 0, 0);
-    
+    margin-bottom: 20rpx;
 }
 .body .title{
-    display: flex;
-    flex-direction: row;
-    /* height: 50rpx; */
-    color:rgb(0, 0, 0);
+    background-color: #fff;
+    text-align:center;
+    font-size: 40rpx;
+    line-height: 90rpx;
+    margin: 0 auto;
+}
+.body .address{
+    background-color: #fff;
+    width: 85%;
+    margin: 0 auto;
+    border-radius: 25rpx;
+    padding: 25rpx;
+    margin-top: 30rpx;
+    line-height: 80rpx;
+    font-size: 40rpx;
+    
+}
+.body .address image{
+    width: 20rpx;
+    height: 50rpx;
+}
+.body .content{
+    background-color: #fff;
+    width: 85%;
+    line-height: 40rpx;
+    font-size: large;
+    margin: 0 auto;
+    border-radius: 25rpx;
+    padding: 25rpx;
+    margin: 30rpx; 
+}
+.body .content view{
+    margin-left: 20rpx;
+}
+.body .expressCode{
+    text-align: center;
+    /* background-color: #fff; */
+    width: 85%;
+    margin: 0 auto;
+    
+}
+.body .expressCode .v1{
+    font-size: 40rpx;
+}
+.body .expressCode .v2{
+    font-size: 60rpx;
+    color: rgb(44, 136, 8);
+}
+.body .expressCode image{
+    margin-top:20rpx;
+}
 
+.body .contact{
+    background-color: #fff;
+    width: 85%;
+    line-height: 44rpx;
+    margin: 0 auto;
+    border-radius: 25rpx;
+    padding: 25rpx;
+    margin: 30rpx;
+}
+.body .contact .text{
+    margin-left: 20rpx;
+}
+.body .contact button{
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+}
+.body .contact .time{
+    line-height: 20rpx;
+    margin-top: 10rpx;
+    margin-left: 20rpx;
+    font-size: 24rpx;
+    color: rgb(73, 73, 73);
+}
+.body .img-style{
+    display: flex;
+    justify-content:center;
+}
+.body .img-style image{
+    height:80px;
+}
+
+.body .btn {
+    /* border-radius: 10%; */
+    background-color: #1067D1;
+    color: rgb(255, 255, 255);
+}
+
+.body .finishedMessage {
+    text-align: center;
+    font-size: 50rpx;
+    color: rgb(5, 150, 29);
 }
