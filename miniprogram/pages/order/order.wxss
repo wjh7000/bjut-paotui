@@ -70,7 +70,7 @@
     font-size: 28rpx;
 }
 
-.order .order_top .top_right_inprogress {
+.order .order_top .top_right_inprocess {
     color: rgb(31, 104, 241);
     background-color: rgba(47, 167, 236, 0.2);
     padding: 10rpx 25rpx;

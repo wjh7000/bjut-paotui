@@ -1,11 +1,13 @@
 // pages/orderDetail/orderDetail.js
+const db = wx.cloud.database()
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        detail:{}
+        detail:{},
+        isRunner:'',
     },
 
     /**
@@ -13,14 +15,25 @@ Page({
      */
     onLoad(options) {
         const detail = wx.getStorageSync('orderDetail');
+        const isRunner = wx.getStorageSync('isRunner')
         //console.log(cdetail);
         //var that = this;
         this.setData({
             detail:detail,
-        }),
+            isRunner: isRunner,
+            status :''
+        });
+        const {status} = detail.basicInfo;
         // console.log(options.ddetail);
         //wx.getStorageSync('detail');
         console.log(this.data.detail);
+        db.collection.doc(detail.basicInfo._id).watch({
+            onChange:function(snapshot){
+                that.setData({
+                    // detail.basicInfo.status: snapshot
+                })
+            }
+        })
     },
 
     /**
@@ -70,5 +83,40 @@ Page({
      */
     onShareAppMessage() {
 
+    },
+    call(){
+        wx.makePhoneCall({
+          phoneNumber: this.data.detail.basicInfo.phone,
+        })
+
+    },
+
+    orderReceive(e){
+        if (this.data.isRunner){
+            wx.showLoading({
+              title: '加载中',
+            })
+            const {
+                _id
+            } = this.data.detail.basicInfo;
+            
+            db.collection('order').doc(_id).update({
+                data:{
+                    runnerid: this.data.openid,
+                    status: 'inProcess',
+                },
+                success:(res) =>{
+                    this.onLoad();
+                    wx.hideLoading();
+                }
+            })
+        }
+        else {
+            wx.showModal({
+              title: '提示',
+              showCancel:false,
+              content: '您目前不是接单员，请先前往个人页申请成为接单员，待审核通过后再来接单',
+            })
+        }
     }
 })

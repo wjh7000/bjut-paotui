@@ -19,8 +19,12 @@ Page({
         (this.data.tabNow==2)?
         `${that.tabList[that.tabNow]}-${this.data.otherList[index]}`
         : `${that.tabList[that.tabNow]}-${index + 1}号楼`;
-        wx.redirectTo({
-          url: `../addAddress/addAddress?build=${build}`
+        // wx.redirectTo({
+        //   url: `../addAddress/addAddress?build=${build}`
+        // })
+        wx.setStorageSync('build', build);
+        wx.navigateBack({
+            delta: 1
         })
     },
   

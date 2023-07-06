@@ -20,6 +20,7 @@ Page({
             rewardOrder:[],
             helpOrder:[],
             openid:'',
+            isRunner:''
     },
     
     
@@ -60,12 +61,13 @@ Page({
                 })
             }
         }),
+
+        //判断骑手
+        this.getPersonPower();
+        //加载全部订单
         db.collection('order').orderBy('createTime','desc').get({
             success:(res)=> {
                 let { data } = res;
-                //console.log(res)
-
-
                 data.forEach((item,index)=> {
                     //旧版
                     // const info = {type: item.type, address: item.address}
@@ -122,7 +124,18 @@ Page({
      * 页面相关事件处理函数--监听用户下拉动作
      */
     onPullDownRefresh() {
-
+        if (this.data.tabNow == 0){
+            this.onLoad();
+        }
+        else if (this.data.tabNow == 1){
+            this.getMyOrder();
+        }
+        else if (this.data.tabNow == 2){
+            this.getMyHelpOrder();
+        }
+        else if (this.data.tabNow == 3){
+            this.getRewardOrder();
+        }
     },
 
     /**
@@ -266,11 +279,11 @@ Page({
                 const { data } = res;
                 data.forEach(item => {
                     //const newItem = this.formatInfo(item)
-                    const info = {type: item.type, address: item.address}
-                    const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    item.info = info_text;
-                    
-                    //console.log(newItem)
+                    // const info = {type: item.type, address: item.address}
+                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    // item.info = info_text;
+                    const formattedItem = this.formatInfo(item);
+                    data[index] = formattedItem;
                 });
                 this.setData({
                     myOrder: data,
@@ -293,9 +306,11 @@ Page({
                 const { data } = res;
                 data.forEach(item => {
                     //console.log(item)
-                    const info = {type: item.type, address: item.address}
-                    const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    item.info = info_text;
+                    // const info = {type: item.type, address: item.address}
+                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    // item.info = info_text;
+                    const formattedItem = this.formatInfo(item);
+                    data[index] = formattedItem;
                 });
                 this.setData({
                     helpOrder: data,
@@ -317,10 +332,11 @@ Page({
             success:(res)=> {
                 const { data } = res;
                 data.forEach(item => {
-                    //console.log(item)
-                    const info = {type: item.type, address: item.address}
-                    const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    item.info = info_text;
+                    // const info = {type: item.type, address: item.address}
+                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                    // item.info = info_text;
+                    const formattedItem = this.formatInfo(item);
+                    data[index] = formattedItem;
                 });
                 this.setData({
                     rewardOrder: data,
@@ -340,12 +356,8 @@ Page({
         //console.log(detail)
         wx.setStorageSync('orderDetail', detail),
         wx.navigateTo({
-          
-          //恢复这里
           url: `../orderDetail/orderDetail`,
-          //url: `../testGPT/testGPT`,
           success:(res)=>{
-              
           },
           fail:(res)=>{
             wx.showToast({
@@ -363,12 +375,12 @@ Page({
         //console.log(basicInfo)
         if (basicInfo.type === "getExpress"){
             moreInfo = {
-                addressFrom:"快递站", addressTo:item.address, business:item.business, codeImg:item.codeImg, expressCode:item.expressCode, remark:item.remark, size:item.size
+                addressFrom:"快递站", addressTo:item.address, business:item.business, img:item.codeImg, expressCode:item.expressCode, remark:item.remark, size:item.size
             }
         }
         else if (basicInfo.type === "expressDelivery"){
             moreInfo = {
-                addressFrom:item.address, addressTo:"快递站", business:item.business, codeImg:item.codeImg, expressCode:item.expressCode, name_from:item.name_from, name_to:item.name_to, remark:item.remark, size:item.size
+                addressFrom:item.address, addressTo:"快递站", business:item.business, img:item.codeImg, expressCode:item.expressCode, name_from:item.name_from, name_to:item.name_to, remark:item.remark, size:item.size
             }
         }
         else if (basicInfo.type === "helpPrint"){
@@ -385,27 +397,36 @@ Page({
         return returnItem
     },
     orderReceive(e){
-        wx.showLoading({
-          title: '加载中',
-        })
-        const {
-            item
-        } = e.currentTarget.dataset;
-        console.log(e);
-        const {
-            _id
-        } = item.basicInfo;
-    
-        db.collection('order').doc(_id).update({
-            data:{
-                runnerid: this.data.openid,
-                status: 'inProgress',
-            },
-            success:(res) =>{
-                this.onLoad();
-                wx.hideLoading();
-            }
-        })
+        if (this.data.isRunner){
+            wx.showLoading({
+              title: '加载中',
+            })
+            const {
+                item
+            } = e.currentTarget.dataset;
+            console.log(e);
+            const {
+                _id
+            } = item.basicInfo;
+            
+            db.collection('order').doc(_id).update({
+                data:{
+                    runnerid: this.data.openid,
+                    status: 'inProcess',
+                },
+                success:(res) =>{
+                    this.onLoad();
+                    wx.hideLoading();
+                }
+            })
+        }
+        else {
+            wx.showModal({
+              title: '提示',
+              showCancel:false,
+              content: '您目前不是接单员，请先前往个人页申请成为接单员，待审核通过后再来接单',
+            })
+        }
     },
 
     orderFinished(e){
@@ -427,6 +448,19 @@ Page({
             success:(res) =>{
                 this.onLoad();
                 wx.hideLoading();
+            }
+        })
+    },
+    getPersonPower(){
+        db.collection('mailmanapply').where({
+            _openid: wx.getStorageSync('userid'),
+            state:'已通过'
+        }).get({
+            success:(res)=>{
+                this.setData({
+                    isRunner: !!res.data.length
+                })
+                wx.setStorageSync('isRunner', this.data.isRunner)
             }
         })
     }
