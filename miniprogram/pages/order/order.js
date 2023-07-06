@@ -630,28 +630,51 @@ Page({
                   content: '不能接自己发布的订单',
                   showCancel:false,
                   complete: (res) => {
-                    if (res.cancel) {
-                      
-                    }
                   }
-                })
+                });
             }
             else{
                 wx.showLoading({
                     title: '加载中',
                   })
-                db.collection('order').doc(_id).update({
-                    data:{
-                        runnerid: this.data.openid,
-                        status: 'inProcess',
-                    },
-                    success:(res) =>{
-                        this.onLoad();
-                        wx.hideLoading();
+                db.collection('order').doc(_id).get({
+                    success:(res) => {
+                        if (res.data.status === 'waiting'){
+                            db.collection('order').doc(_id).update({
+                                data:{
+                                    runnerid: this.data.openid,
+                                    status: 'inProcess',
+                                },
+                                success:(res) =>{
+                                    this.onLoad();
+                                    wx.hideLoading();
+                                },
+                            })
+                        }
+                        else{
+                            wx.hideLoading();
+                            wx.showToast({
+                                title: '订单被抢走了',
+                                icon:'error',
+                                success: (res)=>{
+                                    if (this.data.tabNow == 0){
+                                        this.getRewardOrder();
+                                    }
+                                    else if (this.data.tabNow == 1){
+                                        this.getProcessOrder();
+                                    }
+                                    else if (this.data.tabNow == 2){
+                                        this.getFinishedOrder();
+                                    }
+                                    else if (this.data.tabNow == 3){
+                                        this.getMyOrder();
+                                    }
+                                }
+                            });
+                        }
                     }
                 })
             }
-            
         }
         else {
             wx.showModal({
