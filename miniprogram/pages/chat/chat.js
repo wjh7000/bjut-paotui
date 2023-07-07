@@ -32,7 +32,9 @@ Page({
     },
 
     onUnload() {
-    
+        this.update_rider_last_read()
+        this.update_customer_last_read()
+        console.log("退出")
     },
 
 
@@ -126,6 +128,47 @@ Page({
             },
             onError: function(err){
                 console.log(err)
+            }
+        })
+    },
+    
+    update_rider_last_read(){
+        var that = this;
+        const _id=that.data.id;
+        //console.log(_id);
+        db.collection('chat_record').doc(_id).get({
+            success(res) {
+                console.log(res)
+                var myDate=new Date()
+                db.collection('chat_record').doc(_id).update({
+                    data: {
+                        rider_read_time: myDate.toLocaleString()
+                    },
+                    success(res) {
+                            console.log('1')
+                    }
+                
+                })
+            }
+        })
+    },
+    update_customer_last_read(){
+        var that = this;
+        const _id=wx.getStorageSync('userid');
+        //console.log(_id);
+        db.collection('chat_record').doc(_id).get({
+            success(res) {
+                console.log(res)
+                var myDate=new Date()
+                db.collection('chat_record').doc(_id).update({
+                    data: {
+                        user_read_time: myDate.toLocaleString()
+                    },
+                    success(res) {
+                            console.log('1')
+                    }
+                
+                })
             }
         })
     }

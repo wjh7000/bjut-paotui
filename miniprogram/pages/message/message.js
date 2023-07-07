@@ -83,15 +83,9 @@ Page({
         //console.log(index);
         //console.log(that.data.my_customers[index]);
         //更新骑手最近读的时间
+
         db.collection('chat_record').where({
            _id:this.data.my_customers[index]._id
-        }).update({
-            data: {
-                rider_read_time: myDate.toLocaleString()
-            },
-            success(res) {
-                console.log("success")
-            }
         })
         wx.navigateTo({
           url: '/pages/chat/chat?id=' + this.data.my_customers[index]._id
@@ -104,21 +98,14 @@ Page({
     startChatWithRider(e) {
         const that=this;
         var index = e.currentTarget.dataset.index;
+        var myDate=new Date();
         //console.log(index);
         //console.log(this.data.me_rider);
 
         //更新用户最近读的时间
         db.collection('chat_record').where({
             _id:this.data.me_rider[index]._id
-         }).update({
-             data: {
-                 user_read_time: myDate.toLocaleString()
-             },
-             success(res) {
-                 console.log("success")
-             }
          })
-
 
         wx.navigateTo({
           url: '/pages/chat/chat?id=' + this.data.me_rider[index]._id
