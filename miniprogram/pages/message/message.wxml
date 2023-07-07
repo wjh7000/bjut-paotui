@@ -14,9 +14,9 @@
 
     <view class="left" bindtap="startChat" data-index="{{index}}">
         <view class="flex-row">
-            <image class="face" src="{{item.userInfo.avatarUrl}}"></image>  
+            <image class="face" src="{{item.user_avatar}}"></image>  
             <view>
-                <view class="nick-name">{{item.userInfo.nickName}}</view>
+                <view class="nick-name">{{item.user_nickname}}</view>
               
                 <view class="msg">{{item.chatlog[item.chatlog.length-1].sentamce}}</view>
                

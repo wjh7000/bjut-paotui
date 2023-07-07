@@ -241,7 +241,7 @@ Page({
                     userid:userid,
                     user_avatar,
                     user_nickname,
-    
+
                     recent_update_time:myDate.toLocaleString(),
                     rider_read_time:'',
                     user_read_time:'',
