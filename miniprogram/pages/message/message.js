@@ -42,11 +42,11 @@ Page({
                 for (var index in that.data.my_customers) {
                    if(that.data.my_customers[index].recent_update_time>that.data.my_customers[index].rider_read_time) {
                        is_read1=1
-                    console.log(is_read1)
+                   // console.log(is_read1)
                    }
                    else{
                     is_read1=0
-                    console.log(is_read1)
+                  //  console.log(is_read1)
                    }          
                    }
             },

@@ -4,7 +4,7 @@
 <view wx:for="{{my_dialogs.chatlog}}" wx:key="index">
     <block wx:if="{{item.id!=userid}}">
     <view class="top">
-        <image class = "face" src="{{(userid==mydialogs._openid)?(my_dialogs.user_avatar):(my_dialogs.userInfo.avatarUrl)}}"></image>
+        <image class = "face" src="{{(userid==mydialogs.userid)?(my_dialogs.userInfo.avatarUrl):(my_dialogs.user_avatar)}}"></image>
         <view class="bot">
         <text >{{item.sentamce}}</text>
         
