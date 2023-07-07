@@ -140,7 +140,7 @@ Page({
         var that = this;
         const _id=that.data.id;
         //console.log(_id);
-        if(wx.getStorageSync('userid')==that.data.userid){
+        if(this.data.userid==that.data.my_dialogs._openid){
             db.collection('chat_record').doc(_id).get({
                 success(res) {
                     console.log(res)
@@ -164,7 +164,7 @@ Page({
         var that = this;
         const _id=that.data.id;
         //console.log(_id);
-        if(wx.getStorageSync('userid')!=that.data.userid){
+        if(this.data.userid!=that.data.my_dialogs._openid){
             db.collection('chat_record').doc(_id).get({
                 success(res) {
                     console.log(res)

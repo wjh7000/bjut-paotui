@@ -227,7 +227,7 @@ Page({
             const userid=this.data.detail.basicInfo.openid;//用户id
             //const userid='o0IHy4mVYyOvEz6fdfJzVoB_gXxs';//用户id
             const user_avatar=this.data.detail.basicInfo.userInfo.avatarUrl  //用户的头像
-            const user_nickname=this.data.detail.basicInfo.userInfo.Nickname  //用户的昵称
+            const user_nickname=this.data.detail.basicInfo.userInfo.nickName  //用户的昵称
             const userInfo=wx.getStorageSync('userInfo');//自己的信息
             const typeList=[
              {
