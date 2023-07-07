@@ -4,21 +4,98 @@
     <view class="title">
         <text>订单详情</text>
     </view>
-    <view class="content">
-        <!-- {{info}} -->
-        {{detail.basicInfo.userInfo.nickName}}
-        {{detail.basicInfo.phone}}
-        <br/>
-        {{detail.moreInfo.addressFrom}}
-        {{detail.moreInfo.addressTo}}
-
+    
+    <!-- 地址信息 -->
+    <view class="address">
+        <view>
+            <image src="../../images/zhongdian.png" mode="heightFix"/>
+            {{detail.moreInfo.addressFrom}}
+        </view>
+        <view>
+            <image src="../../images/qidian.png" mode="heightFix"/>
+            {{detail.moreInfo.addressTo}}
+        </view>
     </view>
-    <button class="btn" style="width: 64vw;">
-        <view class="btnleft">
+    
+    <view class="content" wx:if="{{detail.basicInfo.type === 'getExpress'}}">
+        <!-- {{info}} -->
+        <view>订单类型：快递代取</view>
+        <view>快递大小：{{detail.moreInfo.size}}</view>
+        <view>快递公司：{{detail.moreInfo.business}}</view>
+        <view>备注信息：{{detail.moreInfo.remark}}</view>
+        <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
+    </view>
+    <view class="content" wx:if="{{detail.basicInfo.type === 'expressDelivery'}}">
+        <!-- {{info}} -->
+        <view>订单类型：快递代取</view>
+        <view>快递大小：{{detail.moreInfo.size}}</view>
+        <view>快递公司：{{detail.moreInfo.business}}</view>
+        <view>寄件人姓名：{{detail.moreInfo.name_from}}</view>
+        <view>收件人姓名：{{detail.moreInfo.name_to}}</view>
+        <view>收件人地址：{{detail.moreInfo.name_to}}</view>
+        <view>备注信息：{{detail.moreInfo.remark}}</view>
+        <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
+    </view>
+    <view class="content" wx:if="{{detail.basicInfo.type === 'takeaway'}}">
+        <!-- {{info}} -->
+        <view>订单类型：外卖代取</view>
+        <view>外卖类型：{{detail.moreInfo.size}}</view>
+        <view>备注信息：{{detail.moreInfo.remark}}</view>
+        <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
+    </view>
+
+
+    <view class="expressCode" wx:if="{{(detail.moreInfo.expressCode || detail.moreInfo.img) && detail.basicInfo.status !== 'waiting'}}">
+        <view class="v1">取件码</view>
+        <view class="v2" wx:if="{{detail.moreInfo.expressCode}}">{{detail.moreInfo.expressCode}}</view>
+        <image wx:if="{{detail.moreInfo.img}}" src="{{detail.moreInfo.img}}" mode="widthFix"/>
+    </view>
+    <view class="contact" wx:if="{{detail.basicInfo.status !== 'waiting'}}">
+        <view class="text">发起人信息：</view>
+        <view class="text" wx:if="{{detail.basicInfo.userInfo.gender}} == 0">
+            {{detail.basicInfo.userInfo.nickName}}(男)
+        </view>
+        <view class="text" wx:elif="{{detail.basicInfo.userInfo.gender}} == 0">
+            {{detail.basicInfo.userInfo.nickName}}(女)
+        </view>
+        <view class="text">
+            {{detail.basicInfo.phone}}
+            
+        </view>
+        <button bindtap="call">拨打电话</button>
+        <view class="time">
+            下单时间:{{detail.basicInfo.nowDate+detail.basicInfo.nowTime}}
+        </view>
+        <view class="time">
+            订单号:{{detail.basicInfo._id}}
+        </view>
+    </view>
+    <view class="contact" wx:elif="{{detail.basicInfo.status === 'waiting'}}">
+        为保护用户隐私，部分信息已隐藏，接单后可查看
+    </view>
+    <!-- <view class="img-style" wx:if="{{detail.moreInfo.img && detail.basicInfo.status != 'waiting'}}">
+    </view> -->
+    
+    
+    <button class="btn" style="width: 64vw;" wx:if="{{detail.basicInfo.status==='waiting'}}" bindtap="orderReceive">
+        <view class="btnleft" >
             <text>接单</text>
         </view>
-        
     </button>
+    <button class="btn" style="width: 64vw;" wx:elif="{{detail.basicInfo.status==='inProcess' && detail.basicInfo.openid !== openid}}" bindtap="orderFinished">
+        <view class="btnleft">
+            <text>完成订单</text>
+        </view>
+    </button>
+
+    <view class="finishedMessage" wx:elif="{{detail.basicInfo.status==='inProcess' && detail.basicInfo.openid === openid}}">
+        <text>此订单由我发布</text>
+    </view>
+
+
+    <view class="finishedMessage"wx:elif="{{detail.basicInfo.status==='finished'}}">
+            <text>订单已完成</text>
+    </view>
 
 
 

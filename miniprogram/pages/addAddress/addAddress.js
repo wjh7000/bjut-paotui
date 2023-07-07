@@ -143,9 +143,12 @@ Page({
     },
   
     selectBuild() {
-        wx.redirectTo({
-            url: '../selectBuild/selectBuild',
+        wx.navigateTo({
+          url: '../selectBuild/selectBuild',
         })
+        // wx.redirectTo({
+        //     url: '../selectBuild/selectBuild',
+        // })
     },
   
     /**
@@ -153,7 +156,7 @@ Page({
      */
     onLoad(options) {
          const {
-          build, address, index
+           address, index
       } = options;
       if (address) {
           const { build: builds, houseNumber, name, phone, defalutAddress } = JSON.parse(address);
@@ -173,10 +176,13 @@ Page({
           })
       } else {
           const phone=wx.getStorageSync('phone');
+          const build=wx.getStorageSync('build');
+          console.log(build);
           this.setData({
               phone,
               build,
           })
+          wx.removeStorageSync('build');
       }
   
     },
@@ -192,7 +198,14 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-
+          const build=wx.getStorageSync('build');
+          console.log(build);
+          if(!!build){
+              console.log('show');
+          this.setData({
+              build,
+          })
+          wx.removeStorageSync('build');}
     },
 
     /**

@@ -23,16 +23,27 @@ Page({
         const url = wx.getStorageSync('Nowurl')
         if(url=='personal') { return;}
         const address = this.data.address[index];
+        const no=wx.getStorageSync('no');
+        if(no==1){
+        wx.setStorageSync('addressNow2', address);
+        wx.setStorageSync('indexnow2', index);
+        wx.setStorageSync('no', 0);
+    }
+        else{
         wx.setStorageSync('addressNow', address);
-        wx.setStorageSync('indexnow', index);
-        wx.redirectTo({
-          url: `../${url}/${url}`,
+        wx.setStorageSync('indexnow', index);}
+        // wx.redirectTo({
+        //   url: `../${url}/${url}`,
+        // })
+        wx.navigateBack({
+            delta: 1
         })
       },
     
       delete(e) {
         const index = e.currentTarget.dataset.index;
         var indexnow=wx.getStorageSync('indexnow');
+        var indexnow2=wx.getStorageSync('indexnow2');
         const address = this.data.address;
         wx.showModal({
             title: '删除',
@@ -48,7 +59,17 @@ Page({
                       key: 'indexnow',
                     })
                 }
+                if(indexnow2>index) indexnow2--;
+                else if(indexnow2==index){
+                    wx.removeStorage({
+                      key: 'addressNow2',
+                    })
+                    wx.removeStorage({
+                      key: 'indexnow2',
+                    })
+                }
                 wx.setStorageSync('indexnow', indexnow)
+                wx.setStorageSync('indexnow2', indexnow2)
                 address.splice(index, 1);
                 wx.setStorageSync('address', address);
                 wx.showToast({

@@ -1,0 +1,36 @@
+<view class="body">
+    <view class="item">
+    <text>物品名</text>
+    <input type="text" value="{{ itemname }}" placeholder="请输入物品名（必填）" bindinput="getitemname" />
+  </view>
+  <view class="item">
+    <text>收件地址</text>
+    <text bindtap="selectAddress">{{ address ? address : '请选地址（必选） ' }}</text>
+  </view>
+  <view class="item">
+    <text>费用</text>
+    <input type="text" value="{{ money }}" placeholder="元/天（必填，0-999）" maxlength="3"bindinput="getmoney" />
+  </view>
+  <view class="item">
+    <text>租借日期</text>
+    <input type="text" value="{{ renttime }}" placeholder="形如20230701" maxlength="8"  bindinput="getrenttime" />
+  </view>
+  <view class="item">
+    <text>归还日期</text>
+    <input type="text" value="{{ returntime }}" placeholder="形如20230701" maxlength="8"  bindinput="getreturntime" />
+  </view>
+  <view class="item">
+    <text>备注</text>
+    <input type="text" value="{{ remark }}" placeholder="选填，20字内" bindinput="getremark" />
+  </view>
+  <view class="tips">
+    <view class="tips_money">
+      <text>已为您保密订单信息</text>
+      <text> 费用为（单价*天数）</text>
+      <text>将在起始/归还日期上门提供/收回物品</text>
+    </view>
+    <text>需支付</text>
+    <text class="color_red money">{{ (renttime.length==8&&returntime.length==8&&money!=0)?((returntime-renttime+1)*money):0 }} 元</text>
+  </view>
+  <button class="submitBtn" bindtap="submit">立即发布</button>
+</view>
