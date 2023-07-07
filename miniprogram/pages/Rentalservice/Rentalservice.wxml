@@ -30,7 +30,7 @@
       <text>将在起始/归还日期上门提供/收回物品</text>
     </view>
     <text>需支付</text>
-    <text class="color_red money">{{ (renttime.length==8&&returntime.length==8&&money!=0)?((returntime-renttime+1)*money):0 }} 元</text>
+    <text class="color_red money">{{ (renttime.length==8&&returntime.length==8&&money!=0)?(money*((n22-n11)*365+(n222-n111)*30+(n2222-n1111))):0 }} 元</text>
   </view>
   <button class="submitBtn" bindtap="submit">立即发布</button>
 </view>

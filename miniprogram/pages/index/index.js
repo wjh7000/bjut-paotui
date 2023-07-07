@@ -18,7 +18,8 @@ Page({
         },
         {
             icon:'../../images/run.png',
-            text:'校园跑腿'
+            text:'校园跑腿',
+            url:'../Runleg/Runleg'
         },
         {
             icon:'../../images/expressDelivery.png',

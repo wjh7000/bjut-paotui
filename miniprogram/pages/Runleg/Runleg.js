@@ -6,10 +6,9 @@ Page({
   data: {
     itemname: '',
     address: '',
+    address2:'',
     money: null,
     userInfo: {},
-    renttime: '',
-    returntime: '',
     remark: '',
     nowDate:'',
     nowTime:''
@@ -24,6 +23,11 @@ Page({
       address: e.detail.value
     })
   },
+  getaddress2(e) {
+    this.setData({
+      address2: e.detail.value
+    })
+  },
   getremark(e) {
     this.setData({
       remark: e.detail.value
@@ -31,15 +35,6 @@ Page({
   },  
   submit() {
     const that = this.data;
-    var n1=Number(this.data.renttime);
-    var n2=Number(this.data.returntime);
-    var n11=Math.floor(n1/10000);
-    var n111=Math.floor(n1/100)-n11*100;
-    var n1111=n1-n11*10000-n111*100;
-    var n22=Math.floor(n2/10000);
-    var n222=Math.floor(n2/100)-n22*100;
-    var n2222=n2-n22*10000-n222*100;
-
     if(that.remark.length>20){
         wx.showToast({
             title: '备注大于20字',
@@ -50,10 +45,11 @@ Page({
     const {
       itemname,
       address,
+      A1,
+      address2,
+      A2,
       money,
       userInfo,
-      renttime,
-      returntime,
       remark,
     } = this.data;
     if (!itemname) {
@@ -63,10 +59,17 @@ Page({
       })
       return;
     }
-    else if (!address) {
+    else if (!A1) {
         wx.showToast({
           icon: 'none',
-          title: '您未填写地址',
+          title: '您未填写发件地址',
+        })
+        return;
+    }
+    else if (!A2) {
+        wx.showToast({
+          icon: 'none',
+          title: '您未填写收件地址',
         })
         return;
     }
@@ -77,128 +80,26 @@ Page({
         })
         return;
     }
-    else if (!renttime) {
-        wx.showToast({
-          icon: 'none',
-          title: '您未填租借日期',
-        })
-        return;
-    }
-    else if (!returntime) {
-        wx.showToast({
-          icon: 'none',
-          title: '您未填归还日期',
-        })
-        return;
-    }
-    else if (renttime.length!=8||isNaN(n1)) {
-        wx.showToast({
-          icon: 'none',
-          title: '租借日期为8位数字',
-        })
-        return;
-      }
-      else if (returntime.length!=8||isNaN(n2)) {
-        wx.showToast({
-          icon: 'none',
-          title: '归还日期为8位数字',
-        })
-        return;
-      }
-      else if(n11<2023||n11>2050||n22<2023||n22>2050){
-        wx.showToast({
-            icon: 'none',
-            title: '使用期限为2023-2050年',
-          })
-          return;
-      }
-      else if(n111<1||n111>12||n222<1||n222>12){
-        wx.showToast({
-            icon: 'none',
-            title: '月份格式为01-12',
-          })
-          console.log(n1);
-          console.log(n11);
-          console.log(n111);
-          console.log(n1111);
-          return;
-      }
-      else if(n1111<1||n1111>31||n2222<1||n2222>31){
-        wx.showToast({
-            icon: 'none',
-            title: '日份格式为01-31',
-          })
-          return;
-      }
-      else if(n111==2){
-        if(n1111==29||n1111==30||n1111==31){
-        wx.showToast({
-            icon: 'none',
-            title: '不存在此日期',
-          })
-          return;
-        }
-      }
-      else if(n222==2){
-        if(n2222==29||n2222==30||n2222==31){
-        wx.showToast({
-            icon: 'none',
-            title: '不存在此日期',
-          })
-          return;
-        }
-      }
-      else if(n111==4||n111==6||n111==9||n111==11){
-        if(n1111==31){
-        wx.showToast({
-            icon: 'none',
-            title: '不存在此日期',
-          })
-          return;
-        }
-      }
-      else if(n222==4||n222==6||n222==9||n222==11){
-        if(n2222==31){
-        wx.showToast({
-            icon: 'none',
-            title: '不存在此日期',
-          })
-          return;
-        }
-      }
-      else if(n11>n22||n11==n22&&n111>n222||n11==n22&&n111==n222&&n1111>n2222){
-        wx.showToast({
-            icon: 'none',
-            title: '租借日期应小于归还日期',
-          })
-          return;
-      }
     else if (remark.length>20) {
         wx.showToast({
           icon: 'none',
-          title: '备注大于20字',
+          title: '备注不能大于20字',
         })
         return;
       }
     db.collection('order').add({
       data: {
         // 模块的名字
-        type: 'Rentalservice',
-        // 当前时间
+        type: 'Runleg',
         nowTime:that.nowTime,
         nowDate:that.nowDate,
-        // 订单金额
         money,
-        // 订单状态
         status: 'waiting',
-        // 收件地址
         address,
-        // 订单信息
+        address2,
         info: {
           itemname,
           remark,
-          renttime,
-          returntime,
         },
         // 用户信息
         userInfo,
@@ -216,39 +117,20 @@ Page({
       }
     })
   },
-  getrenttime(e) {
-    var n1=Number(e.detail.value);
-    var n11=Math.floor(n1/10000);
-    var n111=Math.floor(n1/100)-n11*100;
-    var n1111=n1-n11*10000-n111*100;
-    this.setData({
-      renttime: e.detail.value, 
-      n1,
-      n11,
-      n111,
-      n1111, 
-    })
-  },
-  getreturntime(e) {
-    var n2=Number(e.detail.value);
-    var n22=Math.floor(n2/10000);
-    var n222=Math.floor(n2/100)-n22*100;
-    var n2222=n2-n22*10000-n222*100;
-    this.setData({
-      returntime: e.detail.value,
-      n2,
-      n22,
-      n222,
-      n2222,
-    })
-  },
   getmoney(e) {
     this.setData({
       money: Number(e.detail.value)
     })
   },
   selectAddress(){
-    wx.setStorageSync('Nowurl', 'Rentalservice')
+    wx.setStorageSync('Nowurl', 'Runleg')
+    wx.navigateTo({
+      url: '../addressmanage/addressmanage',
+    })
+  },
+  selectAddress2(){
+    wx.setStorageSync('Nowurl', 'Runleg');
+    wx.setStorageSync('no', 1);
     wx.navigateTo({
       url: '../addressmanage/addressmanage',
     })
@@ -303,6 +185,7 @@ Page({
   onLoad: function (options) {
     this.currentTime();
     const address = wx.getStorageSync('addressNow');
+    const address2 = wx.getStorageSync('addressNow2');
     const userInfo = wx.getStorageSync('userInfo');
 
     if (address) {
@@ -311,9 +194,30 @@ Page({
         houseNumber
       } = address;
       this.setData({
-        address: `${build}-${houseNumber}`,
+        address:address,
+        A1: `${build}-${houseNumber}`,
       })
     }
+    else{
+        this.setData({
+            A1:'',
+          })
+      }
+    if (address2) {
+        const {
+          build,
+          houseNumber
+        } = address2;
+        this.setData({
+          address2:address2,
+          A2: `${build}-${houseNumber}`,
+        })
+      }
+      else{
+        this.setData({
+            A2:'',
+          })
+      }
     this.setData({
       userInfo,
     })
@@ -328,7 +232,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.onLoad();
   },
   /**
    * 生命周期函数--监听页面隐藏

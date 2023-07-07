@@ -1,0 +1,32 @@
+<view class="body">
+    <view class="item">
+    <text>物品名</text>
+    <input type="text" value="{{ itemname }}" placeholder="请输入物品名（必填）" bindinput="getitemname" />
+  </view>
+  <view class="item">
+    <text>发件地址</text>
+    <text bindtap="selectAddress">{{ A1 ? A1 : '请选地址（必选） ' }}</text>
+  </view>
+  <view class="item">
+    <text>收件地址</text>
+    <text bindtap="selectAddress2">{{ A2 ? A2 : '请选地址（必选） ' }}</text>
+  </view>
+
+  <view class="item">
+    <text>费用</text>
+    <input type="text" value="{{ money }}" placeholder="元（必填，0-99）" maxlength="2"bindinput="getmoney" />
+  </view>
+  <view class="item">
+    <text>备注</text>
+    <input type="text" value="{{ remark }}" placeholder="选填，20字内" bindinput="getremark" />
+  </view>
+  <view class="tips">
+    <view class="tips_money">
+      <text>已为您保密订单信息</text>
+      <text>将提供上门取件服务</text>
+    </view>
+    <text>需支付</text>
+    <text class="color_red money">{{ money }} 元</text>
+  </view>
+  <button class="submitBtn" bindtap="submit">立即发布</button>
+</view>

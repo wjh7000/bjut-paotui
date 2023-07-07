@@ -19,7 +19,7 @@
         <text>取餐信息</text>
     </view>
     <view class="getCode">
-        <textarea class="content" cols="30" rows="10" maxlength="10" placeholder="请输入取餐码（10字内）或上传截图" value="{{ expresscode }}"  bindinput="getExpressCode"  placeholder-class="phcolor">
+        <textarea class="content" cols="30" rows="10" maxlength="20" placeholder="输入取餐码（20字内）或上传截图（必填）" value="{{ expresscode }}"  bindinput="getExpressCode"  placeholder-class="phcolor">
             <image class="expresscode" src="{{ codeImg1 }}">
             </image>
             <image class="getImg" src="{{ codeImg1 ? '../../images/getImg_fill.png' : '../../images/getImg.png' }}" bindtap="getCode">
@@ -28,7 +28,7 @@
     </view>
     <view class="Daddress">
         <text>备注信息：</text>
-        <input type="text" placeholder="您的配送偏好等（可选）" value="{{ remark1 }}" maxlength="10" bindinput="getRemark" placeholder-class="phcolor"/>
+        <input type="text" placeholder="配送偏好（选填10字内）" value="{{ remark1 }}" maxlength="10" bindinput="getRemark" placeholder-class="phcolor"/>
     </view>
     <view class="bottom_tips">
         <text>已为您保密个人信息</text>

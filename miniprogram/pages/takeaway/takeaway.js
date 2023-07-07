@@ -208,9 +208,9 @@ Page({
               return;
         }
 
-        else if(that.expresscode.length>10){
+        else if(that.expresscode.length>20){
             wx.showToast({
-                title: '取件码大于10字',
+                title: '取件码大于20字',
                 icon:'error',
               })
               return;
