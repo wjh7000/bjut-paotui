@@ -20,7 +20,8 @@ Page({
             rewardOrder:[],
             helpOrder:[],
             openid:'',
-            isRunner:''
+            isRunner:'',
+            loginStatus:false
     },
     
     
@@ -46,21 +47,34 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        wx.cloud.callFunction({
-            name:'getuserid',
-            success:(res)=>{
-                this.setData({
-                    openid:res.result.openid
-                })
-                //console.log(this.data.openid)
-                //this.data.openid = res.result.openid
-            },
-            fail:(res)=>{
-                wx.showToast({
-                  title: '错误',
-                })
-            }
-        }),
+        let openid = wx.getStorageSync('userid');
+        let loginStatus;
+        if (!openid){
+            loginStatus = false;
+        }
+        else{
+            loginStatus = true;
+        }
+        this.setData({
+            openid:openid,
+            loginStatus:loginStatus
+        })
+        
+        console.log(this.data.openid, 'openid', loginStatus);
+        // 不用云函数了，直接从缓存取openid，上面是新版
+        // wx.cloud.callFunction({
+        //     name:'getuserid',
+        //     success:(res)=>{
+        //         this.setData({
+        //             openid:res.result.openid
+        //         })
+        //     },
+        //     fail:(res)=>{
+        //         wx.showToast({
+        //           title: '错误',
+        //         })
+        //     }
+        // }),
 
         //判断骑手
         this.getPersonPower();
@@ -403,33 +417,49 @@ Page({
     },
     //我的订单页
     getMyOrder() {
-        db.collection('order').where({
-            _openid:this.data.openid
-        }).orderBy('createTime','desc').get({
-            success:(res)=> {
-                let { data } = res;
-                console.log(data)
-                data.forEach((item,index)=> {
-                    //旧版
-                    // const info = {type: item.type, address: item.address}
-                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    // item.info = info_text;
-                    //新版
-                    let formattedItem = this.formatInfo(item);
-                    data[index] = formattedItem;
-                });
-                this.setData({
-                    //myOrder: data,
-                    orderList: data
-                })
-                console.log(this.data.orderList)
-            },
-            fail:(res)=>{
-                wx.showToast({
-                    title:'加载错误',
-                })
-            }
-        })
+        if (this.data.loginStatus === true){
+            db.collection('order').where({
+                _openid:this.data.openid
+            }).orderBy('createTime','desc').get({
+                success:(res)=> {
+                    let { data } = res;
+                    console.log(data)
+                    data.forEach((item,index)=> {
+                        //旧版
+                        // const info = {type: item.type, address: item.address}
+                        // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                        // item.info = info_text;
+                        //新版
+                        let formattedItem = this.formatInfo(item);
+                        data[index] = formattedItem;
+                    });
+                    this.setData({
+                        //myOrder: data,
+                        orderList: data
+                    })
+                    console.log(this.data.orderList)
+                },
+                fail:(res)=>{
+                    wx.showToast({
+                        title:'加载错误',
+                    })
+                }
+            })
+        }
+        else{
+            wx.showModal({
+                title: '提示',
+                content: '请先登录再查看我发布的订单',
+                showCancel:false,
+                complete: (res) => {
+  
+                }
+              })
+              this.setData({
+                  orderList:''
+              })
+        }
+        
     },
 
     getMyHelpOrder(){
@@ -498,70 +528,98 @@ Page({
 
     },
     getProcessOrder(){
-        db.collection('order').where({
-            runnerid:this.data.openid,
-            status:'inProcess'
-        }).orderBy('createTime','desc').get({
-            success:(res)=> {
-                let { data } = res;
-                //console.log("d", data);
-                data.forEach((item,index)=> {
-                    //旧版
-                    // const info = {type: item.type, address: item.address}
-                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    // item.info = info_text;
-                    //新版
-                    let formattedItem = this.formatInfo(item);
-                    data[index] = formattedItem;
-                });
-                
-                this.setData({
-                    //rewardOrder: data,
-                    orderList:data
-                });
-                
-                
-                
-                console.log(this.data.orderList)
-            },
-            fail:(res)=>{
-                wx.showToast({
-                    title:'加载错误',
-                })
-            }
-        })
+        if (this.data.loginStatus === true){
+            db.collection('order').where({
+                runnerid:this.data.openid,
+                status:'inProcess'
+            }).orderBy('createTime','desc').get({
+                success:(res)=> {
+                    let { data } = res;
+                    //console.log("d", data);
+                    data.forEach((item,index)=> {
+                        //旧版
+                        // const info = {type: item.type, address: item.address}
+                        // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                        // item.info = info_text;
+                        //新版
+                        let formattedItem = this.formatInfo(item);
+                        data[index] = formattedItem;
+                    });
+                    
+                    this.setData({
+                        //rewardOrder: data,
+                        orderList:data
+                    });
+                    console.log(this.data.orderList)
+                },
+                fail:(res)=>{
+                    wx.showToast({
+                        title:'加载错误',
+                    })
+                }
+            })
+        }
+        else{
+            wx.showModal({
+              title: '提示',
+              content: '请先登录再查看我接到的订单',
+              showCancel:false,
+              complete: (res) => {
+
+              }
+            })
+            this.setData({
+                orderList:''
+            })
+        }
+        
 
     },
     getFinishedOrder(){
-        db.collection('order').where({
-            runnerid:this.data.openid,
-            status:'finished'
-        }).orderBy('createTime','desc').get({
-            success:(res)=> {
-                let { data } = res;
-                console.log("d", data);
-                data.forEach((item,index)=> {
-                    //旧版
-                    // const info = {type: item.type, address: item.address}
-                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    // item.info = info_text;
-                    //新版
-                    let formattedItem = this.formatInfo(item);
-                    data[index] = formattedItem;
-                });
-                
-                this.setData({
-                    //rewardOrder: data,
-                    orderList:data
-                });
-                console.log(this.data.orderList)
-            },
-            fail:(res)=>{
-                wx.showToast({
-                    title:'加载错误',
-                })
-            }
-        })
+        if (this.data.loginStatus === true){
+            db.collection('order').where({
+                runnerid:this.data.openid,
+                status:'finished'
+            }).orderBy('createTime','desc').get({
+                success:(res)=> {
+                    let { data } = res;
+                    console.log("d", data);
+                    data.forEach((item,index)=> {
+                        //旧版
+                        // const info = {type: item.type, address: item.address}
+                        // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                        // item.info = info_text;
+                        //新版
+                        let formattedItem = this.formatInfo(item);
+                        data[index] = formattedItem;
+                    });
+                    
+                    this.setData({
+                        //rewardOrder: data,
+                        orderList:data
+                    });
+                    console.log(this.data.orderList)
+                },
+                fail:(res)=>{
+                    wx.showToast({
+                        title:'加载错误',
+                    })
+                }
+            })
+        }
+        else{
+            wx.showModal({
+                title: '提示',
+                content: '请先登录再查看我接到的订单',
+                showCancel:false,
+                complete: (res) => {
+                    
+                }
+              })
+            this.setData({
+                orderList:''
+            })
+        }
 
     },
 
