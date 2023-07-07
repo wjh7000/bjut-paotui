@@ -11,14 +11,18 @@ Page({
         time : 0,
         my_dialogs:[],
         id:'',//对方的openid
-        userid:''
+        userid:'',
+        userInfo:{}
+
     },
 
     onLoad :function (options) {
         const userid=wx.getStorageSync('userid');
+        const userInfo=wx.getStorageSync('userInfo');
         this.setData({
             id : options.id,
-            userid
+            userid,
+            userInfo
         })
         this.getmyDialogs()
     },
@@ -26,6 +30,11 @@ Page({
     onshow: function (options) {
         
     },
+
+    onUnload() {
+    
+    },
+
 
     publishMessage(){
         if (this.data.inputValue == "") {
@@ -43,20 +52,21 @@ Page({
                 console.log(res)
                 var chatlog = res.data.chatlog;
                 var msg = {}
+                var myDate=new Date()
                 //msg.id = app.globalData.userInfo._openid
                 console.log("check")
 
                 msg.id = that.data.userid;
                 msg.sentamce = that.data.inputValue;
                 msg.time = utils.formatTime(new Date());
-                
-                
-                console.log(msg)
+                      
+                //console.log(msg)
                 chatlog.push(msg)
-               console.log(chatlog)
+               //console.log(chatlog)
                 db.collection('chat_record').doc(_id).update({
                     data: {
-                        chatlog : chatlog
+                        chatlog : chatlog,
+                        recent_update_time: myDate.toLocaleString()
                     },
                     success(res) {
                         console.log(res)

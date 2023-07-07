@@ -1,12 +1,15 @@
 
 
-<view wx:if="{{my_customers.data.length==0&&me_rider.data.length==0}}" class='no-message'>
+<view wx:if="{{my_customers.length==0&&me_rider.length==0}}" class='no-message'>
 <image src="../../images/no_message.png"></image>
 </view>
 
 <view wx:else>
-<text>我的顾客</text>
-<block wx:for="{{my_customers.data}}">
+<view wx:if="{{my_customers.length!=0}}" >
+    <text>我的顾客</text>
+</view>
+
+<block wx:for="{{my_customers}}">
 <view class="user-list">
 
     <view class="left" bindtap="startChat" data-index="{{index}}">
@@ -15,18 +18,27 @@
             <view>
                 <view class="nick-name">{{item.userInfo.nickName}}</view>
                 <view class="msg">{{item.chatlog[item.chatlog.length-1].sentamce}}</view>
+
+                <view wx:if="{{item.recent_update_time>item.rider_read_time}}">
+            <image class="new_message" src="../../images/new_msg.png"></image>  
+        </view>
+
             </view>  
         </view>
-        <view class="time">{{item.newtime}}</view>
+          
+        <view class="time">{{item.recent_update_time}}</view>
+      
     </view>
 
-
+   
 
 
 </view>
 </block>
-<text>我的骑手</text>
-<block wx:for="{{me_rider.data}}">
+<view wx:if="{{me_rider.length!=0}}" >
+    <text>我的骑手</text>
+</view>
+<block wx:for="{{me_rider}}">
 <view class="user-list">
 
     <view class="left" bindtap="startChatWithRider" data-index="{{index}}">
@@ -37,7 +49,7 @@
                 <view class="msg">{{item.chatlog[item.chatlog.length-1].sentamce}}</view>
             </view>  
         </view>
-        <view class="time">{{item.newtime}}</view>
+        <view class="time">{{item.recent_update_time}}</view>
     </view>
 </view>
 </block>

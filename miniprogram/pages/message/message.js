@@ -1,5 +1,6 @@
 const app = getApp();
 const db = wx.cloud.database();
+var is_read1;
 Page({
     data: {
         myid:'',
@@ -8,53 +9,51 @@ Page({
 
     onLoad() {
         const myid=wx.getStorageSync('userid');
-
         this.setData({
             myid,
             userInfo : app.globalData.userInfo
         })
+
+       
     },
-    onShow() {
-        
+    onShow() {  
         this.setData({
             userInfo : app.globalData.userInfo,
             my_customers : [],
             me_rider    :[]
         })
-        //this.loadUser()
-       // this.getMyfriend()
-        this.getCustomers()
+        this.getmyCustomers2()
         this.getrider()
     },
-    loadUser() {
-        var that = this;
-        db.collection('chat_user').where({
-            _openid : that.data.userInfo._openid,
-        }).get({
-            success(res) {
-                console.log(res)
-                // 更新数据 拿到 _id
-                app.globalData.userInfo = res.data[0]
-                that.setData({
-                    userInfo: app.globalData.userInfo
-                })
-            }
-        })
-    },
 
-    getCustomers() {
+
+
+    getmyCustomers2(){//进行监视，可以实时更新消息页面信息
         const _openid=wx.getStorageSync('userid')
         var state;    
         const that=this;
-        db.collection('chat_record').where({
-            _openid,
-        }).get({
-            success(res){
+        db.collection('chat_record').where({_openid}).watch({
+            onChange: function(snapshot) {
                 that.setData({
-                    my_customers:res,
-                });
-                console.log(that.data.my_customers);
-            }})
+                    my_customers : snapshot.docs
+                })
+                //console.log(that.data.my_customers);
+                //检查骑手是否有未读消息
+                for (var index in that.data.my_customers) {
+                   if(that.data.my_customers[index].recent_update_time>that.data.my_customers[index].rider_read_time) {
+                       is_read1=1
+                    console.log(is_read1)
+                   }
+                   else{
+                    is_read1=0
+                    console.log(is_read1)
+                   }          
+                   }
+            },
+            onError: function(err){
+                console.log(err)
+            }
+        })
     },
 
     getrider() {
@@ -63,34 +62,66 @@ Page({
         const that=this;
         db.collection('chat_record').where({
             userid:_openid,
-        }).get({
-            success(res){
+        }).watch({
+            onChange: function(snapshot) {
+                //console.log(snapshot);
                 that.setData({
-                    me_rider:res,
-                });
-                console.log(that.data.me_rider);
-            }})
-    },
-
+                    me_rider : snapshot.docs
+                })
+                //console.log(that.data.me_rider);
+            },
+            onError: function(err){
+                console.log(err)
+            }
+    })
+},
 
     startChat(e) {
         const that=this;
         var index = e.currentTarget.dataset.index;
-        console.log(index);
-        console.log(this.data.my_customers);
-        wx.navigateTo({
-          url: '/pages/chat/chat?id=' + this.data.my_customers.data[index]._id
+        var myDate=new Date()
+        //console.log(index);
+        //console.log(that.data.my_customers[index]);
+        //更新骑手最近读的时间
+        db.collection('chat_record').where({
+           _id:this.data.my_customers[index]._id
+        }).update({
+            data: {
+                rider_read_time: myDate.toLocaleString()
+            },
+            success(res) {
+                console.log("success")
+            }
         })
+        wx.navigateTo({
+          url: '/pages/chat/chat?id=' + this.data.my_customers[index]._id
+        })
+        
+
         
     },
 
     startChatWithRider(e) {
         const that=this;
         var index = e.currentTarget.dataset.index;
-        console.log(index);
-        console.log(this.data.me_rider);
+        //console.log(index);
+        //console.log(this.data.me_rider);
+
+        //更新用户最近读的时间
+        db.collection('chat_record').where({
+            _id:this.data.my_customers[index]._id
+         }).update({
+             data: {
+                 user_read_time: myDate.toLocaleString()
+             },
+             success(res) {
+                 console.log("success")
+             }
+         })
+
+
         wx.navigateTo({
-          url: '/pages/chat/chat?id=' + this.data.me_rider.data[index]._id
+          url: '/pages/chat/chat?id=' + this.data.me_rider[index]._id
         })
         
     }

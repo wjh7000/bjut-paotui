@@ -142,27 +142,34 @@ Page({
 
     },
 
-        createDialog(){
-                var that=this.data;
-                var myDate=new Date();
-                const deliverid=wx.getStorageSync('userid');
-               // const userid='o0IHy4mVYyOvEz6fdfJzVoB_gXxs';
-                const userid='o0IHy4h0DmVWqU-o-N_VnukiYIKk';
-                const userInfo=wx.getStorageSync('userInfo');
-                const typeList=[
-                    {
-                        id:deliverid,
-                        sentamce:'我是您的骑手请开始有什么问题可以联系我',
-                        time:myDate.toLocaleString(),
-                    }
-                ];
-                db.collection('chat_record').add({
-                    data: {
-                        chatlog: typeList,
-                        userid:userid,
-                        newtime:myDate.toLocaleString(),
-                        userInfo,
-                    },
+    createDialog(){
+        var that=this.data;
+        var myDate=new Date();
+        var rider_read_time=new Date();
+        var user_read_time=new Date();
+        const deliverid=wx.getStorageSync('userid');
+        const userid='o0IHy4h0DmVWqU-o-N_VnukiYIKk';//用户id
+        const user_avatar='暂无'  //用户的头像
+        const user_nickname='暂无'  //用户的昵称
+        const userInfo=wx.getStorageSync('userInfo');//自己的信息
+        const typeList=[
+         {
+          id:deliverid,
+          sentamce:'我是您的骑手请开始有什么问题可以联系我',
+          time:myDate.toLocaleString(),
+         }];
+         db.collection('chat_record').add({
+         data: {
+                chatlog: typeList,
+                userid:userid,
+                user_avatar,
+                user_nickname,
+
+                recent_update_time:myDate.toLocaleString(),
+                rider_read_time:'',
+                user_read_time:'',
+                userInfo,
+               },
                     success: (res) => {
                         wx.showToast({
                           title: '提交成功',

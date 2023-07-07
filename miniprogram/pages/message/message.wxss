@@ -68,3 +68,10 @@
   .no-message image {
     margin-top: 200rpx;
   }
+  .new_message{
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%; 
+    margin-right: 40rpx;
+
+  }
