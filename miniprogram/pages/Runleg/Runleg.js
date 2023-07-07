@@ -7,7 +7,7 @@ Page({
     itemname: '',
     address: '',
     address2:'',
-    money: null,
+    money: '',
     userInfo: {},
     remark: '',
     nowDate:'',
@@ -52,6 +52,10 @@ Page({
       userInfo,
       remark,
     } = this.data;
+    const sendphone=address.phone;
+    const receiverphone=address2.phone;
+    const sendname=address.name;
+    const receivername=address2.name;
     if (!itemname) {
       wx.showToast({
         icon: 'none',
@@ -95,8 +99,12 @@ Page({
         nowDate:that.nowDate,
         money,
         status: 'waiting',
-        address,
-        address2,
+        A1,
+        A2,
+        sendname,
+        sendphone,
+        receivername,
+        receiverphone,
         info: {
           itemname,
           remark,
@@ -119,8 +127,9 @@ Page({
   },
   getmoney(e) {
     this.setData({
-      money: Number(e.detail.value)
+      money: Number( e.detail.value)
     })
+    //console.log(this.data.money)
   },
   selectAddress(){
     wx.setStorageSync('Nowurl', 'Runleg')

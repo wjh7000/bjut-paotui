@@ -178,7 +178,7 @@ Page({
     
     submit(){
         const that = this.data;
-        const {phone ,name}=wx.getStorageSync('DaddressNow');
+        const {phone ,name}=wx.getStorageSync('addressNow');
         if(!that.Daddress){
             wx.showToast({
                 title: '未选收件地址',
