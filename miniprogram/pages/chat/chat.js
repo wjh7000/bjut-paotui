@@ -31,14 +31,14 @@ Page({
     },
 
     onshow: function (options) {
-
+        //this.getmyDialogs()
     },
 
     onUnload() {
         this.update_rider_last_read()
         this.update_customer_last_read()
         console.log("退出")
-
+        console.log(this.data.my_dialogs._openid)
     },
 
 
@@ -104,6 +104,7 @@ Page({
     getmyDialogs(){
         var that = this;
         const _id=that.data.id;
+        var object_avatar;
         db.collection('chat_record').doc(_id).watch({
             onChange: function(snapshot) {
                 that.setData({
@@ -111,6 +112,17 @@ Page({
                 })
                 that.setData({
                     scrollLast: "toView"
+                })
+                if(that.data.userid==that.data.my_dialogs._openid){
+                    //console.log("我是顾客")
+                    object_avatar=that.data.my_dialogs.user_avatar;
+                }
+                else if(that.data.userid!=that.data.my_dialogs._openid){
+                    //console.log("我是骑手")
+                    object_avatar=that.data.my_dialogs.userInfo.avatarUrl;
+                }
+                that.setData({
+                    object_avatar : object_avatar
                 })
             },
             onError: function(err){
@@ -143,14 +155,14 @@ Page({
         if(this.data.userid==that.data.my_dialogs._openid){
             db.collection('chat_record').doc(_id).get({
                 success(res) {
-                    console.log(res)
+                    //console.log(res)
                     var myDate=new Date()
                     db.collection('chat_record').doc(_id).update({
                         data: {                           
                             rider_read_time: myDate.toLocaleString()
                         },
                         success(res) {
-                                console.log('1')
+                                //console.log('1')
                         }
                     
                     })
@@ -167,14 +179,14 @@ Page({
         if(this.data.userid!=that.data.my_dialogs._openid){
             db.collection('chat_record').doc(_id).get({
                 success(res) {
-                    console.log(res)
+                    //console.log(res)
                     var myDate=new Date()
                     db.collection('chat_record').doc(_id).update({
                         data: {
                             user_read_time: myDate.toLocaleString()
                         },
                         success(res) {
-                                console.log('1')
+                               // console.log('1')
                         }
                     
                     })

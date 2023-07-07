@@ -38,17 +38,6 @@ Page({
                     my_customers : snapshot.docs
                 })
                 //console.log(that.data.my_customers);
-                //检查骑手是否有未读消息
-                for (var index in that.data.my_customers) {
-                   if(that.data.my_customers[index].recent_update_time>that.data.my_customers[index].rider_read_time) {
-                       is_read1=1
-                   // console.log(is_read1)
-                   }
-                   else{
-                    is_read1=0
-                  //  console.log(is_read1)
-                   }          
-                   }
             },
             onError: function(err){
                 console.log(err)
