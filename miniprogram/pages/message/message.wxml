@@ -17,16 +17,19 @@
             <image class="face" src="{{item.userInfo.avatarUrl}}"></image>  
             <view>
                 <view class="nick-name">{{item.userInfo.nickName}}</view>
+              
                 <view class="msg">{{item.chatlog[item.chatlog.length-1].sentamce}}</view>
-                <view wx:if="{{item.recent_update_time>item.rider_read_time}}">
-            <image class="new_message" src="../../images/new_msg.png"></image>  
-        </view>
-
+               
             </view>  
+            
         </view>
-          
-        <view class="time">{{item.recent_update_time}}</view>
-      
+        <view>
+            <view wx:if="{{item.recent_update_time>item.rider_read_time}}">
+            <image class="new_message" src="../../images/new_msg.png"></image> 
+            <view class="new_time">{{item.recent_update_time}}</view>
+        </view>
+        <view wx:else=""  class="time">{{item.recent_update_time}}</view>
+        </view>
     </view>
 
    
@@ -46,12 +49,18 @@
             <view>
                 <view class="nick-name">{{item.userInfo.nickName}}</view>
                 <view class="msg">{{item.chatlog[item.chatlog.length-1].sentamce}}</view>
+                
+            </view>
+            <view>
                 <view wx:if="{{item.recent_update_time>item.user_read_time}}">
-            <image class="new_message" src="../../images/new_msg.png"></image>  
+            <image class="new_message" src="../../images/new_msg.png"></image> 
+            <view class="new_time">{{item.recent_update_time}}</view>
+        </view>  
+        <view wx:else class="time">{{item.recent_update_time}}</view>
+            </view>
+          
         </view>
-            </view>  
-        </view>
-        <view class="time">{{item.recent_update_time}}</view>
+       
     </view>
 </view>
 </block>
