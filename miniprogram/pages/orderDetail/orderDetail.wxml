@@ -97,6 +97,10 @@
             <text>订单已完成</text>
     </view>
 
+    <view class="test">
+        <button bindtap="createDialog"> DialogTest</button>
+    </view>
+
 
 
 </view>

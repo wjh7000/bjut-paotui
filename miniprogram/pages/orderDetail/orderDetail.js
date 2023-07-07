@@ -216,6 +216,50 @@ Page({
                     }
                 }
             })
-        }
+        },
+
+        createDialog(){
+            var that=this.data;
+            var myDate=new Date();
+            var rider_read_time=new Date();
+            var user_read_time=new Date();
+            const deliverid=wx.getStorageSync('userid');
+            const userid=this.data.detail.basicInfo.openid;//用户id
+            //const userid='o0IHy4mVYyOvEz6fdfJzVoB_gXxs';//用户id
+            const user_avatar=this.data.detail.basicInfo.userInfo.avatarUrl  //用户的头像
+            const user_nickname=this.data.detail.basicInfo.userInfo.nickname  //用户的昵称
+            const userInfo=wx.getStorageSync('userInfo');//自己的信息
+            const typeList=[
+             {
+              id:deliverid,
+              sentamce:'我是您的骑手请开始有什么问题可以联系我',
+              time:myDate.toLocaleString(),
+             }];
+             db.collection('chat_record').add({
+             data: {
+                    chatlog: typeList,
+                    userid:userid,
+                    user_avatar,
+                    user_nickname,
+    
+                    recent_update_time:myDate.toLocaleString(),
+                    rider_read_time:'',
+                    user_read_time:'',
+                    userInfo,
+                   },
+                        success: (res) => {
+                            wx.showToast({
+                              title: '提交成功',
+                            })
+                        },
+                        fail: (res) => {
+                            wx.showToast({
+                              icon: 'none',
+                              title: '上传失败',
+                            })
+                        }
+                    })
+                }
+    
     
 })
