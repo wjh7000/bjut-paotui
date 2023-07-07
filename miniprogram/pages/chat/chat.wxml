@@ -19,7 +19,7 @@
         <view class="bot-right">
             {{my_dialogs.chatlog[index].sentamce}}
         </view>
-        <image class = "face-right" src="{{my_dialogs.userInfo.avatarUrl}}"></image>
+        <image class = "face-right" src="{{my_dialogs.user_avatar}}"></image>
     </view>
     </block>
 </view>

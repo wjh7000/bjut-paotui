@@ -25,16 +25,20 @@ Page({
             userInfo
         })
         this.getmyDialogs()
+        wx.setNavigationBarTitle({
+            title:this.data.user_nickname
+        })
     },
 
     onshow: function (options) {
-        
+
     },
 
     onUnload() {
         this.update_rider_last_read()
         this.update_customer_last_read()
         console.log("退出")
+
     },
 
 
@@ -160,7 +164,7 @@ Page({
         var that = this;
         const _id=that.data.id;
         //console.log(_id);
-        if(wx.getStorageSync('userid')==that.data.id){
+        if(wx.getStorageSync('userid')!=that.data.userid){
             db.collection('chat_record').doc(_id).get({
                 success(res) {
                     console.log(res)
