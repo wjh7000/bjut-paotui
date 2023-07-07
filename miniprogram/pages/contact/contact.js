@@ -149,6 +149,7 @@ Page({
         var user_read_time=new Date();
         const deliverid=wx.getStorageSync('userid');
         const userid='o0IHy4h0DmVWqU-o-N_VnukiYIKk';//用户id
+        //const userid='o0IHy4mVYyOvEz6fdfJzVoB_gXxs';//用户id
         const user_avatar='暂无'  //用户的头像
         const user_nickname='暂无'  //用户的昵称
         const userInfo=wx.getStorageSync('userInfo');//自己的信息
