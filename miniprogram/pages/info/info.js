@@ -114,11 +114,6 @@ Page({
         
     },
 
-    contacter(){
-        wx.navigateTo({
-            url: '../contact/contact',
-        })
-    },
 
     addressmanage(){
         if(!this.data.hasuserinfo){
