@@ -20,8 +20,12 @@ Page({
             rewardOrder:[],
             helpOrder:[],
             openid:'',
+            userInfo: {},
+            phone: '',
             isRunner:'',
-            loginStatus:false
+            loginStatus:false,
+
+            
     },
     
     
@@ -48,6 +52,8 @@ Page({
      */
     onLoad(options) {
         let openid = wx.getStorageSync('userid');
+        let userInfo = wx.getStorageSync('userInfo');
+        let phone = wx.getStorageSync('phone');
         let loginStatus;
         if (!openid){
             loginStatus = false;
@@ -57,7 +63,9 @@ Page({
         }
         this.setData({
             openid:openid,
-            loginStatus:loginStatus
+            loginStatus:loginStatus,
+            userInfo:userInfo,
+            phone:phone,
         })
         
         console.log(this.data.openid, 'openid', loginStatus);
@@ -641,7 +649,7 @@ Page({
     
     formatInfo(item){
         let basicInfo = {
-            type:item.type, _id:item._id, openid:item._openid, status:item.status, money:item.money, nowDate:item.nowDate, nowTime:item.nowTime, phone:item.phone, userInfo:item.userInfo, runnerid:item.runnerid
+            type:item.type, _id:item._id, openid:item._openid, status:item.status, money:item.money, nowDate:item.nowDate, nowTime:item.nowTime, phone:item.phone, userInfo:item.userInfo, runnerid:item.runnerid, runnerphone:item.runnerphone, runnerInfo:item.runnerInfo
         }
         let moreInfo
         //console.log(basicInfo)
@@ -664,6 +672,16 @@ Page({
             
             moreInfo = {
                 addressFrom:"打印机", addressTo:item.address, info:item.info
+            }
+        }
+        else if (basicInfo.type === "Runleg"){
+            moreInfo = {
+                addressFrom:item.A1, addressTo:item.A2, info:item.info.itemname, remark:item.info.remark, sendname:item.sendname, sendphone: item.sendphone, receivername:item.receivername, receiverphone:item.receiverphone
+            }
+        }
+        else if (basicInfo.type === "Rentalservice"){
+            moreInfo = {
+                addressTo:item.address, itemname:item.info.itemname, remark:item.info.remark, renttime:item.info.renttime, returntime:item.info.returntime
             }
         }
         else{
@@ -701,9 +719,12 @@ Page({
                             db.collection('order').doc(_id).update({
                                 data:{
                                     runnerid: this.data.openid,
+                                    runnerInfo: this.data.userInfo,
+                                    runnerphone: this.data.phone,
                                     status: 'inProcess',
                                 },
                                 success:(res) =>{
+                                    this.createDialog(item.basicInfo.openid, item.basicInfo.userInfo.avatarUrl, item.basicInfo.userInfo.nickName)
                                     this.onLoad();
                                     wx.hideLoading();
                                 },
@@ -777,5 +798,47 @@ Page({
                 wx.setStorageSync('isRunner', this.data.isRunner)
             }
         })
-    }
+    },
+    createDialog(openid, avatar, nickName){
+        var that=this.data;
+        var myDate=new Date();
+        var rider_read_time=new Date();
+        var user_read_time=new Date();
+        const deliverid=wx.getStorageSync('userid');
+        const userid=openid;//用户id
+        //const userid='o0IHy4mVYyOvEz6fdfJzVoB_gXxs';//用户id
+        const user_avatar=avatar  //用户的头像
+        const user_nickname=nickName  //用户的昵称
+        const userInfo=wx.getStorageSync('userInfo');//自己的信息
+        const typeList=[
+         {
+          id:deliverid,
+          sentamce:'我是您的骑手请开始,有什么问题可以联系我',
+          time:myDate.toLocaleString(),
+         }];
+         db.collection('chat_record').add({
+         data: {
+                chatlog: typeList,
+                userid:userid,
+                user_avatar,
+                user_nickname,
+
+                recent_update_time:myDate.toLocaleString(),
+                rider_read_time:'',
+                user_read_time:'',
+                userInfo,
+               },
+                    success: (res) => {
+                        wx.showToast({
+                          //title: '提交成功',
+                        })
+                    },
+                    fail: (res) => {
+                        wx.showToast({
+                          icon: 'none',
+                          title: '对话创建失败',
+                        })
+                    }
+                })
+            },
 })

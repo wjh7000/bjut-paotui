@@ -32,7 +32,7 @@
     background-color: #fff;
     width: 85%;
     line-height: 40rpx;
-    font-size: large;
+    font-size: 34rpx;
     margin: 0 auto;
     border-radius: 25rpx;
     padding: 25rpx;
@@ -40,6 +40,24 @@
 }
 .body .content view{
     margin-left: 20rpx;
+}
+.body .content .phoneclass{
+    display: flex;
+    text-align: center;
+    justify-content:center;
+    align-items: center;
+}
+.body .content .phoneclass .callbtn{
+    border-radius: 8rpx;
+    background-color: #1067D1;
+    text-align: center;
+    justify-content:center;
+    align-items: center;
+    display:flex;
+    color: #fff;
+    height: 60rpx;
+    width: 140rpx;
+    font-size: 28rpx;
 }
 .body .expressCode{
     text-align: center;
@@ -69,11 +87,42 @@
     margin: 30rpx;
 }
 .body .contact .text{
+    text-align: center;
+}
+.body .contact .contact_top{
+    display: flex;
+    /* text-align: center; */
+    align-items: center;
+
+    /* flex-direction: row; */
+}
+.body .contact .contact_top image{
+    width: 60rpx;
+    height: 60rpx;
+    border-radius: 50%;
+    margin-left: 20rpx;
+}
+.body .contact .contact_top .info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20rpx;
+    font-size: 26rpx;
+}
+.body .contact .text{
+    font-size: 28rpx;
     margin-left: 20rpx;
 }
 .body .contact button{
     margin-top: 20rpx;
     margin-bottom: 20rpx;
+    margin-right: 20rpx;
+    height: 60rpx;
+    width: 160rpx;
+    text-align: center;
+    justify-content:center;
+    align-items: center;
+    display:flex;
+    font-size: 28rpx;
 }
 .body .contact .time{
     line-height: 20rpx;
