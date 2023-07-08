@@ -116,13 +116,13 @@
     margin-top: 20rpx;
     margin-bottom: 20rpx;
     margin-right: 20rpx;
-    height: 60rpx;
-    width: 160rpx;
+    height: 70rpx;
+    width: 180rpx;
     text-align: center;
     justify-content:center;
     align-items: center;
     display:flex;
-    font-size: 28rpx;
+    font-size: 26rpx;
 }
 .body .contact .time{
     line-height: 20rpx;
