@@ -22,7 +22,7 @@
             <text>收件姓名</text>
         </view>
         <view class="right">
-            <input type="text" placeholder="输入取件姓名（必填）" bindinput="getName" value="{{ name }}" />
+            <input type="text" placeholder="输入取件姓名（必填）" maxlength="10" bindinput="getName" value="{{ name }}" />
         </view>
     </view>
     <view class="body_item">
