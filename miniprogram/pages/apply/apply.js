@@ -80,7 +80,7 @@ Page({
         }
         else if(that.userID.length!=8){
             wx.showToast({
-              title: '证件号错误',
+              title: '证件号应为8位',
               icon: 'none',
             })
             return;
@@ -104,7 +104,7 @@ Page({
             var n1=Number(that.userID)
             if(isNaN(n1)){
                 wx.showToast({
-                    title: '证件号非法',
+                    title: '证件号应只包含数字',
                     icon: 'none',
                   })
                 return;

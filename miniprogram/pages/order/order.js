@@ -20,7 +20,12 @@ Page({
             rewardOrder:[],
             helpOrder:[],
             openid:'',
-            isRunner:''
+            userInfo: {},
+            phone: '',
+            isRunner:'',
+            loginStatus:false,
+
+            
     },
     
     
@@ -46,21 +51,38 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        wx.cloud.callFunction({
-            name:'getuserid',
-            success:(res)=>{
-                this.setData({
-                    openid:res.result.openid
-                })
-                //console.log(this.data.openid)
-                //this.data.openid = res.result.openid
-            },
-            fail:(res)=>{
-                wx.showToast({
-                  title: '错误',
-                })
-            }
-        }),
+        let openid = wx.getStorageSync('userid');
+        let userInfo = wx.getStorageSync('userInfo');
+        let phone = wx.getStorageSync('phone');
+        let loginStatus;
+        if (!openid){
+            loginStatus = false;
+        }
+        else{
+            loginStatus = true;
+        }
+        this.setData({
+            openid:openid,
+            loginStatus:loginStatus,
+            userInfo:userInfo,
+            phone:phone,
+        })
+        
+        console.log(this.data.openid, 'openid', loginStatus);
+        // 不用云函数了，直接从缓存取openid，上面是新版
+        // wx.cloud.callFunction({
+        //     name:'getuserid',
+        //     success:(res)=>{
+        //         this.setData({
+        //             openid:res.result.openid
+        //         })
+        //     },
+        //     fail:(res)=>{
+        //         wx.showToast({
+        //           title: '错误',
+        //         })
+        //     }
+        // }),
 
         //判断骑手
         this.getPersonPower();
@@ -403,33 +425,49 @@ Page({
     },
     //我的订单页
     getMyOrder() {
-        db.collection('order').where({
-            _openid:this.data.openid
-        }).orderBy('createTime','desc').get({
-            success:(res)=> {
-                let { data } = res;
-                console.log(data)
-                data.forEach((item,index)=> {
-                    //旧版
-                    // const info = {type: item.type, address: item.address}
-                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    // item.info = info_text;
-                    //新版
-                    let formattedItem = this.formatInfo(item);
-                    data[index] = formattedItem;
-                });
-                this.setData({
-                    //myOrder: data,
-                    orderList: data
-                })
-                console.log(this.data.orderList)
-            },
-            fail:(res)=>{
-                wx.showToast({
-                    title:'加载错误',
-                })
-            }
-        })
+        if (this.data.loginStatus === true){
+            db.collection('order').where({
+                _openid:this.data.openid
+            }).orderBy('createTime','desc').get({
+                success:(res)=> {
+                    let { data } = res;
+                    console.log(data)
+                    data.forEach((item,index)=> {
+                        //旧版
+                        // const info = {type: item.type, address: item.address}
+                        // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                        // item.info = info_text;
+                        //新版
+                        let formattedItem = this.formatInfo(item);
+                        data[index] = formattedItem;
+                    });
+                    this.setData({
+                        //myOrder: data,
+                        orderList: data
+                    })
+                    console.log(this.data.orderList)
+                },
+                fail:(res)=>{
+                    wx.showToast({
+                        title:'加载错误',
+                    })
+                }
+            })
+        }
+        else{
+            wx.showModal({
+                title: '提示',
+                content: '请先登录再查看我发布的订单',
+                showCancel:false,
+                complete: (res) => {
+  
+                }
+              })
+              this.setData({
+                  orderList:''
+              })
+        }
+        
     },
 
     getMyHelpOrder(){
@@ -498,70 +536,98 @@ Page({
 
     },
     getProcessOrder(){
-        db.collection('order').where({
-            runnerid:this.data.openid,
-            status:'inProcess'
-        }).orderBy('createTime','desc').get({
-            success:(res)=> {
-                let { data } = res;
-                //console.log("d", data);
-                data.forEach((item,index)=> {
-                    //旧版
-                    // const info = {type: item.type, address: item.address}
-                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    // item.info = info_text;
-                    //新版
-                    let formattedItem = this.formatInfo(item);
-                    data[index] = formattedItem;
-                });
-                
-                this.setData({
-                    //rewardOrder: data,
-                    orderList:data
-                });
-                
-                
-                
-                console.log(this.data.orderList)
-            },
-            fail:(res)=>{
-                wx.showToast({
-                    title:'加载错误',
-                })
-            }
-        })
+        if (this.data.loginStatus === true){
+            db.collection('order').where({
+                runnerid:this.data.openid,
+                status:'inProcess'
+            }).orderBy('createTime','desc').get({
+                success:(res)=> {
+                    let { data } = res;
+                    //console.log("d", data);
+                    data.forEach((item,index)=> {
+                        //旧版
+                        // const info = {type: item.type, address: item.address}
+                        // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                        // item.info = info_text;
+                        //新版
+                        let formattedItem = this.formatInfo(item);
+                        data[index] = formattedItem;
+                    });
+                    
+                    this.setData({
+                        //rewardOrder: data,
+                        orderList:data
+                    });
+                    console.log(this.data.orderList)
+                },
+                fail:(res)=>{
+                    wx.showToast({
+                        title:'加载错误',
+                    })
+                }
+            })
+        }
+        else{
+            wx.showModal({
+              title: '提示',
+              content: '请先登录再查看我接到的订单',
+              showCancel:false,
+              complete: (res) => {
+
+              }
+            })
+            this.setData({
+                orderList:''
+            })
+        }
+        
 
     },
     getFinishedOrder(){
-        db.collection('order').where({
-            runnerid:this.data.openid,
-            status:'finished'
-        }).orderBy('createTime','desc').get({
-            success:(res)=> {
-                let { data } = res;
-                console.log("d", data);
-                data.forEach((item,index)=> {
-                    //旧版
-                    // const info = {type: item.type, address: item.address}
-                    // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
-                    // item.info = info_text;
-                    //新版
-                    let formattedItem = this.formatInfo(item);
-                    data[index] = formattedItem;
-                });
-                
-                this.setData({
-                    //rewardOrder: data,
-                    orderList:data
-                });
-                console.log(this.data.orderList)
-            },
-            fail:(res)=>{
-                wx.showToast({
-                    title:'加载错误',
-                })
-            }
-        })
+        if (this.data.loginStatus === true){
+            db.collection('order').where({
+                runnerid:this.data.openid,
+                status:'finished'
+            }).orderBy('createTime','desc').get({
+                success:(res)=> {
+                    let { data } = res;
+                    console.log("d", data);
+                    data.forEach((item,index)=> {
+                        //旧版
+                        // const info = {type: item.type, address: item.address}
+                        // const info_text = `订单类型: ${info.type} \n 地址: ${info.address}\n`;
+                        // item.info = info_text;
+                        //新版
+                        let formattedItem = this.formatInfo(item);
+                        data[index] = formattedItem;
+                    });
+                    
+                    this.setData({
+                        //rewardOrder: data,
+                        orderList:data
+                    });
+                    console.log(this.data.orderList)
+                },
+                fail:(res)=>{
+                    wx.showToast({
+                        title:'加载错误',
+                    })
+                }
+            })
+        }
+        else{
+            wx.showModal({
+                title: '提示',
+                content: '请先登录再查看我接到的订单',
+                showCancel:false,
+                complete: (res) => {
+                    
+                }
+              })
+            this.setData({
+                orderList:''
+            })
+        }
 
     },
 
@@ -583,7 +649,7 @@ Page({
     
     formatInfo(item){
         let basicInfo = {
-            type:item.type, _id:item._id, openid:item._openid, status:item.status, money:item.money, nowDate:item.nowDate, nowTime:item.nowTime, phone:item.phone, userInfo:item.userInfo, runnerid:item.runnerid
+            type:item.type, _id:item._id, openid:item._openid, status:item.status, money:item.money, nowDate:item.nowDate, nowTime:item.nowTime, phone:item.phone, userInfo:item.userInfo, runnerid:item.runnerid, runnerphone:item.runnerphone, runnerInfo:item.runnerInfo
         }
         let moreInfo
         //console.log(basicInfo)
@@ -606,6 +672,16 @@ Page({
             
             moreInfo = {
                 addressFrom:"打印机", addressTo:item.address, info:item.info
+            }
+        }
+        else if (basicInfo.type === "Runleg"){
+            moreInfo = {
+                addressFrom:item.A1, addressTo:item.A2, info:item.info.itemname, remark:item.info.remark, sendname:item.sendname, sendphone: item.sendphone, receivername:item.receivername, receiverphone:item.receiverphone
+            }
+        }
+        else if (basicInfo.type === "Rentalservice"){
+            moreInfo = {
+                addressTo:item.address, itemname:item.info.itemname, remark:item.info.remark, renttime:item.info.renttime, returntime:item.info.returntime
             }
         }
         else{
@@ -643,9 +719,12 @@ Page({
                             db.collection('order').doc(_id).update({
                                 data:{
                                     runnerid: this.data.openid,
+                                    runnerInfo: this.data.userInfo,
+                                    runnerphone: this.data.phone,
                                     status: 'inProcess',
                                 },
                                 success:(res) =>{
+                                    this.createDialog(item.basicInfo.openid, item.basicInfo.userInfo.avatarUrl, item.basicInfo.userInfo.nickName)
                                     this.onLoad();
                                     wx.hideLoading();
                                 },
@@ -719,5 +798,47 @@ Page({
                 wx.setStorageSync('isRunner', this.data.isRunner)
             }
         })
-    }
+    },
+    createDialog(openid, avatar, nickName){
+        var that=this.data;
+        var myDate=new Date();
+        var rider_read_time=new Date();
+        var user_read_time=new Date();
+        const deliverid=wx.getStorageSync('userid');
+        const userid=openid;//用户id
+        //const userid='o0IHy4mVYyOvEz6fdfJzVoB_gXxs';//用户id
+        const user_avatar=avatar  //用户的头像
+        const user_nickname=nickName  //用户的昵称
+        const userInfo=wx.getStorageSync('userInfo');//自己的信息
+        const typeList=[
+         {
+          id:deliverid,
+          sentamce:'我是您的骑手请开始,有什么问题可以联系我',
+          time:myDate.toLocaleString(),
+         }];
+         db.collection('chat_record').add({
+         data: {
+                chatlog: typeList,
+                userid:userid,
+                user_avatar,
+                user_nickname,
+
+                recent_update_time:myDate.toLocaleString(),
+                rider_read_time:'',
+                user_read_time:'',
+                userInfo,
+               },
+                    success: (res) => {
+                        wx.showToast({
+                          //title: '提交成功',
+                        })
+                    },
+                    fail: (res) => {
+                        wx.showToast({
+                          icon: 'none',
+                          title: '对话创建失败',
+                        })
+                    }
+                })
+            },
 })

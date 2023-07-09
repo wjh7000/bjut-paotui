@@ -18,6 +18,8 @@ Page({
         const detail = wx.getStorageSync('orderDetail');
         const isRunner = wx.getStorageSync('isRunner');
         const userid = wx.getStorageSync('userid');
+        const phone = wx.getStorageSync('phone');
+        const userInfo = wx.getStorageSync('userInfo')
         //console.log(cdetail);
         //var that = this;
         this.setData({
@@ -25,6 +27,8 @@ Page({
             isRunner: isRunner,
             status :'',
             openid:userid,
+            userInfo: userInfo,
+            phone: phone
         });
         let {status} = detail.basicInfo;
         // console.log(options.ddetail);
@@ -87,9 +91,11 @@ Page({
     onShareAppMessage() {
 
     },
-    call(){
+    call(e){
+        const {phone} = e.target.dataset
+        console.log(e);
         wx.makePhoneCall({
-          phoneNumber: this.data.detail.basicInfo.phone,
+          phoneNumber: phone,
         })
 
     },
@@ -123,6 +129,8 @@ Page({
                             db.collection('order').doc(_id).update({
                                 data:{
                                     runnerid: this.data.openid,
+                                    runnerInfo: this.data.userInfo,
+                                    runnerphone: this.data.phone,
                                     status: 'inProcess',
                                 },
                                 success:(res) =>{
@@ -132,6 +140,7 @@ Page({
                             });
                             //这里有问题
                             wx.hideLoading();
+                            this.createDialog();
                             wx.showToast({
                                 title: '接单成功',
                                 duration: 2000,
@@ -158,6 +167,7 @@ Page({
                     }
                 })
             }
+            
         }
         else {
             wx.showModal({
@@ -216,6 +226,78 @@ Page({
                     }
                 }
             })
+        },
+
+        createDialog(){
+            var that=this.data;
+            var myDate=new Date();
+            var rider_read_time=new Date();
+            var user_read_time=new Date();
+            const deliverid=wx.getStorageSync('userid');
+            const userid=this.data.detail.basicInfo.openid;//用户id
+            //const userid='o0IHy4mVYyOvEz6fdfJzVoB_gXxs';//用户id
+            const user_avatar=this.data.detail.basicInfo.userInfo.avatarUrl  //用户的头像
+            const user_nickname=this.data.detail.basicInfo.userInfo.nickName  //用户的昵称
+            const userInfo=wx.getStorageSync('userInfo');//自己的信息
+            const typeList=[
+             {
+              id:deliverid,
+              sentamce:'我是您的骑手请开始,有什么问题可以联系我',
+              time:myDate.toLocaleString(),
+             }];
+             db.collection('chat_record').add({
+             data: {
+                    chatlog: typeList,
+                    userid:userid,
+                    user_avatar,
+                    user_nickname,
+
+                    recent_update_time:myDate.toLocaleString(),
+                    rider_read_time:'',
+                    user_read_time:'',
+                    userInfo,
+                   },
+                        success: (res) => {
+            //                 wx.showToast({
+            //                   //title: '提交成功',
+            //                 })
+                        },
+                        fail: (res) => {
+                            wx.showToast({
+                              icon: 'none',
+                              title: '对话创建失败',
+                            })
+                        }
+                    })
+                },
+        downloadFile(){
+            console.log( "fileID");
+            wx.showLoading({
+              title: '下载中',
+            })
+            wx.cloud.downloadFile({
+                fileID: this.data.detail.moreInfo.info.printImg,
+                success : res =>{
+                    
+                    const fileManager = wx.getFileSystemManager();
+                    fileManager.saveFile({
+                       tempFilePath: res.tempFilePath,
+                        
+                        success: (res) =>{
+                            wx.hideLoading()
+                            console.log(res, "tmppath");
+                            wx.openDocument({
+                              filePath: res.savedFilePath,
+                              showMenu:true
+                          })
+                        }
+                    })
+                },
+                fail: (res) =>{
+                    console.log("fail")
+                }
+            })
         }
+    
     
 })

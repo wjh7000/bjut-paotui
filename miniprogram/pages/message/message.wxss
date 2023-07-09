@@ -50,9 +50,14 @@
   
   
   .time {
-    font-size: 24rpx;
+    font-size: 20rpx;
     color: #a0a0a0;
-    margin-top: 10rpx;
+    margin-top: 20rpx;
+  }
+  .new_time {
+    font-size: 20rpx;
+    color: #a0a0a0;
+    margin-top: -30rpx;
   }
   
   .flex-row {
@@ -69,8 +74,9 @@
     margin-top: 200rpx;
   }
   .new_message{
-    width: 100rpx;
-    height: 100rpx;
+    width: 80rpx;
+    height: 80rpx;
+    left:20rpx;
     border-radius: 50%; 
     margin-right: 40rpx;
 

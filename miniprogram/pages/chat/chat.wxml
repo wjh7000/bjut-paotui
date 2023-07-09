@@ -2,10 +2,11 @@
 <scroll-view scroll-y="true" scroll-into-view="{{scrollLast}}" scroll-with-animation="true" class='chat_content'>
 
 <view wx:for="{{my_dialogs.chatlog}}" wx:key="index">
-
     <block wx:if="{{item.id!=userid}}">
+    
     <view class="top">
-        <image class = "face" src="{{my_dialogs.userInfo.avatarUrl}}"></image>
+
+        <image class = "face" src="{{(object_avatar)}}"></image>
         <view class="bot">
         <text >{{item.sentamce}}</text>
         
@@ -19,7 +20,7 @@
         <view class="bot-right">
             {{my_dialogs.chatlog[index].sentamce}}
         </view>
-        <image class = "face-right" src="{{my_dialogs.userInfo.avatarUrl}}"></image>
+        <image class = "face-right" src="{{userInfo.avatarUrl}}"></image>
     </view>
     </block>
 </view>

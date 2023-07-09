@@ -50,7 +50,7 @@ Page({
         var n2=Number(houseNumber);
         if(isNaN(n2)){
             wx.showToast({
-                title: '门牌号非法',
+                title: '门牌号应为数字',
                 icon: 'error',
               })
             return;
@@ -79,7 +79,7 @@ Page({
         var n1=Number(phone);
         if(isNaN(n1)){
             wx.showToast({
-                title: '手机号非法',
+                title: '手机号应为纯数字',
                 icon: 'error',
               })
             return;

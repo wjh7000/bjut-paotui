@@ -20,6 +20,8 @@
                     <text wx:elif="{{item.basicInfo.type === 'expressDelivery'}}">快递代寄</text>
                     <text wx:elif="{{item.basicInfo.type === 'takeaway'}}">外卖代取</text>
                     <text wx:elif="{{item.basicInfo.type === 'helpPrint'}}">帮我打印</text>
+                    <text wx:elif="{{item.basicInfo.type === 'Runleg'}}">校园跑腿</text>
+                    <text wx:elif="{{item.basicInfo.type === 'Rentalservice'}}">租借服务</text>
                     <text wx:else>未知项目</text>
                     <text>{{item.basicInfo.nowDate+' '+item.basicInfo.nowTime}}</text>
                 </view>
@@ -34,7 +36,7 @@
                 已完成
             </view>
         </view>
-        <view class="order_content" bindtap="jumptoDetail" data-detail="{{item}}" wx:if="{{item.basicInfo.type !== 'helpPrint'}}">
+        <view class="order_content" bindtap="jumptoDetail" data-detail="{{item}}" wx:if="{{item.basicInfo.type !== 'helpPrint' && item.basicInfo.type !== 'Rentalservice'}}">
             <view class="fromAddress">
                 起点：{{item.moreInfo.addressFrom}}
             </view>
@@ -47,6 +49,9 @@
             <view class = "sub_content" wx:elif="{{item.basicInfo.type === 'takeaway'}}">
                 外卖类型：{{item.moreInfo.size}}
             </view>
+            <view class = "sub_content" wx:elif="{{item.basicInfo.type === 'Runleg'}}">
+                物品：{{item.moreInfo.info}}
+            </view>
             <view class = "tap_detail">点击订单查看详情</view> 
 
         </view>
@@ -57,6 +62,17 @@
             <view class = "sub_content">
                 文件页数：{{item.moreInfo.info.pageNum}}
             </view>
+            <view class = "tap_detail">点击订单查看详情</view> 
+        </view>
+        <view class="order_content" bindtap="jumptoDetail" data-detail="{{item}}" wx:elif="{{item.basicInfo.type === 'Rentalservice'}}">
+            <view class="toAddress">
+                物品内容：{{item.moreInfo.itemname}}
+            </view>
+            <view class = "sub_content">
+                <view>开始时间：{{item.moreInfo.renttime}}</view> 
+                <view>归还时间：{{item.moreInfo.returntime}}</view> 
+            </view>
+            <view class = "tap_detail">点击订单查看详情</view> 
         </view>
         
         <view class="order_bottom">

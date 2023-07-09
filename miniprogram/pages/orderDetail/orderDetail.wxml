@@ -7,11 +7,11 @@
     
     <!-- 地址信息 -->
     <view class="address">
-        <view>
+        <view wx:if="{{detail.moreInfo.addressFrom}}">
             <image src="../../images/zhongdian.png" mode="heightFix"/>
             {{detail.moreInfo.addressFrom}}
         </view>
-        <view>
+        <view wx:if="{{detail.moreInfo.addressTo}}">
             <image src="../../images/qidian.png" mode="heightFix"/>
             {{detail.moreInfo.addressTo}}
         </view>
@@ -25,17 +25,20 @@
         <view>备注信息：{{detail.moreInfo.remark}}</view>
         <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
     </view>
+
     <view class="content" wx:if="{{detail.basicInfo.type === 'expressDelivery'}}">
         <!-- {{info}} -->
         <view>订单类型：快递代取</view>
         <view>快递大小：{{detail.moreInfo.size}}</view>
         <view>快递公司：{{detail.moreInfo.business}}</view>
-        <view>寄件人姓名：{{detail.moreInfo.name_from}}</view>
-        <view>收件人姓名：{{detail.moreInfo.name_to}}</view>
-        <view>收件人地址：{{detail.moreInfo.name_to}}</view>
+        <view wx:if="{{detail.basicInfo.openid === openid || detail.basicInfo.runnerid === openid}}">寄件人姓名：{{detail.moreInfo.name_from}}</view>
+        <view wx:if="{{detail.basicInfo.openid === openid || detail.basicInfo.runnerid === openid}}">收件人姓名：{{detail.moreInfo.name_to}}</view>
+        <view wx:if="{{detail.basicInfo.openid === openid || detail.basicInfo.runnerid === openid}}">收件人地址：{{detail.moreInfo.name_to}}</view>
         <view>备注信息：{{detail.moreInfo.remark}}</view>
         <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
     </view>
+
+
     <view class="content" wx:if="{{detail.basicInfo.type === 'takeaway'}}">
         <!-- {{info}} -->
         <view>订单类型：外卖代取</view>
@@ -43,26 +46,104 @@
         <view>备注信息：{{detail.moreInfo.remark}}</view>
         <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
     </view>
+    <view class="content" wx:if="{{detail.basicInfo.type === 'Runleg'}}">
+        <!-- {{info}} -->
+        <view>订单类型：校园跑腿</view>
+        <view>物品详情：{{detail.moreInfo.info}}</view>
+        <view>备注信息：{{detail.moreInfo.remark}}</view>
+        <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
+    </view>
+    <view class="content" wx:if="{{detail.basicInfo.type === 'Runleg' && (detail.basicInfo.status !== 'waiting' || detail.basicInfo.openid === openid)}}">
+        <!-- {{info}} -->
+
+        <view>发件人姓名：{{detail.moreInfo.sendname}}</view>
+        <view class = "phoneclass">
+            发件人电话：{{detail.moreInfo.sendphone}} 
+            <button class = 'callbtn' bindtap="call" data-phone="{{detail.moreInfo.sendphone}}">拨打</button>
+        
+        </view>
+
+        <view>收件人姓名：{{detail.moreInfo.receivername}}</view>
+        <view class = "phoneclass">
+            收件人电话：{{detail.moreInfo.receiverphone}} 
+            <button class = 'callbtn' bindtap="call" data-phone="{{detail.moreInfo.receiverphone}}">拨打</button>
+        </view>
+    </view>
+
+    <view class="content" wx:if="{{detail.basicInfo.type === 'Rentalservice'}}">
+        <!-- {{info}} -->
+        <view>订单类型：租借服务</view>
+        <view>物品详情：{{detail.moreInfo.itemname}}</view>
+        <view>备注信息：{{detail.moreInfo.remark}}</view>
+        <view>开始日期：{{detail.moreInfo.renttime}}</view>
+        <view>归还日期：{{detail.moreInfo.returntime}}</view>
+        <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
+    </view>
+
+    <view class="content" wx:if="{{detail.basicInfo.type === 'helpPrint'}}">
+        <!-- {{info}} -->
+        <view>订单类型：帮我打印</view>
+        <view>文件页数：{{detail.moreInfo.info.pageNum}}</view>
+        <view style="color:darkgoldenrod;">是否彩打：{{detail.moreInfo.info.colorPrint === true ? "是" : "否"}}</view>
+        <view style="color: darkgoldenrod;">是否双面打印：{{detail.moreInfo.info.twoSided === true ? "是" : "否"}}</view>
+        
+        <view class="printbtn" wx:if="{{detail.basicInfo.status === 'waiting' && detail.basicInfo.openid !== openid}}">
+            接单后可查看文件
+        </view>
+        <button class="printbtn" wx:elif="{{detail.basicInfo.status !== 'waiting' || detail.basicInfo.openid === openid}}" bindtap="downloadFile" style="margin-top: 20rpx;">
+            下载文件
+        </button>
+        <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
+    </view>
+
+    
 
 
-    <view class="expressCode" wx:if="{{(detail.moreInfo.expressCode || detail.moreInfo.img) && detail.basicInfo.status !== 'waiting'}}">
+
+    <view class="expressCode" wx:if="{{(detail.moreInfo.expressCode || detail.moreInfo.img) && (detail.basicInfo.status !== 'waiting' || detail.basicInfo.openid === openid)}}">
         <view class="v1">取件码</view>
         <view class="v2" wx:if="{{detail.moreInfo.expressCode}}">{{detail.moreInfo.expressCode}}</view>
         <image wx:if="{{detail.moreInfo.img}}" src="{{detail.moreInfo.img}}" mode="widthFix"/>
     </view>
-    <view class="contact" wx:if="{{detail.basicInfo.status !== 'waiting'}}">
-        <view class="text">发起人信息：</view>
-        <view class="text" wx:if="{{detail.basicInfo.userInfo.gender}} == 0">
-            {{detail.basicInfo.userInfo.nickName}}(男)
-        </view>
-        <view class="text" wx:elif="{{detail.basicInfo.userInfo.gender}} == 0">
-            {{detail.basicInfo.userInfo.nickName}}(女)
-        </view>
-        <view class="text">
-            {{detail.basicInfo.phone}}
-            
-        </view>
-        <button bindtap="call">拨打电话</button>
+
+
+    <view class="contact" wx:if="{{detail.basicInfo.status !== 'waiting' || detail.basicInfo.openid === openid}}">
+    <view class="text" wx:if="{{detail.basicInfo.openid !== openid}}">
+        发起人信息
+    </view>
+    <view class="text" wx:if="{{detail.basicInfo.openid === openid}}">
+        跑腿员信息
+    </view>
+    <view class = "contact_top" wx:if="{{detail.basicInfo.openid !== openid}}">
+            <image src="{{detail.basicInfo.userInfo.avatarUrl}}"></image>
+            <view class = "info">
+                <text wx:if="{{detail.basicInfo.userInfo.gender}} == 0">{{detail.basicInfo.userInfo.nickName}}(男)</text>
+                <text wx:elif="{{detail.basicInfo.userInfo.gender}} == 1">{{detail.basicInfo.userInfo.nickName}}(女)</text>
+                <text>{{detail.basicInfo.phone}}</text>
+            </view>
+            <button bindtap="call" data-phone="{{detail.basicInfo.phone}}">拨打电话</button>
+    </view>
+
+    <view class = "contact_top" wx:if="{{detail.basicInfo.openid === openid && detail.basicInfo.runnerid}}">
+            <image src="{{detail.basicInfo.runnerInfo.avatarUrl}}"></image>
+            <view class = "info">
+                <text wx:if="{{detail.basicInfo.runnerInfo.gender}} == 0">{{detail.basicInfo.runnerInfo.nickName}}(男)</text>
+                <text wx:elif="{{detail.basicInfo.runnerInfo.gender}} == 1">{{detail.basicInfo.runnerInfo.nickName}}(女)</text>
+                <text>{{detail.basicInfo.runnerphone}}</text>
+            </view>
+            <button bindtap="call" data-phone="{{detail.basicInfo.runnerphone}}">拨打电话</button>
+    </view>
+
+    <view class = "contact_top" wx:if="{{detail.basicInfo.openid === openid && !detail.basicInfo.runnerid}}">
+            <view class="info">
+                <text style="text-align: center; color: darkgrey; font-size: 36rpx; text-align: center; margin-top: 30rpx; margin-bottom: 30rpx;">暂时还没有人接单，再等等吧</text>
+            </view>
+    </view>
+
+    
+        
+        <!-- <button bindtap="call" data-phone="{{detail.basicInfo.phone}}">拨打电话</button> -->
+    
         <view class="time">
             下单时间:{{detail.basicInfo.nowDate+detail.basicInfo.nowTime}}
         </view>
@@ -70,15 +151,15 @@
             订单号:{{detail.basicInfo._id}}
         </view>
     </view>
-    <view class="contact" wx:elif="{{detail.basicInfo.status === 'waiting'}}">
+    <view class="contact" wx:elif="{{detail.basicInfo.status === 'waiting' && detail.basicInfo.openid !== openid}}">
         为保护用户隐私，部分信息已隐藏，接单后可查看
     </view>
     <!-- <view class="img-style" wx:if="{{detail.moreInfo.img && detail.basicInfo.status != 'waiting'}}">
     </view> -->
     
     
-    <button class="btn" style="width: 64vw;" wx:if="{{detail.basicInfo.status==='waiting'}}" bindtap="orderReceive">
-        <view class="btnleft" >
+    <button class="btn" style="width: 64vw;" wx:if="{{detail.basicInfo.openid!==openid && detail.basicInfo.status==='waiting'}}" bindtap="orderReceive">
+        <view class="btnleft">
             <text>接单</text>
         </view>
     </button>
@@ -88,15 +169,10 @@
         </view>
     </button>
 
-    <view class="finishedMessage" wx:elif="{{detail.basicInfo.status==='inProcess' && detail.basicInfo.openid === openid}}">
+    <view class="finishedMessage" wx:elif="{{detail.basicInfo.openid === openid}}">
         <text>此订单由我发布</text>
     </view>
-
-
     <view class="finishedMessage"wx:elif="{{detail.basicInfo.status==='finished'}}">
             <text>订单已完成</text>
     </view>
-
-
-
 </view>
