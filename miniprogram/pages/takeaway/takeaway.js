@@ -188,7 +188,7 @@ Page({
         }
         else if(!that.Spoint){
             wx.showToast({
-                title: '未选外卖商家',
+                title: '未选外卖存点',
                 icon:'error'
             })
             return;
@@ -210,7 +210,7 @@ Page({
 
         else if(that.expresscode.length>20){
             wx.showToast({
-                title: '取件码大于20字',
+                title: '取餐码大于20字',
                 icon:'error',
               })
               return;
