@@ -25,17 +25,20 @@
         <view>备注信息：{{detail.moreInfo.remark}}</view>
         <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
     </view>
+
     <view class="content" wx:if="{{detail.basicInfo.type === 'expressDelivery'}}">
         <!-- {{info}} -->
         <view>订单类型：快递代取</view>
         <view>快递大小：{{detail.moreInfo.size}}</view>
         <view>快递公司：{{detail.moreInfo.business}}</view>
-        <view>寄件人姓名：{{detail.moreInfo.name_from}}</view>
-        <view>收件人姓名：{{detail.moreInfo.name_to}}</view>
-        <view>收件人地址：{{detail.moreInfo.name_to}}</view>
+        <view wx:if="{{detail.basicInfo.openid === openid || detail.basicInfo.runnerid === openid}}">寄件人姓名：{{detail.moreInfo.name_from}}</view>
+        <view wx:if="{{detail.basicInfo.openid === openid || detail.basicInfo.runnerid === openid}}">收件人姓名：{{detail.moreInfo.name_to}}</view>
+        <view wx:if="{{detail.basicInfo.openid === openid || detail.basicInfo.runnerid === openid}}">收件人地址：{{detail.moreInfo.name_to}}</view>
         <view>备注信息：{{detail.moreInfo.remark}}</view>
         <view style="color:brown; font-size:50rpx; margin-top: 20rpx;">￥{{detail.basicInfo.money}}</view>
     </view>
+
+
     <view class="content" wx:if="{{detail.basicInfo.type === 'takeaway'}}">
         <!-- {{info}} -->
         <view>订单类型：外卖代取</view>
@@ -120,7 +123,8 @@
             </view>
             <button bindtap="call" data-phone="{{detail.basicInfo.phone}}">拨打电话</button>
     </view>
-    <view class = "contact_top" wx:if="{{detail.basicInfo.openid === openid}}">
+
+    <view class = "contact_top" wx:if="{{detail.basicInfo.openid === openid && detail.basicInfo.runnerid}}">
             <image src="{{detail.basicInfo.runnerInfo.avatarUrl}}"></image>
             <view class = "info">
                 <text wx:if="{{detail.basicInfo.runnerInfo.gender}} == 0">{{detail.basicInfo.runnerInfo.nickName}}(男)</text>
@@ -128,6 +132,12 @@
                 <text>{{detail.basicInfo.runnerphone}}</text>
             </view>
             <button bindtap="call" data-phone="{{detail.basicInfo.runnerphone}}">拨打电话</button>
+    </view>
+
+    <view class = "contact_top" wx:if="{{detail.basicInfo.openid === openid && !detail.basicInfo.runnerid}}">
+            <view class="info">
+                <text style="text-align: center; color: darkgrey; font-size: 36rpx; text-align: center; margin-top: 30rpx; margin-bottom: 30rpx;">暂时还没有人接单，再等等吧</text>
+            </view>
     </view>
 
     

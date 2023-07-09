@@ -58,6 +58,7 @@
     height: 60rpx;
     width: 140rpx;
     font-size: 28rpx;
+    margin-right: 20rpx;
 }
 .body .expressCode{
     text-align: center;
