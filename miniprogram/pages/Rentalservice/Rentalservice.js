@@ -56,7 +56,7 @@ Page({
       returntime,
       remark,
     } = this.data;
-    if (!itemname) {
+    if (itemname.replace(/\s*/g,"").length==0) {
       wx.showToast({
         icon: 'none',
         title: '您未选择物品',

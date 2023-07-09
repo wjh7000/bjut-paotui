@@ -56,7 +56,7 @@ Page({
     const receiverphone=address2.phone;
     const sendname=address.name;
     const receivername=address2.name;
-    if (!itemname) {
+    if (!itemname||itemname.replace(/\s*/g,"").length==0) {
       wx.showToast({
         icon: 'none',
         title: '您未选择物品',

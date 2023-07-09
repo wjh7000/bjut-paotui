@@ -181,19 +181,19 @@ Page({
         const {phone ,name}=wx.getStorageSync('addressNow');
         if(!that.Daddress){
             wx.showToast({
-                title: '未选收件地址',
+                title: '未选送餐地址',
                 icon:'error'
             })
             return;
         }
         else if(!that.Spoint){
             wx.showToast({
-                title: '未选快递商家',
+                title: '未选外卖商家',
                 icon:'error'
             })
             return;
         }
-         else if(!that.expresscode && !that.codeImg1){
+         else if(that.expresscode.replace(/\s*/g,"").length==0 && !that.codeImg1){
             wx.showToast({
                 title: '未填写取件信息',
                 icon:'error'
